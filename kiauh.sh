@@ -47,7 +47,8 @@ INI_FILE=${HOME}/.kiauh.ini
 BACKUP_DIR=${HOME}/kiauh-backups
 
 ### set github repos
-KLIPPER_REPO=https://github.com/Klipper3d/klipper.git
+# KLIPPER_REPO=https://github.com/Klipper3d/klipper.git
+KLIPPER_REPO=https://github.com/EchoHeim/klipper.git
 ARKSINE_REPO=https://github.com/Arksine/klipper.git
 DMBUTYUGIN_REPO=https://github.com/dmbutyugin/klipper.git
 DWC2FK_REPO=https://github.com/Stephan3/dwc2-for-klipper-socket.git

@@ -1,10 +1,9 @@
 custom_updates_ui(){
   ui_print_versions
   top_border
-  echo -e "|     ${green}~~~~~~~~~~~~~~ [ Update Menu ] ~~~~~~~~~~~~~~${default}     | "
+  echo -e "|     ${green}~~~~~~~~~~ [ Custom Updates Menu ] ~~~~~~~~~~${default}     | "
   hr
-  echo -e "|  0) $BB4U_STATUS| "
-  hr
+  echo -e "|  No features added yet! "
 
   back_footer
 }

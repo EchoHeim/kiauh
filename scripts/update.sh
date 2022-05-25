@@ -222,7 +222,7 @@ migrate_custompios(){
 update_klipper(){
   do_action_service "stop" "klipper"
   if [ ! -d $KLIPPER_DIR ]; then
-    cd ${HOME} && git clone $KLIPPER_REPO
+    cd ${HOME} && git clone -b lodge --depth 1 $KLIPPER_REPO
   else
     bb4u "klipper"
     read_branch

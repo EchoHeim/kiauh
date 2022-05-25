@@ -17,18 +17,18 @@ hr(){
 
 custom_update(){
   hr
-  echo -e "| ${cyan} lodge Custom ${default}                 ${red}U) Custom_Update${default}       |"
+  echo -e "| ${cyan} lodge Custom ${default}                     ${red}U) Custom_Update${default}   |"
 }
 
 quit_footer(){
   hr
-  echo -e "|                                ${red}Q) Quit${default}                |"
+  echo -e "|                                    ${red}Q) Quit${default}            |"
   bottom_border
 }
 
 back_footer(){
   hr
-  echo -e "|                       ${green}B) « Back${default}                       |"
+  echo -e "|                                   ${green}B) « Back${default}           |"
   bottom_border
 }
 
