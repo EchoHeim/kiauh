@@ -70,3 +70,9 @@ For more information or instructions to the various components KIAUH can install
 * A big thank you to [lixxbox](https://github.com/lixxbox) for that awesome KIAUH-Logo!
 * Also a big thank you to everyone who supported my work with a [Ko-fi](https://ko-fi.com/th33xitus) !
 * Last but not least: Thank you to all contributors and members of the Klipper Community who like and share this project!
+
+---
+
+- lodge branch functions
+
+    - New custom menu
