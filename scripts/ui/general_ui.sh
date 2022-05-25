@@ -15,6 +15,11 @@ hr(){
   echo -e "|-------------------------------------------------------|"
 }
 
+custom_update(){
+  hr
+  echo -e "|                        ${red}U) Custom_Update${default}               |"
+}
+
 quit_footer(){
   hr
   echo -e "|                        ${red}Q) Quit${default}                        |"
