@@ -78,6 +78,14 @@ print_unkown_cmd(){
   ERROR_MSG="Invalid command!"
 }
 
+print_no_mjpg(){
+  ERROR_MSG="MJPG not installed!"
+}
+
+print_enable_mjpg_ok(){
+  CONFIRM_MSG="enable mjpg_streamer complete!"
+}
+
 print_msg(){
   if [[ "$ERROR_MSG" != "" ]]; then
     echo -e "${red}"

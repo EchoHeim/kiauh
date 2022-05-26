@@ -15,7 +15,7 @@ main_ui(){
   echo -e "|                      |                                |"
   echo -e "|                      |          DWC2: $DWC2_STATUS|"
   echo -e "|  ${cyan}$KIAUH_VER${default}|     Octoprint: $OCTOPRINT_STATUS|"
-  custom_update
+  custom_function
   quit_footer
 }
 
@@ -64,7 +64,7 @@ main_menu(){
       4) clear && advanced_menu && break;;
       5) clear && backup_menu && break;;
       6) clear && settings_menu && break;;
-      U|u) clear && custom_updates_menu && break;;
+      F|f) clear && custom_function_menu && break;;
       Q|q)
         echo -e "${green}###### Happy printing! ######${default}"; echo
         exit -1;;

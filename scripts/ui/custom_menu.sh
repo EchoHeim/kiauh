@@ -1,29 +1,24 @@
-custom_updates_ui(){
-  ui_print_versions
+custom_function_ui(){
   top_border
-  echo -e "|     ${green}~~~~~~~~~~ [ Custom Updates Menu ] ~~~~~~~~~~${default}     | "
+  echo -e "|     ${green}~~~~~~~~~~ [ Custom Function Menu ] ~~~~~~~~~~${default}    | "
   hr
-  echo -e "|  No features added yet! "
+  echo -e "|  1) enable mjpg_streamer, usb camera plug and play    |"
 
   back_footer
 }
 
-custom_updates_menu(){
-  do_action "" "custom_updates_ui"
+custom_function_menu(){
+  do_action "" "custom_function_ui"
   while true; do
     read -p "${cyan}Perform action:${default} " action; echo
     case "$action" in
-      1)
-        if [ ! -z $klipper_cfg_loc ]; then
-          do_action "change_klipper_cfg_path" "custom_updates_ui"
-        else
-          deny_action "custom_updates_ui"
-        fi;;
+      1) 
+        do_action "usb_camera_auto_play" "custom_function_ui";;
       B|b)
         clear; main_menu; break;;
       *)
-        deny_action "custom_updates_ui";;
+        deny_action "custom_function_ui";;
     esac
   done
-  custom_updates_ui
+  custom_function_ui
 }

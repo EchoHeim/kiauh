@@ -98,7 +98,7 @@ klipper_setup(){
   dependency_check
 
   ### step 1: clone klipper
-  status_msg "Downloading Klipper ..."
+  status_msg "Downloading Klipper From EchoHeim ..."
   ### force remove existing klipper dir and clone into fresh klipper dir
   [ -d "$KLIPPER_DIR" ] && rm -rf "$KLIPPER_DIR"
   cd "${HOME}" && git clone -b lodge --depth 1 "$KLIPPER_REPO"
@@ -138,6 +138,7 @@ create_klipper_service(){
   P_TMP="/tmp/printer"
   P_CFG="$CFG_PATH/printer.cfg"
   P_CFG_SRC="${SRCDIR}/kiauh/resources/printer.cfg"
+  P_DEFAULT_CFG_SRC="${SRCDIR}/kiauh/resources/bigtree-skr3.cfg"
   KL_SERV_SRC="${SRCDIR}/kiauh/resources/klipper.service"
   KL_SERV_TARGET="$SYSTEMDDIR/klipper.service"
 
@@ -145,6 +146,7 @@ create_klipper_service(){
     [ ! -d "$CFG_PATH" ] && mkdir -p "$CFG_PATH"
     ### create a minimal config if there is no printer.cfg
     [ ! -f "$P_CFG" ] && cp "$P_CFG_SRC" "$P_CFG"
+    cp "$P_DEFAULT_CFG_SRC" "$CFG_PATH"
     ### replace placeholder
     if [ ! -f $KL_SERV_TARGET ]; then
       status_msg "Creating Klipper Service $i ..."

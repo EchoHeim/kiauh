@@ -3,7 +3,6 @@ remove_ui(){
   echo -e "|     ${red}~~~~~~~~~~~~~~ [ Remove Menu ] ~~~~~~~~~~~~~~${default}     | "
   hr
   echo -e "|  Directories which remain untouched:                  | "
-  echo -e "|  --> Your printer configuration directory             | "
   echo -e "|  --> ~/kiauh-backups                                  | "
   echo -e "|  You need remove them manually if you wish so.        | "
   hr

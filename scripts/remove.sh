@@ -110,6 +110,9 @@ remove_klipper(){
   if [ "$REM_MR" == "true" ]; then
     remove_moonraker && unset REM_MR
   fi
+
+  [ -d "${HOME}/klipper_logs" ] && rm ${HOME}/klipper_logs -fr
+  [ -d "${HOME}/klipper_config" ] && rm ${HOME}/klipper_config -fr
 }
 
 #############################################################

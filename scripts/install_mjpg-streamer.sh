@@ -19,7 +19,7 @@ install_mjpg-streamer(){
   fi
 
   ### check and install dependencies if missing
-  dep=(git cmake build-essential imagemagick libv4l-dev ffmpeg)
+  dep=(git cmake subversion build-essential imagemagick libv4l-dev ffmpeg)
   if apt-cache search libjpeg62-turbo-dev | grep -Eq "^libjpeg62-turbo-dev "; then
     dep+=(libjpeg62-turbo-dev)
   elif apt-cache search libjpeg8-dev | grep -Eq "^libjpeg8-dev "; then
@@ -34,11 +34,12 @@ install_mjpg-streamer(){
 
   ### step 2: compiling mjpg-streamer
   status_msg "Compiling MJPG-Streamer ..."
-  cd "${HOME}"/mjpg-streamer/mjpg-streamer-experimental && make
+  cd "${HOME}"/mjpg-streamer/mjpg-streamer-experimental && make all
   ok_msg "Compiling complete!"
 
   #step 3: install mjpg-streamer
   status_msg "Installing MJPG-Streamer ..."
+  cd "${HOME}"/mjpg-streamer/mjpg-streamer-experimental && sudo make install
   cd "${HOME}"/mjpg-streamer && mv mjpg-streamer-experimental/* .
   mkdir www-mjpgstreamer
   cat <<EOT >> ./www-mjpgstreamer/index.html
@@ -63,6 +64,10 @@ EOT
   if [ ! -f "$WEBCAM_TXT" ]; then
     status_msg "Creating webcam.txt config file ..."
     wget $WEBCAM_TXT_SRC -O "$WEBCAM_TXT"
+    if [ ! -e "$WEBCAM_TXT" ]; then
+      status_msg "Copy alternate files ..."
+      cp "${SRCDIR}/kiauh/resources/webcam.txt" $klipper_cfg_loc/
+    fi
     ok_msg "Done!"
   fi
 

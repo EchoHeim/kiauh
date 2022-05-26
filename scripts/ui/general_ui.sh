@@ -15,14 +15,14 @@ hr(){
   echo -e "|-------------------------------------------------------|"
 }
 
-custom_update(){
+custom_function(){
   hr
-  echo -e "| ${cyan} lodge Custom ${default}                     ${red}U) Custom_Update${default}   |"
+  echo -e "| ${cyan} lodge Custom ${default}                    ${red}F) Function${default}         |"
 }
 
 quit_footer(){
   hr
-  echo -e "|                                    ${red}Q) Quit${default}            |"
+  echo -e "|                                   ${red}Q) Quit${default}             |"
   bottom_border
 }
 
@@ -77,4 +77,16 @@ deny_action(){
   print_unkown_cmd
   print_msg && clear_msg
   $1
+}
+
+deny_mjpg_action(){
+  clear && print_header
+  print_no_mjpg
+  print_msg && clear_msg
+}
+
+do_action_OK(){
+  clear && print_header
+  print_enable_mjpg_ok
+  print_msg && clear_msg
 }

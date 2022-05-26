@@ -355,6 +355,10 @@ fluidd_setup(){
   [ -d "$FLUIDD_DIR" ] && rm -rf "$FLUIDD_DIR"
   mkdir "$FLUIDD_DIR" && cd $FLUIDD_DIR
   status_msg "Downloading Fluidd $FLUIDD_VERSION ..."
+  if [ -z $FLUIDD_DL_URL ];then
+    status_msg "Use alternate download address ..."
+    FLUIDD_DL_URL=https://github.com/fluidd-core/fluidd/releases/download/v1.18.1/fluidd.zip
+  fi
   wget "$FLUIDD_DL_URL" && ok_msg "Download complete!"
 
   ### extract archive
