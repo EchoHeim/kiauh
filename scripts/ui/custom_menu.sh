@@ -1,10 +1,10 @@
 custom_function_ui(){
-  top_border
-  echo -e "|     ${green}~~~~~~~~~~ [ Custom Function Menu ] ~~~~~~~~~~${default}    | "
-  hr
-  echo -e "|  1) enable mjpg_streamer, usb camera plug and play    |"
-
-  back_footer
+    top_border
+    echo -e "|     ${green}~~~~~~~~~~ [ Custom Function Menu ] ~~~~~~~~~~${default}    | "
+    hr
+    echo -e "|  1) usb device auto mount                             |"
+        
+    back_footer
 }
 
 custom_function_menu(){
@@ -13,7 +13,7 @@ custom_function_menu(){
     read -p "${cyan}Perform action:${default} " action; echo
     case "$action" in
       1) 
-        do_action "usb_camera_auto_play" "custom_function_ui";;
+        do_action "usb_device_mount" "custom_function_ui";;
       B|b)
         clear; main_menu; break;;
       *)

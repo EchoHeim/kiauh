@@ -19,7 +19,7 @@ install_mjpg-streamer(){
   fi
 
   ### check and install dependencies if missing
-  dep=(git cmake subversion build-essential imagemagick libv4l-dev ffmpeg)
+  dep=(git cmake subversion tofrodos build-essential imagemagick libv4l-dev ffmpeg)
   if apt-cache search libjpeg62-turbo-dev | grep -Eq "^libjpeg62-turbo-dev "; then
     dep+=(libjpeg62-turbo-dev)
   elif apt-cache search libjpeg8-dev | grep -Eq "^libjpeg8-dev "; then
