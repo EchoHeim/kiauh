@@ -250,7 +250,7 @@ update_dwc2fk(){
   do_action_service "stop" "dwc"
   bb4u "dwc2"
   if [ ! -d $DWC2FK_DIR ]; then
-    cd ${HOME} && git clone $DWC2FK_REPO
+    cd ${HOME} && git clone --depth 1 $DWC2FK_REPO
   else
     cd $DWC2FK_DIR && git pull
   fi

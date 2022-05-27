@@ -79,6 +79,8 @@ deny_action(){
   $1
 }
 
+################ lodge custom ################
+
 deny_mjpg_action(){
   clear && print_header
   print_no_mjpg
@@ -90,3 +92,17 @@ do_action_OK(){
   print_enable_mjpg_ok
   print_msg && clear_msg
 }
+
+KS_install_error(){
+  clear && print_header
+  KS_err_msg
+  print_msg && clear_msg
+}
+
+KS_fix_ok(){
+  clear && print_header
+  KS_OK_msg
+  print_msg && clear_msg
+}
+
+##############################################

@@ -29,7 +29,7 @@ install_mjpg-streamer(){
 
   ### step 1: clone moonraker
   status_msg "Downloading MJPG-Streamer ..."
-  cd "${HOME}" && git clone https://github.com/jacksonliam/mjpg-streamer.git
+  cd "${HOME}" && git clone --depth 1 https://github.com/jacksonliam/mjpg-streamer.git
   ok_msg "Download complete!"
 
   ### step 2: compiling mjpg-streamer
@@ -65,8 +65,10 @@ EOT
     status_msg "Creating webcam.txt config file ..."
     wget $WEBCAM_TXT_SRC -O "$WEBCAM_TXT"
     if [ ! -e "$WEBCAM_TXT" ]; then
-      status_msg "Copy alternate files ..."
-      cp "${SRCDIR}/kiauh/resources/webcam.txt" $klipper_cfg_loc/
+      if [ ! -s "$WEBCAM_TXT" ]; then
+        status_msg "Copy alternate files ..."
+        cp "${SRCDIR}/kiauh/resources/webcam.txt" $klipper_cfg_loc/
+      fi
     fi
     ok_msg "Done!"
   fi

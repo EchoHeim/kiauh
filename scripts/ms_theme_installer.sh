@@ -96,7 +96,7 @@ ms_theme_install(){
   status_msg "Please wait ..."
 
   [ -d "$THEME_PATH/.theme" ] && rm -rf "$THEME_PATH/.theme"
-  cd "$THEME_PATH" && git clone "$THEME_URL" ".theme"
+  cd "$THEME_PATH" && git clone --depth 1 "$THEME_URL" ".theme"
 
   ok_msg "Theme installation complete!"
   [ -n "$4" ] && echo "${yellow}###### Theme Info: $4${default}"

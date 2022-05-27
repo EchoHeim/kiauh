@@ -97,7 +97,7 @@ moonraker_setup(){
   status_msg "Downloading Moonraker ..."
   ### force remove existing moonraker dir and clone into fresh moonraker dir
   [ -d "$MOONRAKER_DIR" ] && rm -rf "$MOONRAKER_DIR"
-  cd "${HOME}" && git clone $MOONRAKER_REPO
+  cd "${HOME}" && git clone --depth 1 $MOONRAKER_REPO
   ok_msg "Download complete!"
 
   ### step 2: install moonraker dependencies and create python virtualenv

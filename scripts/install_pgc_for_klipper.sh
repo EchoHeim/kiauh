@@ -17,7 +17,7 @@ install_pgc_for_klipper(){
   dependency_check
   ### clone repo
   [ -d $PGC_DIR ] && rm -rf $PGC_DIR
-  cd ${HOME} && git clone $PGC_FOR_KLIPPER_REPO
+  cd ${HOME} && git clone --depth 1 $PGC_FOR_KLIPPER_REPO
   ### copy nginx config into destination directory
   sudo cp $pgconfsrc $pgconf
   ### replace default pi user in case the user is called different

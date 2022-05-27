@@ -31,7 +31,7 @@ klipperscreen_setup(){
   # force remove existing KlipperScreen dir
   [ -d $KLIPPERSCREEN_DIR ] && rm -rf $KLIPPERSCREEN_DIR
   # clone into fresh KlipperScreen dir
-  cd ${HOME} && git clone $KLIPPERSCREEN_REPO
+  cd ${HOME} && git clone --depth 1 $KLIPPERSCREEN_REPO
   ok_msg "Download complete!"
   status_msg "Installing KlipperScreen ..."
   $KLIPPERSCREEN_DIR/scripts/KlipperScreen-install.sh

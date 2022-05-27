@@ -118,7 +118,7 @@ dwc_setup(){
 
   ### step 1: get dwc2-for-klipper
   status_msg "Downloading DWC2-for-Klipper-Socket ..."
-  cd "${HOME}" && git clone "$DWC2FK_REPO"
+  cd "${HOME}" && git clone --depth 1 "$DWC2FK_REPO"
   ok_msg "Download complete!"
 
   ### step 2: install dwc2 dependencies and create python virtualenv

@@ -78,6 +78,8 @@ print_unkown_cmd(){
   ERROR_MSG="Invalid command!"
 }
 
+################ lodge custom ################
+
 print_no_mjpg(){
   ERROR_MSG="MJPG not installed!"
 }
@@ -85,6 +87,16 @@ print_no_mjpg(){
 print_enable_mjpg_ok(){
   CONFIRM_MSG="enable mjpg_streamer complete!"
 }
+
+KS_err_msg(){
+  ERROR_MSG="KlipperScreen not installed correctly!"
+}
+
+KS_OK_msg(){
+  CONFIRM_MSG="KlipperScreen restoration complete!"
+}
+
+##############################################
 
 print_msg(){
   if [[ "$ERROR_MSG" != "" ]]; then
