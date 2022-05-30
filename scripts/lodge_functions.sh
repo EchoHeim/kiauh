@@ -1,7 +1,7 @@
 LCF_SRC_DIR="${SRCDIR}/kiauh/resources/lodge_custom"
 SYS_UDEV_RULE_DIR=/etc/udev/rules.d
 
-udisk_auto_mount() {
+function udisk_auto_mount() {
     USB_RULES_SRC="${LCF_SRC_DIR}/10-usb.rules"
     USB_UDEV_SRC="${LCF_SRC_DIR}/usb_udev.sh"
 
@@ -26,7 +26,7 @@ udisk_auto_mount() {
     sudo service systemd-udevd --full-restart
 }
 
-usb_camera_auto_play(){
+function usb_camera_auto_play(){
     WEB_CAMERA_LAUNCH="${LCF_SRC_DIR}/web_camera.sh"
     SYNC_SRC="${LCF_SRC_DIR}/sync.sh"
 
@@ -46,20 +46,20 @@ usb_camera_auto_play(){
     fi
 }
 
-usb_device_mount() {
+function usb_device_mount() {
     if [ -d "${HOME}/mjpg-streamer" ]; then
         [ ! -d "${HOME}/scripts" ] && mkdir ${HOME}/scripts
 
         udisk_auto_mount
         usb_camera_auto_play
 
-        do_action_OK
+        print_confirm "enable mjpg_streamer complete!"
     else
-        deny_mjpg_action
+        print_error "MJPG not installed!"
     fi
 }
 
-fix_klipperscreen() {
+function fix_klipperscreen() {
     if [ -e "/etc/X11/Xwrapper.config" ]; then
         if [ `grep -c "allowed_users=anybody" "/etc/X11/Xwrapper.config"` -ne '1' ];then
             sudo bash -c 'echo "allowed_users=anybody" >> /etc/X11/Xwrapper.config'
@@ -68,8 +68,19 @@ fix_klipperscreen() {
             sudo bash -c 'echo "needs_root_rights=yes" >> /etc/X11/Xwrapper.config'
         fi
 
-        KS_fix_ok
+        print_confirm "KlipperScreen restoration complete!"
     else
-        KS_install_error
+        print_error "KlipperScreen not installed correctly!"
     fi
+}
+
+function klipper_lodge_repo() {
+    if [ ! -e "${HOME}/kiauh/klipper_repos.txt" ]; then
+        cp ${LCF_SRC_DIR}/lodge_repos.txt ${HOME}/kiauh/klipper_repos.txt
+    else
+        if [ `grep -c "https://github.com/EchoHeim/klipper,lodge" "${HOME}/kiauh/klipper_repos.txt"` -ne '1' ];then
+            echo "https://github.com/EchoHeim/klipper,lodge" >> ${HOME}/kiauh/klipper_repos.txt
+        fi
+    fi
+    print_confirm "lodge custom klipper added successfully!"
 }

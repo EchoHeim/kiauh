@@ -124,7 +124,6 @@ function update_all() {
           break;;
         *)
           print_unkown_cmd
-          print_msg && clear_msg;;
       esac
     fi
   done

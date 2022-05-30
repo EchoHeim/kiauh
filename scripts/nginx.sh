@@ -261,7 +261,6 @@ function detect_conflicting_packages() {
           break;;
         *)
           print_unkown_cmd
-          print_msg && clear_msg;;
       esac
     done
   fi

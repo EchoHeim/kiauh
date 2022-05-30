@@ -272,16 +272,18 @@ function clone_klipper() {
   repo=$(echo "${repo}" | sed -r "s/^(http|https):\/\/github\.com\///i; s/\.git$//")
   repo="https://github.com/${repo}"
 
-  [[ -z ${branch} ]] && branch="master"
-
   ### force remove existing klipper dir and clone into fresh klipper dir
   [[ -d ${KLIPPER_DIR} ]] && rm -rf "${KLIPPER_DIR}"
 
   status_msg "Cloning Klipper from ${repo} ..."
 
   cd "${HOME}" || exit 1
-  if git clone "${repo}" "${KLIPPER_DIR}"; then
-    cd "${KLIPPER_DIR}" && git checkout "${branch}"
+  
+  [[ ! -z ${branch} ]] && branch="-b ${branch}"
+
+  if git clone ${branch} --depth 1 "${repo}" "${KLIPPER_DIR}"; then
+    # cd "${KLIPPER_DIR}" && git checkout "${branch}"
+    cd "${KLIPPER_DIR}" 
   else
     print_error "Cloning Klipper from\n ${repo}\n failed!"
     exit 1

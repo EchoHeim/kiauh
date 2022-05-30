@@ -330,11 +330,16 @@ function get_fluidd_download_url() {
   read_kiauh_ini "${FUNCNAME[0]}"
   if [[ ${fluidd_install_unstable} == "true" ]]; then
     url="${latest_url}"
-    echo "${url}"
   else
     url="${stable_url}"
-    echo "${url}"
   fi
+
+  if [ -z $url ];then
+    status_msg "Use alternate download address ..."
+    url=https://github.com/fluidd-core/fluidd/releases/download/v1.18.1/fluidd.zip
+  fi
+
+  echo "${url}"
 }
 
 function fluidd_port_check() {

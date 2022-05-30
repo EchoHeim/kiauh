@@ -46,48 +46,50 @@ function change_klipper_repo_menu() {
   while true; do
     read -p "${cyan}###### Perform action:${white} " option
     case "${option}" in
-      0 | "$(( option < ${#repos[@]} ))")
-        select_msg "Repo: ${repos[option]} Branch: ${branches[option]}"
-        if [[ -d ${KLIPPER_DIR} ]]; then
-          top_border
-          echo -e "|                   ${red}!!! ATTENTION !!!${white}                   |"
-          echo -e "| Existing Klipper folder found! Proceeding will remove | "
-          echo -e "| the existing Klipper folder and replace it with a     | "
-          echo -e "| clean copy of the previously selected source repo!    | "
-          bottom_border
+        B|b)
+            clear && print_header
+            settings_menu
+            break;;
+        H|h)
+            clear && print_header
+            show_custom_klipper_repo_help
+            break;;
+        *)
+        if [[ ${option} -lt ${#repos[@]} ]] && [[ ${option} -ge 0 ]];then
+            select_msg "Repo: ${repos[option]} Branch: ${branches[option]}"
+            if [[ -d ${KLIPPER_DIR} ]]; then
+            top_border
+            echo -e "|                   ${red}!!! ATTENTION !!!${white}                   |"
+            echo -e "| Existing Klipper folder found! Proceeding will remove | "
+            echo -e "| the existing Klipper folder and replace it with a     | "
+            echo -e "| clean copy of the previously selected source repo!    | "
+            bottom_border
 
-          local yn
-          while true; do
-          read -p "${cyan}###### Proceed? (Y/n):${white} " yn
-            case "${yn}" in
-              Y|y|Yes|yes|"")
-                select_msg "Yes"
-                switch_klipper_repo "${repos[${option}]}" "${branches[${option}]}"
-                set_custom_klipper_repo "${repos[${option}]}" "${branches[${option}]}"
-                break;;
-              N|n|No|no)
-                select_msg "No"
-                break;;
-              *)
-                error_msg "Invalid command!";;
-            esac
-          done
+            local yn
+            while true; do
+            read -p "${cyan}###### Proceed? (Y/n):${white} " yn
+                case "${yn}" in
+                Y|y|Yes|yes|"")
+                    select_msg "Yes"
+                    switch_klipper_repo "${repos[${option}]}" "${branches[${option}]}"
+                    set_custom_klipper_repo "${repos[${option}]}" "${branches[${option}]}"
+                    break;;
+                N|n|No|no)
+                    select_msg "No"
+                    break;;
+                *)
+                    error_msg "Invalid command!";;
+                esac
+            done
+            else
+            status_msg "Set custom Klipper repository to:\n       ● Repository: ${repos[${option}]}\n       ● Branch: ${branches[${option}]}"
+            set_custom_klipper_repo "${repos[${option}]}" "${branches[${option}]}"
+            ok_msg "This repo will now be used for new Klipper installations!\n"
+            fi
         else
-          status_msg "Set custom Klipper repository to:\n       ● Repository: ${repos[${option}]}\n       ● Branch: ${branches[${option}]}"
-          set_custom_klipper_repo "${repos[${option}]}" "${branches[${option}]}"
-          ok_msg "This repo will now be used for new Klipper installations!\n"
+            error_msg "Invalid command!"
         fi
-        break;;
-      B|b)
-        clear && print_header
-        settings_menu
-        break;;
-      H|h)
-        clear && print_header
-        show_custom_klipper_repo_help
-        break;;
-      *)
-        error_msg "Invalid command!";;
+        break ;;
     esac
   done
   change_klipper_repo_menu
