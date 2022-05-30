@@ -215,7 +215,7 @@ function clone_moonraker() {
   [[ -d ${MOONRAKER_DIR} ]] && rm -rf "${MOONRAKER_DIR}"
 
   cd "${HOME}" || exit 1
-  if ! git clone "${MOONRAKER_REPO}" "${MOONRAKER_DIR}"; then
+  if ! git clone --depth 1 "${MOONRAKER_REPO}" "${MOONRAKER_DIR}"; then
     print_error "Cloning Moonraker from\n ${repo}\n failed!"
     exit 1
   fi

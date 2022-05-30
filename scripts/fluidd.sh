@@ -316,28 +316,27 @@ function compare_fluidd_versions() {
 #================================================#
 
 function get_fluidd_download_url() {
-  local tags latest_tag latest_url stable_tag stable_url url
+  local tags latest_tag stable_tag ver_tag url
   tags=$(curl -s "${FLUIDD_TAGS}" | grep "name" | cut -d'"' -f4)
 
   ### latest download url including pre-releases (alpha, beta, rc)
   latest_tag=$(echo "${tags}" | head -1)
-  latest_url="https://github.com/fluidd-core/fluidd/releases/download/${latest_tag}/fluidd.zip"
-
   ### get stable fluidd download url
   stable_tag=$(echo "${tags}" | grep -E "^v([0-9]+\.?){3}$" | head -1)
-  stable_url="https://github.com/fluidd-core/fluidd/releases/download/${stable_tag}/fluidd.zip"
 
   read_kiauh_ini "${FUNCNAME[0]}"
   if [[ ${fluidd_install_unstable} == "true" ]]; then
-    url="${latest_url}"
+    ver_tag="${latest_tag}"
   else
-    url="${stable_url}"
+    ver_tag="${stable_tag}"
   fi
 
-  if [ -z $url ];then
+  if [ -z $ver_tag ];then
     status_msg "Use alternate download address ..."
-    url=https://github.com/fluidd-core/fluidd/releases/download/v1.18.1/fluidd.zip
+    ver_tag="v1.18.1"
   fi
+
+  url="https://github.com/fluidd-core/fluidd/releases/download/${ver_tag}/fluidd.zip"
 
   echo "${url}"
 }

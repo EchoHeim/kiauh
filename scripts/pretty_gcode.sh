@@ -32,7 +32,7 @@ function install_pgc_for_klipper() {
   [[ -d ${PGC_DIR} ]] && rm -rf "${PGC_DIR}"
 
   cd "${HOME}" || exit 1
-  if ! git clone "${PGC_REPO}" "${PGC_DIR}"; then
+  if ! git clone --depth 1 "${PGC_REPO}" "${PGC_DIR}"; then
     print_error "Cloning PrettyGCode for Klipper from\n ${PGC_REPO}\n failed!"
     exit 1
   fi
