@@ -60,8 +60,6 @@ function kiauh_update_dialog() {
   done
 }
 
-check_euid
-init_logfile
 set_globals
 init_ini
 kiauh_update_dialog
