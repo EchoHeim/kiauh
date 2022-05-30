@@ -332,7 +332,7 @@ function get_fluidd_download_url() {
   fi
 
   if [ -z $ver_tag ];then
-    status_msg "Use alternate download address ..."
+    # status_msg "Use alternate download address ..."
     ver_tag="v1.18.1"
   fi
 

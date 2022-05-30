@@ -1,4 +1,4 @@
-LCF_SRC_DIR="${SRCDIR}/kiauh/resources/lodge_custom"
+LCF_SRC_DIR="${KIAUH_SRCDIR}/resources/lodge_custom"
 SYS_UDEV_RULE_DIR=/etc/udev/rules.d
 
 function udisk_auto_mount() {
