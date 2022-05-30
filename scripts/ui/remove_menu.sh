@@ -15,13 +15,7 @@ function remove_ui() {
   top_border
   echo -e "|     ${red}~~~~~~~~~~~~~~ [ Remove Menu ] ~~~~~~~~~~~~~~${white}     |"
   hr
-<<<<<<< HEAD
-  echo -e "|  Directories which remain untouched:                  | "
-  echo -e "|  --> ~/kiauh-backups                                  | "
-  echo -e "|  You need remove them manually if you wish so.        | "
-=======
   echo -e "| ${yellow}INFO: Configurations and/or any backups will be kept!${white} |"
->>>>>>> master
   hr
   echo -e "| Firmware & API:           | 3rd Party Webinterface:   |"
   echo -e "|  1) [Klipper]             |  6) [OctoPrint]           |"

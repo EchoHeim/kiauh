@@ -15,46 +15,6 @@ function main_ui() {
   top_border
   echo -e "|     $(title_msg "~~~~~~~~~~~~~~~ [ Main Menu ] ~~~~~~~~~~~~~~~")     |"
   hr
-<<<<<<< HEAD
-  echo -e "|  0) [Upload Log]     |       Klipper: $KLIPPER_STATUS|"
-  echo -e "|                      |        Branch: ${cyan}$PRINT_BRANCH${default}|"
-  echo -e "|  1) [Install]        |                                |"
-  echo -e "|  2) [Update]         |     Moonraker: $MOONRAKER_STATUS|"
-  echo -e "|  3) [Remove]         |                                |"
-  echo -e "|  4) [Advanced]       |      Mainsail: $MAINSAIL_STATUS|"
-  echo -e "|  5) [Backup]         |        Fluidd: $FLUIDD_STATUS|"
-  echo -e "|                      | KlipperScreen: $KLIPPERSCREEN_STATUS|"
-  echo -e "|  6) [Settings]       |  Telegram Bot: $MOONRAKER_TELEGRAM_BOT_STATUS|"
-  echo -e "|                      |                                |"
-  echo -e "|                      |          DWC2: $DWC2_STATUS|"
-  echo -e "|  ${cyan}$KIAUH_VER${default}|     Octoprint: $OCTOPRINT_STATUS|"
-  custom_function
-  quit_footer
-}
-
-print_kiauh_version(){
-  cd ${SRCDIR}/kiauh
-  KIAUH_VER=Ver_0.0.1
-  KIAUH_VER="$(printf "%-20s" "$KIAUH_VER")"
-}
-
-main_menu(){
-  print_header
-
-  #check install status
-    print_kiauh_version
-    klipper_status
-    moonraker_status
-    dwc2_status
-    fluidd_status
-    mainsail_status
-    octoprint_status
-    klipperscreen_status
-    MoonrakerTelegramBot_status
-    print_branch
-  print_msg && clear_msg
-  main_ui
-=======
   echo -e "|  0) [Log-Upload]   |       Klipper: $(print_status "klipper")|"
   echo -e "|                    |          Repo: $(print_klipper_repo)|"
   echo -e "|  1) [Install]      |                                  |"
@@ -66,6 +26,7 @@ main_menu(){
   echo -e "|  6) [Settings]     |  Telegram Bot: $(print_status "telegram_bot")|"
   echo -e "|                    |                                  |"
   echo -e "|  $(print_kiauh_version)|     Octoprint: $(print_status "octoprint")|"
+  custom_function
   quit_footer
 }
 
@@ -116,13 +77,10 @@ function print_klipper_repo() {
   printf "%-28s" "${repo}"
 }
 
-
-
 function main_menu() {
   print_header && main_ui
 
   local action
->>>>>>> master
   while true; do
     read -p "${cyan}####### Perform action:${white} " action
     case "${action}" in
@@ -135,22 +93,11 @@ function main_menu() {
       "start octoprint") do_action_service "start" "octoprint"; main_ui;;
       "stop octoprint") do_action_service "stop" "octoprint"; main_ui;;
       "restart octoprint") do_action_service "restart" "octoprint"; main_ui;;
-<<<<<<< HEAD
-      update) do_action "main_ui";;
-      0) do_action "upload_selection" "main_ui";;
-      1) clear && install_menu && break;;
-      2) clear && update_menu && break;;
-      3) clear && remove_menu && break;;
-      4) clear && advanced_menu && break;;
-      5) clear && backup_menu && break;;
-      6) clear && settings_menu && break;;
-      F|f) clear && custom_function_menu && break;;
-=======
       update) do_action "update_kiauh" "main_ui";;
-      0)clear && print_header
+      0) clear && print_header
         upload_selection
         break;;
-      1)clear && print_header
+      1) clear && print_header
         install_menu
         break;;
       2) clear && print_header
@@ -159,18 +106,20 @@ function main_menu() {
       3) clear && print_header
         remove_menu
         break;;
-      4)clear && print_header
+      4) clear && print_header
         advanced_menu
         break;;
-      5)clear && print_header
+      5) clear && print_header
         backup_menu
         break;;
-      6)clear && print_header
+      6) clear && print_header
         settings_menu
         break;;
->>>>>>> master
+      F|f) clear && print_header
+        custom_function_menu 
+        break;;
       Q|q)
-        echo -e "${green}###### Happy printing! ######${white}"; echo
+        echo -e "\n${green}###### Happy printing! ######${white}";
         exit 0;;
       *)
         deny_action "main_ui";;

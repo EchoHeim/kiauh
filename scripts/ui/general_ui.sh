@@ -28,30 +28,20 @@ function hr() {
   echo -e "|-------------------------------------------------------|"
 }
 
-<<<<<<< HEAD
 custom_function(){
   hr
-  echo -e "| ${cyan} lodge Custom ${default}                    ${red}F) Function${default}         |"
+  echo -e "| ${cyan} lodge Custom ${white}                    ${red}F) Function${white}         |"
 }
 
 quit_footer(){
   hr
-  echo -e "|                                   ${red}Q) Quit${default}             |"
-=======
-function quit_footer() {
-  hr
-  echo -e "|                        ${red}Q) Quit${white}                        |"
->>>>>>> master
+  echo -e "|                                   ${red}Q) Quit${white}             |"
   bottom_border
 }
 
 function back_footer() {
   hr
-<<<<<<< HEAD
-  echo -e "|                                   ${green}B) « Back${default}           |"
-=======
-  echo -e "|                       ${green}B) « Back${white}                       |"
->>>>>>> master
+  echo -e "|                                   ${green}B) « Back${white}           |"
   bottom_border
 }
 

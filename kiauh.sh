@@ -13,6 +13,27 @@ set -e
 clear
 
 ### sourcing all additional scripts
+KIAUH_SRCDIR="$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}")")"
+for script in "${KIAUH_SRCDIR}/scripts/"*.sh; do . "${script}"; done
+for script in "${KIAUH_SRCDIR}/scripts/ui/"*.sh; do . "${script}"; done
+
+#===================================================#
+#=================== UPDATE KIAUH ==================#
+#===================================================#
+
+function update_kiauh() {
+  status_msg "Updating KIAUH ..."
+
+  cd "${KIAUH_SRCDIR}"
+  git reset --hard && git pull
+
+  ok_msg "Update complete! Please restart KIAUH."
+  exit 0
+}
+
+#===================================================#
+#=================== KIAUH STATUS ==================#
+#===================================================#
 
 function kiauh_update_avail() {
   [[ ! -d "${KIAUH_SRCDIR}/.git" ]] && return
@@ -60,6 +81,8 @@ function kiauh_update_dialog() {
   done
 }
 
+check_euid
+init_logfile
 set_globals
 init_ini
 kiauh_update_dialog

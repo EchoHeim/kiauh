@@ -1,17 +1,18 @@
-custom_function_ui(){
+function custom_function_ui(){
     top_border
-    echo -e "|     ${green}~~~~~~~~~~ [ Custom Function Menu ] ~~~~~~~~~~${default}    | "
+    echo -e "|     ${green}~~~~~~~~~ [ Custom Function Menu ] ~~~~~~~~~~${white}     | "
     hr
     echo -e "|  1) usb device auto mount                             |"
+    echo -e "|                                                       |"
     echo -e "|  2) fix KlipperScreen                                 |"
         
     back_footer
 }
 
-custom_function_menu(){
+function custom_function_menu(){
   do_action "" "custom_function_ui"
   while true; do
-    read -p "${cyan}Perform action:${default} " action; echo
+    read -p "${cyan}Perform action:${white} " action; echo
     case "$action" in
       1) 
         do_action "usb_device_mount" "custom_function_ui";;
