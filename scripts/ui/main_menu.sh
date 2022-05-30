@@ -34,7 +34,7 @@ function get_kiauh_version() {
   local version
   cd "${KIAUH_SRCDIR}"
 #   version="$(git describe HEAD --always --tags | cut -d "-" -f 1,2)"
-  version="v4.0.0-2"
+  version="v4.0.0-3"
   echo "${version}"
 }
 
@@ -121,6 +121,7 @@ function main_menu() {
         break;;
       Q|q)
         echo -e "\n${green}###### Happy printing! ######${white}";
+        echo
         exit 0;;
       *)
         deny_action "main_ui";;

@@ -39,11 +39,10 @@ function usb_camera_auto_play(){
     sudo sed -i 's/%user%/'''`whoami`'''/' ${HOME}/scripts/sync.sh
 
     crontab -l > conf
-    if [ `grep -c "scripts/sync.sh" "conf"` -ne '0' ];then
-        echo "sync.sh is exist!"
-    else
-        echo "*/1 * * * * /home/`whoami`/scripts/sync.sh" >> conf && crontab conf && rm -f conf
+    if [ `grep -c "scripts/sync.sh" "conf"` -eq '0' ];then
+        echo "*/1 * * * * /home/`whoami`/scripts/sync.sh" >> conf && crontab conf
     fi
+    rm -f conf
 }
 
 function usb_device_mount() {
