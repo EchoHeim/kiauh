@@ -134,7 +134,12 @@ function download_fluidd_macros() {
       if [[ ! -f "${path}/fluidd.cfg" ]]; then
         status_msg "Downloading fluidd.cfg to ${path} ..."
         log_info "downloading fluidd.cfg to: ${path}"
-        wget "${fluidd_cfg}" -O "${path}/fluidd.cfg"
+        if wget "${fluidd_cfg}" -O "${path}/fluidd.cfg"; then
+          ok_msg "Download complete!"
+        else
+          cp ${KIAUH_SRCDIR}/resources/fluidd.cfg ${path}/fluidd.cfg
+          ok_msg "Copy archive files complete!"
+        fi
 
         ### replace user 'pi' with current username to prevent issues in cases where the user is not called 'pi'
         log_info "modify fluidd.cfg"
