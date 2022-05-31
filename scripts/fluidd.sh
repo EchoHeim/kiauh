@@ -168,14 +168,16 @@ function download_fluidd() {
 
   if wget "${url}"; then
     ok_msg "Download complete!"
-    status_msg "Extracting archive ..."
-    unzip -q -o ./*.zip && ok_msg "Done!"
-    status_msg "Remove downloaded archive ..."
-    rm -rf ./*.zip && ok_msg "Done!"
   else
     print_error "Downloading Fluidd from\n ${url}\n failed!"
-    exit 1
+    cp ${KIAUH_SRCDIR}/resources/fluidd.zip ./
+    ok_msg "Copy archive files complete!"
   fi
+
+  status_msg "Extracting archive ..."
+  unzip -q -o ./*.zip && ok_msg "Done!"
+  status_msg "Remove downloaded archive ..."
+  rm -rf ./*.zip && ok_msg "Done!"
 }
 
 #===================================================#
@@ -316,29 +318,25 @@ function compare_fluidd_versions() {
 #================================================#
 
 function get_fluidd_download_url() {
-  local tags latest_tag stable_tag ver_tag url
+  local tags latest_tag latest_url stable_tag stable_url url
   tags=$(curl -s "${FLUIDD_TAGS}" | grep "name" | cut -d'"' -f4)
 
   ### latest download url including pre-releases (alpha, beta, rc)
   latest_tag=$(echo "${tags}" | head -1)
+  latest_url="https://github.com/fluidd-core/fluidd/releases/download/${latest_tag}/fluidd.zip"
+
   ### get stable fluidd download url
   stable_tag=$(echo "${tags}" | grep -E "^v([0-9]+\.?){3}$" | head -1)
+  stable_url="https://github.com/fluidd-core/fluidd/releases/download/${stable_tag}/fluidd.zip"
 
   read_kiauh_ini "${FUNCNAME[0]}"
   if [[ ${fluidd_install_unstable} == "true" ]]; then
-    ver_tag="${latest_tag}"
+    url="${latest_url}"
+    echo "${url}"
   else
-    ver_tag="${stable_tag}"
+    url="${stable_url}"
+    echo "${url}"
   fi
-
-  if [ -z $ver_tag ];then
-    # status_msg "Use alternate download address ..."
-    ver_tag="v1.18.1"
-  fi
-
-  url="https://github.com/fluidd-core/fluidd/releases/download/${ver_tag}/fluidd.zip"
-
-  echo "${url}"
 }
 
 function fluidd_port_check() {

@@ -34,7 +34,7 @@ function get_kiauh_version() {
   local version
   cd "${KIAUH_SRCDIR}"
 #   version="$(git describe HEAD --always --tags | cut -d "-" -f 1,2)"
-  version="v4.0.0-4"
+  version="v4.0.0-5"
   echo "${version}"
 }
 
