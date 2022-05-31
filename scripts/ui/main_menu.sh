@@ -17,6 +17,7 @@ function main_ui() {
   hr
   echo -e "|  0) [Log-Upload]   |       Klipper: $(print_status "klipper")|"
   echo -e "|                    |          Repo: $(print_klipper_repo)|"
+  echo -e "|                    |        Branch: $(print_klipper_branch)|"
   echo -e "|  1) [Install]      |                                  |"
   echo -e "|  2) [Update]       |     Moonraker: $(print_status "moonraker")|"
   echo -e "|  3) [Remove]       |                                  |"
@@ -34,7 +35,7 @@ function get_kiauh_version() {
   local version
   cd "${KIAUH_SRCDIR}"
 #   version="$(git describe HEAD --always --tags | cut -d "-" -f 1,2)"
-  version="v4.0.0-7"
+  version="v4.0.0-8"
   echo "${version}"
 }
 
@@ -64,15 +65,30 @@ function print_klipper_repo() {
 
   local repo klipper_status
   klipper_status=$(get_klipper_status)
-  repo=$(echo "${custom_klipper_repo}" | sed "s/https:\/\/github\.com\///" | sed "s/\.git$//")
-  repo="${repo^^}"
+  custom_repo=$(echo "${custom_klipper_repo}" | sed "s/https:\/\/github\.com\///" | sed "s/\.git$//")
+  repo="${custom_repo^^}"
 
   if [[ ${klipper_status} == "Not installed!" ]]; then
     repo="${red}-${white}"
   elif [[ -n ${repo} && ${repo} != "KLIPPER3D/KLIPPER"  ]]; then
-    repo="${cyan}custom${white}"
+    repo="${cyan}${custom_repo}${white}"
   else
     repo="${cyan}Klipper3d/klipper${white}"
+  fi
+
+  printf "%-28s" "${repo}"
+}
+
+function print_klipper_branch() {
+  if [[ ${klipper_status} == "Not installed!" ]]; then
+    repo="${red}-${white}"
+  else
+    if [ -d "${HOME}/klipper" ];then
+      cd ${HOME}/klipper
+      repo="${cyan}`git branch | sed -n '/\* /s///p'`${white}"
+    else
+      repo="${red}-${white}"
+    fi
   fi
 
   printf "%-28s" "${repo}"

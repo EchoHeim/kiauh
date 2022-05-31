@@ -38,9 +38,10 @@ function usb_camera_auto_play(){
     sudo sed -i 's/%user%/'''`whoami`'''/' ${HOME}/scripts/web_camera.sh
     sudo sed -i 's/%user%/'''`whoami`'''/' ${HOME}/scripts/sync.sh
 
-    crontab -l > conf
-    if [ `grep -c "scripts/sync.sh" "conf"` -eq '0' ];then
-        echo "*/1 * * * * /home/`whoami`/scripts/sync.sh" >> conf && crontab conf
+    if ! crontab -l > conf; then
+        if [ `grep -c "scripts/sync.sh" "conf"` -eq '0' ];then
+            echo "*/1 * * * * /home/`whoami`/scripts/sync.sh" >> conf && crontab conf
+        fi
     fi
     rm -f conf
 }
