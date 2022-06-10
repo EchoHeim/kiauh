@@ -41,7 +41,8 @@ function custom_function_ui(){
     echo -e "|  1) usb device auto mount                             |"
     echo -e "|                                                       |"
     echo -e "|  2) fix KlipperScreen                                 |"
-
+    echo -e "|                                                       |"
+    echo -e "|  3) config klipper cfg files                          |"
     back_footer
 }
 
@@ -61,6 +62,8 @@ function custom_function_menu(){
                 do_action "usb_device_mount" "custom_function_ui";;
             2) 
                 do_action "fix_klipperscreen" "custom_function_ui";;
+            3) 
+                do_action "klipper_cfg_menu" "";;
             B|b)
                 clear; main_menu; break;;
             *)
@@ -68,4 +71,40 @@ function custom_function_menu(){
         esac
     done
     custom_function_ui
+}
+
+function klipper_cfg_ui(){
+    top_border
+    echo -e "|     ${green}~~~~~~~~~ [ klipper_cfg_files Menu ] ~~~~~~~~~~${white}     | "
+    hr
+    echo -e "|  1) bigtree-skr3         |  3) stm32mp157             |"
+    echo -e "|                          |                            |"
+    echo -e "|  2) Hurakan              |                            |"
+
+    back_footer
+}
+
+function klipper_cfg_menu(){
+    dep_pkg=(git tofrodos)
+    detect_pack
+    WhetherInstall
+    unset dep_pkg
+
+    do_action "" "klipper_cfg_ui"
+    while true; do
+        read -p "${cyan}Perform action:${white} " action; echo
+        case "$action" in
+            0)
+                do_action "klipper_lodge_repo" "klipper_cfg_ui";;
+            1) 
+                do_action "usb_device_mount" "klipper_cfg_ui";;
+            2) 
+                do_action "fix_klipperscreen" "klipper_cfg_ui";;
+            B|b)
+                clear; main_menu; break;;
+            *)
+                deny_action "klipper_cfg_ui";;
+        esac
+    done
+    klipper_cfg_ui
 }
