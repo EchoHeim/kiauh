@@ -64,37 +64,37 @@ function settings_ui() {
   fi
 
   top_border
-  echo -e "|     $(title_msg "~~~~~~~~~~~~ [ KIAUH Settings ] ~~~~~~~~~~~~~")     |"
+  echo -e "|      $(title_msg "~~~~~~~~~~~~ [ KIAUH Settings ] ~~~~~~~~~~~~~")      |"
   hr
-  echo -e "| Klipper:                                              |"
-  echo -e "|   ● Config folder:                                    |"
-  printf  "|     %-60s|\n" "${custom_cfg_loc}"
-  echo -e "|   ● Repository:                                       |"
-  printf  "|     %-70s|\n" "${custom_repo} (${custom_branch})"
+  echo -e "| Klipper:                                                |"
+  echo -e "|   ● Config folder:                                      |"
+  printf  "|     %-62s|\n" "${custom_cfg_loc}"
+  echo -e "|   ● Repository:                                         |"
+  printf  "|     %-72s|\n" "${custom_repo} (${custom_branch})"
   hr
-  echo -e "| Install unstable releases:                            |"
-  printf  "|     Mainsail: %-29sFluidd: %-27s|\n" "${ms_pre_rls}" "${fl_pre_rls}"
+  echo -e "| Install unstable releases:                              |"
+  printf  "|     Mainsail: %-30sFluidd: %-28s|\n" "${ms_pre_rls}" "${fl_pre_rls}"
   hr
-  printf  "| Backup before updating: %-42s|\n" "${bbu}"
+  printf  "| Backup before updating: %-44s|\n" "${bbu}"
   hr
-  echo -e "| 1) Change Klipper config folder location              |"
-  echo -e "| 2) Set custom Klipper repository                      |"
+  echo -e "| 1) Change Klipper config folder location                |"
+  echo -e "| 2) Set custom Klipper repository                        |"
   blank_line
   if [[ ${mainsail_install_unstable} == "false" ]]; then
-  echo -e "| 3) ${green}Allow${white} unstable Mainsail releases                   |"
+  echo -e "| 3) ${green}Allow${white} unstable Mainsail releases                     |"
   else
-  echo -e "| 3) ${red}Disallow${white} unstable Mainsail releases                |"
+  echo -e "| 3) ${red}Disallow${white} unstable Mainsail releases                  |"
   fi
   if [[ ${fluidd_install_unstable} == "false" ]]; then
-  echo -e "| 4) ${green}Allow${white} unstable Fluidd releases                     |"
+  echo -e "| 4) ${green}Allow${white} unstable Fluidd releases                       |"
   else
-  echo -e "| 4) ${red}Disallow${white} unstable Fluidd releases                  |"
+  echo -e "| 4) ${red}Disallow${white} unstable Fluidd releases                    |"
   fi
   blank_line
   if [[ ${backup_before_update} == "false" ]]; then
-  echo -e "| 5) ${green}Enable${white} automatic backups before updates            |"
+  echo -e "| 5) ${green}Enable${white} automatic backups before updates              |"
   else
-  echo -e "| 5) ${red}Disable${white} automatic backups before updates           |"
+  echo -e "| 5) ${red}Disable${white} automatic backups before updates             |"
   fi
   back_help_footer
 }
@@ -103,37 +103,37 @@ function show_settings_help() {
   local default_cfg="${cyan}${HOME}/klipper_config${white}"
 
   top_border
-  echo -e "|    ~~~~~~ < ? > Help: KIAUH Settings < ? > ~~~~~~     |"
+  echo -e "|     ~~~~~~ < ? > Help: KIAUH Settings < ? > ~~~~~~      |"
   hr
-  echo -e "| ${cyan}Klipper config folder:${white}                                |"
-  echo -e "| The location of your printer.cfg and all other config |"
-  echo -e "| files that gets used during installation of Klipper   |"
-  echo -e "| and all other components which need that location.    |"
-  echo -e "| It is not recommended to change this location.        |"
-  echo -e "| Be advised, that negative side effects could occur.   |"
+  echo -e "| ${cyan}Klipper config folder:${white}                                  |"
+  echo -e "| The location of your printer.cfg and all other config   |"
+  echo -e "| files that gets used during installation of Klipper     |"
+  echo -e "| and all other components which need that location.      |"
+  echo -e "| It is not recommended to change this location.          |"
+  echo -e "| Be advised, that negative side effects could occur.     |"
   blank_line
   printf  "| Default: %-55s|\n" "${default_cfg}"
   blank_line
   hr
-  echo -e "| ${cyan}Install unstable releases:${white}                            |"
-  echo -e "| If set to ${green}true${white}, KIAUH installs/updates the software   |"
-  echo -e "| with the latest, currently available release.         |"
-  echo -e "| ${yellow}This will include alpha, beta and rc releases!${white}        |"
+  echo -e "| ${cyan}Install unstable releases:${white}                              |"
+  echo -e "| If set to ${green}true${white}, KIAUH installs/updates the software     |"
+  echo -e "| with the latest, currently available release.           |"
+  echo -e "| ${yellow}This will include alpha, beta and rc releases!${white}          |"
   blank_line
-  echo -e "| If set to ${red}false${white}, KIAUH installs/updates the software  |"
-  echo -e "| with the most recent stable release.                  |"
+  echo -e "| If set to ${red}false${white}, KIAUH installs/updates the software    |"
+  echo -e "| with the most recent stable release.                    |"
   blank_line
-  echo -e "| Default: ${red}false${white}                                        |"
+  echo -e "| Default: ${red}false${white}                                          |"
   blank_line
   hr
-  echo -e "| ${cyan}Backup before updating:${white}                               |"
-  echo -e "| If set to true, KIAUH will automatically create a     |"
-  echo -e "| backup from the corresponding component you are about |"
-  echo -e "| to update before actually updating it, preserving the |"
-  echo -e "| current state of the component in a safe location.    |"
-  echo -e "| All backups are stored in '~/kiauh_backups'.          |"
+  echo -e "| ${cyan}Backup before updating:${white}                                 |"
+  echo -e "| If set to true, KIAUH will automatically create a       |"
+  echo -e "| backup from the corresponding component you are about   |"
+  echo -e "| to update before actually updating it, preserving the   |"
+  echo -e "| current state of the component in a safe location.      |"
+  echo -e "| All backups are stored in '~/kiauh_backups'.            |"
   blank_line
-  echo -e "| Default: ${red}false${white}                                        |"
+  echo -e "| Default: ${red}false${white}                                          |"
   blank_line
   back_footer
 

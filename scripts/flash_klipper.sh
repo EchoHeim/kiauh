@@ -16,15 +16,15 @@ function init_flash_process() {
   check_usergroups
 
   top_border
-  echo -e "|        ~~~~~~~~~~~~ [ Flash MCU ] ~~~~~~~~~~~~        |"
+  echo -e "|         ~~~~~~~~~~~~ [ Flash MCU ] ~~~~~~~~~~~~         |"
   hr
-  echo -e "| Please select the flashing method to flash your MCU.  |"
-  echo -e "| Make sure to only select a method your MCU supports.  |"
-  echo -e "| Not all MCUs support both methods!                    |"
+  echo -e "| Please select the flashing method to flash your MCU.    |"
+  echo -e "| Make sure to only select a method your MCU supports.    |"
+  echo -e "| Not all MCUs support both methods!                      |"
   hr
   blank_line
-  echo -e "| 1) Regular flashing method                            |"
-  echo -e "| 2) Updating via SD-Card Update                        |"
+  echo -e "| 1) Regular flashing method                              |"
+  echo -e "| 2) Updating via SD-Card Update                          |"
   blank_line
   back_help_footer
 
@@ -64,12 +64,12 @@ function init_flash_process() {
 #================================================#
 function select_mcu_connection() {
   top_border
-  echo -e "| ${yellow}Make sure that the controller board is connected now!${white} |"
+  echo -e "|  ${yellow}Make sure that the controller board is connected now!${white}  |"
   hr
   blank_line
-  echo -e "| How is the controller board connected to the host?    |"
-  echo -e "| 1) USB                                                |"
-  echo -e "| 2) UART                                               |"
+  echo -e "| How is the controller board connected to the host?      |"
+  echo -e "| 1) USB                                                  |"
+  echo -e "| 2) UART                                                 |"
   blank_line
   back_help_footer
 
@@ -126,10 +126,10 @@ function select_mcu_id() {
   fi
 
   top_border
-  echo -e "|                   ${red}!!! ATTENTION !!!${white}                   |"
+  echo -e "|                    ${red}!!! ATTENTION !!!${white}                    |"
   hr
-  echo -e "| Make sure, to select the correct MCU!                 |"
-  echo -e "| ${red}ONLY flash a firmware created for the respective MCU!${white} |"
+  echo -e "| Make sure, to select the correct MCU!                   |"
+  echo -e "| ${red}ONLY flash a firmware created for the respective MCU!${white}   |"
   bottom_border
   echo -e "${cyan}###### List of available MCU:${white}"
 
@@ -210,10 +210,10 @@ function start_flash_sd() {
   done
 
   top_border
-  echo -e "|  Please select the type of board that corresponds to  |"
-  echo -e "|  the currently selected MCU ID you chose before.      |"
+  echo -e "|  Please select the type of board that corresponds to    |"
+  echo -e "|  the currently selected MCU ID you chose before.        |"
   blank_line
-  echo -e "|  The following boards are currently supported:        |"
+  echo -e "|  The following boards are currently supported:          |"
   hr
   ### display all supported boards to the user
   for board in "${board_list[@]}"; do
@@ -245,10 +245,10 @@ function start_flash_sd() {
   while true; do
     echo
     top_border
-    echo -e "| If your board is flashed with firmware that connects  |"
-    echo -e "| at a custom baud rate, please change it now.          |"
+    echo -e "| If your board is flashed with firmware that connects    |"
+    echo -e "| at a custom baud rate, please change it now.            |"
     blank_line
-    echo -e "| If you are unsure, stick to the default 250000!       |"
+    echo -e "| If you are unsure, stick to the default 250000!         |"
     bottom_border
 
     local baud_rate regex="^[0-9]+$"
@@ -331,30 +331,30 @@ function get_uart_id() {
 
 function show_flash_method_help() {
   top_border
-  echo -e "|     ~~~~~~~~ < ? > Help: Flash MCU < ? > ~~~~~~~~     |"
+  echo -e "|      ~~~~~~~~ < ? > Help: Flash MCU < ? > ~~~~~~~~      |"
   hr
-  echo -e "| ${cyan}Regular flashing method:${white}                              |"
-  echo -e "| The default method to flash controller boards which   |"
-  echo -e "| are connected and updated over USB and not by placing |"
-  echo -e "| a compiled firmware file onto an internal SD-Card.    |"
+  echo -e "| ${cyan}Regular flashing method:${white}                                |"
+  echo -e "| The default method to flash controller boards which     |"
+  echo -e "| are connected and updated over USB and not by placing   |"
+  echo -e "| a compiled firmware file onto an internal SD-Card.      |"
   blank_line
-  echo -e "| Common controllers that get flashed that way are:     |"
-  echo -e "| - Arduino Mega 2560                                   |"
-  echo -e "| - Fysetc F6 / S6 (used without a Display + SD-Slot)   |"
+  echo -e "| Common controllers that get flashed that way are:       |"
+  echo -e "| - Arduino Mega 2560                                     |"
+  echo -e "| - Fysetc F6 / S6 (used without a Display + SD-Slot)     |"
   blank_line
-  echo -e "| ${cyan}Updating via SD-Card Update:${white}                          |"
-  echo -e "| Many popular controller boards ship with a bootloader |"
-  echo -e "| capable of updating the firmware via SD-Card.         |"
-  echo -e "| Choose this method if your controller board supports  |"
-  echo -e "| this way of updating. This method ONLY works for up-  |"
-  echo -e "| grading firmware. The initial flashing procedure must |"
-  echo -e "| be done manually per the instructions that apply to   |"
-  echo -e "| your controller board.                                |"
+  echo -e "| ${cyan}Updating via SD-Card Update:${white}                            |"
+  echo -e "| Many popular controller boards ship with a bootloader   |"
+  echo -e "| capable of updating the firmware via SD-Card.           |"
+  echo -e "| Choose this method if your controller board supports    |"
+  echo -e "| this way of updating. This method ONLY works for up-    |"
+  echo -e "| grading firmware. The initial flashing procedure must   |"
+  echo -e "| be done manually per the instructions that apply to     |"
+  echo -e "| your controller board.                                  |"
   blank_line
-  echo -e "| Common controllers that can be flashed that way are:  |"
-  echo -e "| - BigTreeTech SKR 1.3 / 1.4 (Turbo) / E3 / Mini E3    |"
-  echo -e "| - Fysetc F6 / S6 (used with a Display + SD-Slot)      |"
-  echo -e "| - Fysetc Spider                                       |"
+  echo -e "| Common controllers that can be flashed that way are:    |"
+  echo -e "| - BigTreeTech SKR 1.3 / 1.4 (Turbo) / E3 / Mini E3      |"
+  echo -e "| - Fysetc F6 / S6 (used with a Display + SD-Slot)        |"
+  echo -e "| - Fysetc Spider                                         |"
   blank_line
   back_footer
 
@@ -374,23 +374,23 @@ function show_flash_method_help() {
 
 function show_mcu_connection_help() {
   top_border
-  echo -e "|     ~~~~~~~~ < ? > Help: Flash MCU < ? > ~~~~~~~~     |"
+  echo -e "|      ~~~~~~~~ < ? > Help: Flash MCU < ? > ~~~~~~~~      |"
   hr
-  echo -e "| ${cyan}USB:${white}                                                  |"
-  echo -e "| Selecting USB as the connection method will scan the  |"
-  echo -e "| USB ports for connected controller boards. This will  |"
-  echo -e "| be similar to the 'ls /dev/serial/by-id/*' command    |"
-  echo -e "| suggested by the official Klipper documentation for   |"
-  echo -e "| determining successfull USB connections!              |"
+  echo -e "| ${cyan}USB:${white}                                                    |"
+  echo -e "| Selecting USB as the connection method will scan the    |"
+  echo -e "| USB ports for connected controller boards. This will    |"
+  echo -e "| be similar to the 'ls /dev/serial/by-id/*' command      |"
+  echo -e "| suggested by the official Klipper documentation for     |"
+  echo -e "| determining successfull USB connections!                |"
   blank_line
-  echo -e "| ${cyan}UART:${white}                                                 |"
-  echo -e "| Selecting UART as the connection method will list all |"
-  echo -e "| possible UART serial ports. Note: This method ALWAYS  |"
-  echo -e "| returns something as it seems impossible to determine |"
-  echo -e "| if a valid Klipper controller board is connected or   |"
-  echo -e "| not. Because of that, you ${red}MUST${white} know which UART serial |"
-  echo -e "| port your controller board is connected to when using |"
-  echo -e "| this connection method.                               |"
+  echo -e "| ${cyan}UART:${white}                                                   |"
+  echo -e "| Selecting UART as the connection method will list all   |"
+  echo -e "| possible UART serial ports. Note: This method ALWAYS    |"
+  echo -e "| returns something as it seems impossible to determine   |"
+  echo -e "| if a valid Klipper controller board is connected or     |"
+  echo -e "| not. Because of that, you ${red}MUST${white} know which UART serial   |"
+  echo -e "| port your controller board is connected to when using   |"
+  echo -e "| this connection method.                                 |"
   blank_line
   back_footer
 

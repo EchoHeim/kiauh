@@ -45,7 +45,7 @@ function install_fluidd() {
     while true; do
       echo
       top_border
-      echo -e "| Install MJGP-Streamer for webcam support?             |"
+      echo -e "| Install MJGP-Streamer for webcam support?               |"
       bottom_border
       read -p "${cyan}###### Please select (y/N):${white} " yn
       case "${yn}" in
@@ -95,17 +95,17 @@ function install_fluidd_macros() {
   while true; do
     echo
     top_border
-    echo -e "| It is recommended to have some important macros in    |"
-    echo -e "| your printer configuration to have Fluidd fully       |"
-    echo -e "| functional and working.                               |"
+    echo -e "| It is recommended to have some important macros in      |"
+    echo -e "| your printer configuration to have Fluidd fully         |"
+    echo -e "| functional and working.                                 |"
     blank_line
-    echo -e "| The recommended macros for Fluidd can be found here:  |"
-    echo -e "| https://docs.fluidd.xyz/configuration/initial_setup   |"
+    echo -e "| The recommended macros for Fluidd can be found here:    |"
+    echo -e "| https://docs.fluidd.xyz/configuration/initial_setup     |"
     blank_line
-    echo -e "| If you already have these macros in your config file, |"
-    echo -e "| skip this step and answer with 'no'.                  |"
-    echo -e "| Otherwise you should consider to answer with 'yes' to |"
-    echo -e "| add the recommended example macros to your config.    |"
+    echo -e "| If you already have these macros in your config file,   |"
+    echo -e "| skip this step and answer with 'no'.                    |"
+    echo -e "| Otherwise you should consider to answer with 'yes' to   |"
+    echo -e "| add the recommended example macros to your config.      |"
     bottom_border
     read -p "${cyan}###### Add the recommended macros? (Y/n):${white} " yn
     case "${yn}" in
@@ -374,17 +374,17 @@ function select_fluidd_port() {
   if [[ ${PORT_80_BLOCKED} == "true" ]]; then
     echo
     top_border
-    echo -e "|                    ${red}!!!WARNING!!!${white}                      |"
-    echo -e "| ${red}You need to choose a different port for Fluidd!${white}       |"
-    echo -e "| ${red}The following web interface is listening at port 80:${white}  |"
+    echo -e "|                     ${red}!!!WARNING!!!${white}                       |"
+    echo -e "| ${red}You need to choose a different port for Fluidd!${white}         |"
+    echo -e "| ${red}The following web interface is listening at port 80:${white}    |"
     blank_line
-    [[ ${MAINSAIL_PORT} == "80" ]] && echo "|  ● Mainsail                                           |"
+    [[ ${MAINSAIL_PORT} == "80" ]] && echo "|  ● Mainsail                                             |"
     blank_line
-    echo -e "| Make sure you don't choose a port which is already    |"
-    echo -e "| assigned to another webinterface!                     |"
+    echo -e "| Make sure you don't choose a port which is already      |"
+    echo -e "| assigned to another webinterface!                       |"
     blank_line
-    echo -e "| Be aware: there is ${red}NO${white} sanity check for the following  |"
-    echo -e "| input. So make sure to choose a valid port!           |"
+    echo -e "| Be aware: there is ${red}NO${white} sanity check for the following    |"
+    echo -e "| input. So make sure to choose a valid port!             |"
     bottom_border
 
     local new_port re="^[0-9]+$"

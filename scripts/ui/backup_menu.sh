@@ -13,19 +13,19 @@ set -e
 
 function backup_ui() {
   top_border
-  echo -e "|     $(title_msg "~~~~~~~~~~~~~~ [ Backup Menu ] ~~~~~~~~~~~~~~")     |"
+  echo -e "|      $(title_msg "~~~~~~~~~~~~~~ [ Backup Menu ] ~~~~~~~~~~~~~~")      |"
   hr
-  echo -e "| ${yellow}INFO: Backups are located in '~/kiauh-backups'${white}        |"
+  echo -e "|  ${yellow}INFO: Backups are located in '~/kiauh-backups'${white}         |"
   hr
-  echo -e "| Klipper & API:             | Touchscreen GUI:         |"
-  echo -e "|  1) [Klipper]              |  7) [KlipperScreen]      |"
-  echo -e "|  2) [Moonraker]            |                          |"
-  echo -e "|  3) [Configuration Folder] | 3rd Party Webinterface:  |"
-  echo -e "|  4) [Moonraker Database]   |  8) [OctoPrint]          |"
-  echo -e "|                            |                          |"
-  echo -e "| Klipper Webinterface:      | Other:                   |"
-  echo -e "|  5) [Mainsail]             |  9) [Telegram Bot]       |"
-  echo -e "|  6) [Fluidd]               |                          |"
+  echo -e "| Klipper & API:             | Touchscreen GUI:           |"
+  echo -e "|  1) [Klipper]              |  7) [KlipperScreen]        |"
+  echo -e "|  2) [Moonraker]            |                            |"
+  echo -e "|  3) [Configuration Folder] | 3rd Party Webinterface:    |"
+  echo -e "|  4) [Moonraker Database]   |  8) [OctoPrint]            |"
+  echo -e "|                            |                            |"
+  echo -e "| Klipper Webinterface:      | Other:                     |"
+  echo -e "|  5) [Mainsail]             |  9) [Telegram Bot]         |"
+  echo -e "|  6) [Fluidd]               |                            |"
   back_footer
 }
 

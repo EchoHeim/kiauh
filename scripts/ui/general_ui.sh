@@ -13,49 +13,49 @@ set -e
 
 #ui total width = 57 chars
 function top_border() {
-  echo -e "/=======================================================\\"
+  echo -e "/=========================================================\\"
 }
 
 function bottom_border() {
-  echo -e "\=======================================================/"
+  echo -e "\=========================================================/"
 }
 
 function blank_line() {
-  echo -e "|                                                       |"
+  echo -e "|                                                         |"
 }
 
 function hr() {
-  echo -e "|-------------------------------------------------------|"
+  echo -e "|---------------------------------------------------------|"
 }
 
 custom_function(){
   hr
-  echo -e "| ${cyan} lodge Custom ${white}                    ${red}F) Function${white}         |"
+  echo -e "| ${cyan} lodge Custom ${white}                      ${red}F) Function${white}         |"
 }
 
 quit_footer(){
   hr
-  echo -e "|                                   ${red}Q) Quit${white}             |"
+  echo -e "|                                     ${red}Q) Quit${white}             |"
   bottom_border
 }
 
 function back_footer() {
   hr
-  echo -e "|                                   ${green}B) « Back${white}           |"
+  echo -e "|                                     ${green}B) « Back${white}           |"
   bottom_border
 }
 
 function back_help_footer() {
   hr
-  echo -e "|         ${green}B) « Back${white}         |        ${yellow}H) Help [?]${white}        |"
+  echo -e "|         ${green}B) « Back${white}         |          ${yellow}H) Help [?]${white}        |"
   bottom_border
 }
 
 function print_header() {
   top_border
-  echo -e "|     $(title_msg "~~~~~~~~~~~~~~~~~ [ KIAUH ] ~~~~~~~~~~~~~~~~~")     |"
-  echo -e "|     $(title_msg "   Klipper Installation And Update Helper    ")     |"
-  echo -e "|     $(title_msg "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")     |"
+  echo -e "|      $(title_msg "~~~~~~~~~~~~~~~~~ [ KIAUH ] ~~~~~~~~~~~~~~~~~")      |"
+  echo -e "|      $(title_msg "   Klipper Installation And Update Helper    ")      |"
+  echo -e "|      $(title_msg "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")      |"
   bottom_border
 }
 

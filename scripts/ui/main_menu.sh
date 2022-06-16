@@ -13,20 +13,20 @@ set -e
 
 function main_ui() {
   top_border
-  echo -e "|     $(title_msg "~~~~~~~~~~~~~~~ [ Main Menu ] ~~~~~~~~~~~~~~~")     |"
+  echo -e "|      $(title_msg "~~~~~~~~~~~~~~~ [ Main Menu ] ~~~~~~~~~~~~~~~")      |"
   hr
-  echo -e "|  0) [Log-Upload]   |       Klipper: $(print_status "klipper")|"
-  echo -e "|                    |          Repo: $(print_klipper_repo)|"
-  echo -e "|                    |        Branch: $(print_klipper_branch)|"
-  echo -e "|  1) [Install]      |                                  |"
-  echo -e "|  2) [Update]       |     Moonraker: $(print_status "moonraker")|"
-  echo -e "|  3) [Remove]       |                                  |"
-  echo -e "|  4) [Advanced]     |      Mainsail: $(print_status "mainsail")|"
-  echo -e "|  5) [Backup]       |        Fluidd: $(print_status "fluidd")|"
-  echo -e "|                    | KlipperScreen: $(print_status "klipperscreen")|"
-  echo -e "|  6) [Settings]     |  Telegram Bot: $(print_status "telegram_bot")|"
-  echo -e "|                    |                                  |"
-  echo -e "|  $(print_kiauh_version)|     Octoprint: $(print_status "octoprint")|"
+  echo -e "|  0) [Log-Upload]   |       Klipper: $(print_status "klipper")  |"
+  echo -e "|                    |          Repo: $(print_klipper_repo)  |"
+  echo -e "|                    |        Branch: $(print_klipper_branch)  |"
+  echo -e "|  1) [Install]      |                                    |"
+  echo -e "|  2) [Update]       |     Moonraker: $(print_status "moonraker")  |"
+  echo -e "|  3) [Remove]       |                                    |"
+  echo -e "|  4) [Advanced]     |      Mainsail: $(print_status "mainsail")  |"
+  echo -e "|  5) [Backup]       |        Fluidd: $(print_status "fluidd")  |"
+  echo -e "|                    | KlipperScreen: $(print_status "klipperscreen")  |"
+  echo -e "|  6) [Settings]     |  Telegram Bot: $(print_status "telegram_bot")  |"
+  echo -e "|                    |                                    |"
+  echo -e "|  $(print_kiauh_version)|     Octoprint: $(print_status "octoprint")  |"
   custom_function
   quit_footer
 }
@@ -35,7 +35,7 @@ function get_kiauh_version() {
   local version
   cd "${KIAUH_SRCDIR}"
 #   version="$(git describe HEAD --always --tags | cut -d "-" -f 1,2)"
-  version="v4.0.0-9"
+  version="v4.0.0-10"
   echo "${version}"
 }
 

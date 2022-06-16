@@ -57,12 +57,12 @@ function klipper_setup_dialog() {
 
   ### ask for amount of instances to create
   top_border
-  echo -e "| Please select the number of Klipper instances to set  |"
-  echo -e "| up. The number of Klipper instances will determine    |"
-  echo -e "| the amount of printers you can run from this host.    |"
+  echo -e "| Please select the number of Klipper instances to set    |"
+  echo -e "| up. The number of Klipper instances will determine      |"
+  echo -e "| the amount of printers you can run from this host.      |"
   blank_line
-  echo -e "| ${yellow}WARNING:${white}                                              |"
-  echo -e "| ${yellow}Setting up too many instances may crash your system.${white}  |"
+  echo -e "| ${yellow}WARNING:${white}                                                |"
+  echo -e "| ${yellow}Setting up too many instances may crash your system.${white}    |"
   bottom_border
 
   ### ask for amount of instances
@@ -98,12 +98,12 @@ function klipper_setup_dialog() {
   if (( klipper_count > 1 )); then
     local custom_names="false"
     top_border
-    echo -e "| You can give each instance a custom name or skip.     |"
-    echo -e "| If skipped, KIAUH will automatically assign an index  |"
-    echo -e "| to each instance in ascending order, starting at '1'. |"
+    echo -e "| You can give each instance a custom name or skip.       |"
+    echo -e "| If skipped, KIAUH will automatically assign an index    |"
+    echo -e "| to each instance in ascending order, starting at '1'.   |"
     blank_line
-    echo -e "| Info:                                                 |"
-    echo -e "| Only alphanumeric characters will be allowed.         |"
+    echo -e "| Info:                                                   |"
+    echo -e "| Only alphanumeric characters will be allowed.           |"
     bottom_border
     while true; do
       read -p "${cyan}###### Use custom names? (y/N):${white} " yn

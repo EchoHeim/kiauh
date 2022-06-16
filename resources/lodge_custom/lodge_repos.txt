@@ -14,3 +14,4 @@
 # Down below are now a few examples of what is considered as valid:
 https://github.com/Klipper3d/klipper,master
 https://github.com/EchoHeim/klipper,lodge
+https://github.com/bigtreetech/klipper,hurakan

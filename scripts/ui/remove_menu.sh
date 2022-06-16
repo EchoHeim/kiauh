@@ -13,20 +13,20 @@ set -e
 
 function remove_ui() {
   top_border
-  echo -e "|     ${red}~~~~~~~~~~~~~~ [ Remove Menu ] ~~~~~~~~~~~~~~${white}     |"
+  echo -e "|      ${red}~~~~~~~~~~~~~~ [ Remove Menu ] ~~~~~~~~~~~~~~${white}      |"
   hr
-  echo -e "| ${yellow}INFO: Configurations and/or any backups will be kept!${white} |"
+  echo -e "|  ${yellow}INFO: Configurations and/or any backups will be kept!${white}  |"
   hr
-  echo -e "| Firmware & API:           | 3rd Party Webinterface:   |"
-  echo -e "|  1) [Klipper]             |  6) [OctoPrint]           |"
-  echo -e "|  2) [Moonraker]           |                           |"
-  echo -e "|                           | Webcam Streamer:          |"
-  echo -e "| Klipper Webinterface:     |  7) [MJPG-Streamer]       |"
-  echo -e "|  3) [Mainsail]            |                           |"
-  echo -e "|  4) [Fluidd]              | Other:                    |"
-  echo -e "|                           |  8) [PrettyGCode]         |"
-  echo -e "| Touchscreen GUI:          |  9) [Telegram Bot]        |"
-  echo -e "|  5) [KlipperScreen]       | 10) [NGINX]               |"
+  echo -e "| Firmware & API:           | 3rd Party Webinterface:     |"
+  echo -e "|  1) [Klipper]             |  6) [OctoPrint]             |"
+  echo -e "|  2) [Moonraker]           |                             |"
+  echo -e "|                           | Webcam Streamer:            |"
+  echo -e "| Klipper Webinterface:     |  7) [MJPG-Streamer]         |"
+  echo -e "|  3) [Mainsail]            |                             |"
+  echo -e "|  4) [Fluidd]              | Other:                      |"
+  echo -e "|                           |  8) [PrettyGCode]           |"
+  echo -e "| Touchscreen GUI:          |  9) [Telegram Bot]          |"
+  echo -e "|  5) [KlipperScreen]       | 10) [NGINX]                 |"
   back_footer
 }
 

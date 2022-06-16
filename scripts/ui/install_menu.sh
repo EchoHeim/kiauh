@@ -13,22 +13,22 @@ set -e
 
 function install_ui() {
   top_border
-  echo -e "|     ${green}~~~~~~~~~~~ [ Installation Menu ] ~~~~~~~~~~~${white}     |"
+  echo -e "|      ${green}~~~~~~~~~~~ [ Installation Menu ] ~~~~~~~~~~~${white}      |"
   hr
-  echo -e "|  You need this menu usually only for installing       |"
-  echo -e "|  all necessary dependencies for the various           |"
-  echo -e "|  functions on a completely fresh system.              |"
+  echo -e "|  You need this menu usually only for installing         |"
+  echo -e "|  all necessary dependencies for the various             |"
+  echo -e "|  functions on a completely fresh system.                |"
   hr
-  echo -e "| Firmware & API:           | 3rd Party Webinterface:   |"
-  echo -e "|  1) [Klipper]             |  6) [OctoPrint]           |"
-  echo -e "|  2) [Moonraker]           |                           |"
-  echo -e "|                           | Other:                    |"
-  echo -e "| Klipper Webinterface:     |  7) [PrettyGCode]         |"
-  echo -e "|  3) [Mainsail]            |  8) [Telegram Bot]        |"
-  echo -e "|  4) [Fluidd]              |                           |"
-  echo -e "|                           | Webcam Streamer:          |"
-  echo -e "| Touchscreen GUI:          |  9) [MJPG-Streamer]       |"
-  echo -e "|  5) [KlipperScreen]       |                           |"
+  echo -e "| Firmware & API:           | 3rd Party Webinterface:     |"
+  echo -e "|  1) [Klipper]             |  6) [OctoPrint]             |"
+  echo -e "|  2) [Moonraker]           |                             |"
+  echo -e "|                           | Other:                      |"
+  echo -e "| Klipper Webinterface:     |  7) [PrettyGCode]           |"
+  echo -e "|  3) [Mainsail]            |  8) [Telegram Bot]          |"
+  echo -e "|  4) [Fluidd]              |                             |"
+  echo -e "|                           | Webcam Streamer:            |"
+  echo -e "| Touchscreen GUI:          |  9) [MJPG-Streamer]         |"
+  echo -e "|  5) [KlipperScreen]       |                             |"
   back_footer
 }
 
@@ -69,14 +69,14 @@ function install_menu() {
 
 function select_klipper_python_version() {
   top_border
-  echo -e "| Please select the preferred Python version.           | "
-  echo -e "| The recommended version is Python 2.7.                | "
+  echo -e "| Please select the preferred Python version.             | "
+  echo -e "| The recommended version is Python 2.7.                  | "
   blank_line
-  echo -e "| Installing Klipper with Python 3 is officially not    | "
-  echo -e "| recommended and should be considered as experimental. | "
+  echo -e "| Installing Klipper with Python 3 is officially not      | "
+  echo -e "| recommended and should be considered as experimental.   | "
   hr
-  echo -e "|  1) [Python 2.7]  (recommended)                       | "
-  echo -e "|  2) [Python 3.x]  ${yellow}(experimental)${white}                      | "
+  echo -e "|  1) [Python 2.7]  (recommended)                         | "
+  echo -e "|  2) [Python 3.x]  ${yellow}(experimental)${white}                        | "
   back_footer
   while true; do
     read -p "${cyan}###### Select Python version:${white} " action

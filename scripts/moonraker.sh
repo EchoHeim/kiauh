@@ -69,12 +69,12 @@ function moonraker_setup_dialog() {
       printf "|${cyan}%-57s${white}|\n" " ● klipper-${name}"
     done
     blank_line
-    echo -e "| The setup will apply the same names to Moonraker!     |"
+    echo -e "| The setup will apply the same names to Moonraker!       |"
     blank_line
-    echo -e "| Please select the number of Moonraker instances to    |"
-    echo -e "| install. Usually one Moonraker instance per Klipper   |"
-    echo -e "| instance is required, but you may not install more    |"
-    echo -e "| Moonraker instances than available Klipper instances. |"
+    echo -e "| Please select the number of Moonraker instances to      |"
+    echo -e "| install. Usually one Moonraker instance per Klipper     |"
+    echo -e "| instance is required, but you may not install more      |"
+    echo -e "| Moonraker instances than available Klipper instances.   |"
     bottom_border
 
     ### ask for amount of instances
