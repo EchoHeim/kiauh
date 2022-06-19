@@ -307,8 +307,7 @@ function write_klipper_service() {
 
 function write_example_printer_cfg() {
   local cfg_dir=${1} cfg=${2}
-  local cfg_template="${KIAUH_SRCDIR}/resources/printer.cfg"
-  local cfg_skr3="${KIAUH_SRCDIR}/resources/bigtree-skr3.cfg"
+  local cfg_template="${KIAUH_SRCDIR}/resources/lodge_custom/skr-3/bigtree-skr3.cfg"
 
   ### create a config directory if it doesn't exist
   if [[ ! -d ${cfg_dir} ]]; then
@@ -320,7 +319,6 @@ function write_example_printer_cfg() {
   if [[ ! -f ${cfg} ]]; then
     status_msg "Creating minimal example printer.cfg ..."
     cp "${cfg_template}" "${cfg}"
-    cp "${cfg_skr3}" "${cfg_dir}"
   fi
 }
 

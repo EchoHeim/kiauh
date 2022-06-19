@@ -84,3 +84,17 @@ function klipper_lodge_repo() {
     fi
     print_confirm "lodge custom klipper added successfully!"
 }
+
+function config_klipper_cfgfile() {
+    case "$1" in
+        "skr3")
+            cp ${KIAUH_SRCDIR}/resources/lodge_custom/skr-3/* ${KLIPPER_CONFIG} -f ;;
+        "Hurakan") 
+            cp ${KIAUH_SRCDIR}/resources/lodge_custom/Hurakan/* ${KLIPPER_CONFIG} -f ;;
+        "stm32mp157") 
+            cp ${KIAUH_SRCDIR}/resources/lodge_custom/stm32mp157/* ${KLIPPER_CONFIG} -f ;;
+    esac
+
+    [ $? == 0 ] && ok_msg "config_klipper_cfgfile OK"
+}
+

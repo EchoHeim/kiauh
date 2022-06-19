@@ -32,6 +32,8 @@ function WhetherInstall(){
     unset inst_pkg
 }
 
+#-----------------------------------------------------------------------------------
+
 function custom_function_ui(){
     top_border
     echo -e "|      ${green}~~~~~~~~~ [ Custom Function Menu ] ~~~~~~~~~~${white}      | "
@@ -73,13 +75,15 @@ function custom_function_menu(){
     custom_function_ui
 }
 
+#-----------------------------------------------------------------------------------
+
 function klipper_cfg_ui(){
     top_border
-    echo -e "|      ${green}~~~~~~~~~ [ klipper_cfg_files Menu ] ~~~~~~~~~~${white}      | "
+    echo -e "|      ${green}~~~~~~~~~ [ klipper_cfg_files Menu ] ~~~~~~~~${white}      | "
     hr
-    echo -e "|  1) bigtree-skr3         |  3) stm32mp157               |"
-    echo -e "|                          |                              |"
-    echo -e "|  2) Hurakan              |                              |"
+    echo -e "|  1) bigtree-skr3           |  3) stm32mp157             |"
+    echo -e "|                            |                            |"
+    echo -e "|  2) Hurakan                |                            |"
 
     back_footer
 }
@@ -94,14 +98,14 @@ function klipper_cfg_menu(){
     while true; do
         read -p "${cyan}Perform action:${white} " action; echo
         case "$action" in
-            0)
-                do_action "klipper_lodge_repo" "klipper_cfg_ui";;
-            1) 
-                do_action "usb_device_mount" "klipper_cfg_ui";;
+            1)
+                do_action "config_klipper_cfgfile skr3" "klipper_cfg_ui";;
             2) 
-                do_action "fix_klipperscreen" "klipper_cfg_ui";;
+                do_action "config_klipper_cfgfile Hurakan" "klipper_cfg_ui";;
+            3) 
+                do_action "config_klipper_cfgfile stm32mp157" "klipper_cfg_ui";;
             B|b)
-                clear; main_menu; break;;
+                clear; custom_function_menu; break;;
             *)
                 deny_action "klipper_cfg_ui";;
         esac
