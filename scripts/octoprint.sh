@@ -45,17 +45,17 @@ function octoprint_setup_dialog() {
 
   elif (( klipper_count > 1 )); then
     top_border
-    printf "|${green}%-57s${white}|\n" " ${klipper_count} Klipper instances found!"
+    printf "|${green}%-55s${white}|\n" " ${klipper_count} Klipper instances found!"
     for name in "${klipper_names[@]}"; do
-      printf "|${cyan}%-59s${white}|\n" " ● ${name}"
+      printf "|${cyan}%-57s${white}|\n" " ● ${name}"
     done
     blank_line
-    echo -e "| The setup will apply the same names to OctoPrint!       |"
+    echo -e "| The setup will apply the same names to OctoPrint!     |"
     blank_line
-    echo -e "| Please select the number of OctoPrint instances to      |"
-    echo -e "| install. Usually one OctoPrint instance per Klipper     |"
-    echo -e "| instance is required, but you may not install more      |"
-    echo -e "| OctoPrint instances than available Klipper instances.   |"
+    echo -e "| Please select the number of OctoPrint instances to    |"
+    echo -e "| install. Usually one OctoPrint instance per Klipper   |"
+    echo -e "| instance is required, but you may not install more    |"
+    echo -e "| OctoPrint instances than available Klipper instances. |"
     bottom_border
 
     local re="^[1-9][0-9]*$"

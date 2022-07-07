@@ -95,17 +95,17 @@ function install_mainsail_macros() {
   while true; do
     echo
     top_border
-    echo -e "| It is recommended to have some important macros in      |"
-    echo -e "| your printer configuration to have Mainsail fully       |"
-    echo -e "| functional and working.                                 |"
+    echo -e "| It is recommended to have some important macros in    |"
+    echo -e "| your printer configuration to have Mainsail fully     |"
+    echo -e "| functional and working.                               |"
     blank_line
-    echo -e "| The recommended macros for Mainsail can be seen here:   |"
-    echo -e "| https://docs.mainsail.xyz/configuration#macros          |"
+    echo -e "| The recommended macros for Mainsail can be seen here: |"
+    echo -e "| https://docs.mainsail.xyz/configuration#macros        |"
     blank_line
-    echo -e "| If you already have these macros in your config file,   |"
-    echo -e "| skip this step and answer with 'no'.                    |"
-    echo -e "| Otherwise you should consider to answer with 'yes' to   |"
-    echo -e "| add the recommended example macros to your config.      |"
+    echo -e "| If you already have these macros in your config file, |"
+    echo -e "| skip this step and answer with 'no'.                  |"
+    echo -e "| Otherwise you should consider to answer with 'yes' to |"
+    echo -e "| add the recommended example macros to your config.    |"
     bottom_border
     read -p "${cyan}###### Add the recommended macros? (Y/n):${white} " yn
     case "${yn}" in
@@ -337,18 +337,18 @@ function ms_theme_installer_menu() {
   theme_list=$(curl -s -L "${theme_csv_url}")
 
   top_border
-  echo -e "|      ${red}~~~~~~~~ [ Mainsail Theme Installer ] ~~~~~~~${white}      |"
+  echo -e "|     ${red}~~~~~~~~ [ Mainsail Theme Installer ] ~~~~~~~${white}     |"
   hr
-  echo -e "| ${cyan}A preview of each Mainsail theme can be found here:${white}     |"
-  echo -e "| https://docs.mainsail.xyz/theming/themes                |"
+  echo -e "| ${cyan}A preview of each Mainsail theme can be found here:${white}   |"
+  echo -e "| https://docs.mainsail.xyz/theming/themes              |"
   blank_line
-  echo -e "| ${yellow}Important note:${white}                                         |"
-  echo -e "| Installing a theme from this menu will overwrite an     |"
-  echo -e "| already installed theme or modified custom.css file!    |"
+  echo -e "| ${yellow}Important note:${white}                                       |"
+  echo -e "| Installing a theme from this menu will overwrite an   |"
+  echo -e "| already installed theme or modified custom.css file!  |"
   hr
   print_theme_list "${theme_list}"
-  echo -e "|                                                         |"
-  echo -e "| R) [Remove Theme]                                       |"
+  echo -e "|                                                       |"
+  echo -e "| R) [Remove Theme]                                     |"
   back_footer
 
   while IFS="," read -r col1 col2 col3 col4; do
@@ -392,11 +392,11 @@ function ms_theme_install() {
 
   if (( ${#target_folders[@]} > 1 )); then
     top_border
-    echo -e "| Please select the printer you want to apply the theme   |"
-    echo -e "| installation to:                                        |"
+    echo -e "| Please select the printer you want to apply the theme |"
+    echo -e "| installation to:                                      |"
     for (( i=0; i < ${#target_folders[@]}; i++ )); do
       folder=$(echo "${target_folders[${i}]}" | rev | cut -d "/" -f1 | rev)
-      printf "|${cyan}%-57s${white}|\n" " ${i}) ${folder}"
+      printf "|${cyan}%-55s${white}|\n" " ${i}) ${folder}"
     done
     bottom_border
 
@@ -434,11 +434,11 @@ function ms_theme_delete() {
 
   if (( ${#target_folders[@]} > 0 )); then
     top_border
-    echo -e "| Please select the printer you want to remove the        |"
-    echo -e "| theme installation from.                                |"
+    echo -e "| Please select the printer you want to remove the      |"
+    echo -e "| theme installation from.                              |"
     for (( i=0; i < ${#target_folders[@]}; i++ )); do
       folder=$(echo "${target_folders[${i}]}" | rev | cut -d "/" -f2 | rev)
-      printf "|${cyan}%-57s${white}|\n" " ${i}) ${folder}"
+      printf "|${cyan}%-55s${white}|\n" " ${i}) ${folder}"
     done
     bottom_border
 
@@ -514,17 +514,17 @@ function select_mainsail_port() {
   if [[ ${PORT_80_BLOCKED} == "true" ]]; then
     echo
     top_border
-    echo -e "|                     ${red}!!!WARNING!!!${white}                       |"
-    echo -e "| ${red}You need to choose a different port for Mainsail!${white}       |"
-    echo -e "| ${red}The following web interface is listening at port 80:${white}    |"
+    echo -e "|                    ${red}!!!WARNING!!!${white}                      |"
+    echo -e "| ${red}You need to choose a different port for Mainsail!${white}     |"
+    echo -e "| ${red}The following web interface is listening at port 80:${white}  |"
     blank_line
-    [[ ${FLUIDD_PORT} == "80" ]] && echo "|  ● Fluidd                                               |"
+    [[ ${FLUIDD_PORT} == "80" ]] && echo "|  ● Fluidd                                             |"
     blank_line
-    echo -e "| Make sure you don't choose a port which was already     |"
-    echo -e "| assigned to another webinterface!                       |"
+    echo -e "| Make sure you don't choose a port which was already   |"
+    echo -e "| assigned to another webinterface!                     |"
     blank_line
-    echo -e "| Be aware: there is ${red}NO${white} sanity check for the following    |"
-    echo -e "| input. So make sure to choose a valid port!             |"
+    echo -e "| Be aware: there is ${red}NO${white} sanity check for the following  |"
+    echo -e "| input. So make sure to choose a valid port!           |"
     bottom_border
 
     local new_port re="^[0-9]+$"

@@ -13,14 +13,14 @@ set -e
 
 function rollback_menu() {
   top_border
-  echo -e "|      $(title_msg "~~~~~~~~~~~~~ [ Rollback Menu ] ~~~~~~~~~~~~~")      |"
+  echo -e "|     $(title_msg "~~~~~~~~~~~~~ [ Rollback Menu ] ~~~~~~~~~~~~~")     |"
   hr
-  echo -e "| If serious errors occured after updating Klipper or     |"
-  echo -e "| Moonraker, you can use this menu to try and reset the   |"
-  echo -e "| repository to an earlier state.                         |"
+  echo -e "| If serious errors occured after updating Klipper or   |"
+  echo -e "| Moonraker, you can use this menu to try and reset the |"
+  echo -e "| repository to an earlier state.                       |"
   hr
-  echo -e "| 1) Rollback Klipper                                     |"
-  echo -e "| 2) Rollback Moonraker                                   |"
+  echo -e "| 1) Rollback Klipper                                   |"
+  echo -e "| 2) Rollback Moonraker                                 |"
   back_footer
 
   local action
@@ -53,13 +53,13 @@ function rollback_component() {
 
   echo
   top_border
-  echo -e "| Please select how many commits you want to revert.      |"
-  echo -e "| Consider using the information provided by the GitHub   |"
-  echo -e "| commit history to decide how many commits to revert.    |"
+  echo -e "| Please select how many commits you want to revert.    |"
+  echo -e "| Consider using the information provided by the GitHub |"
+  echo -e "| commit history to decide how many commits to revert.  |"
   blank_line
-  echo -e "| ${red}Warning:${white}                                                |"
-  echo -e "| ${red}Do not proceed if you are currently in the progress${white}     |"
-  echo -e "| ${red}of printing! Proceeding WILL terminate that print!${white}      |"
+  echo -e "| ${red}Warning:${white}                                              |"
+  echo -e "| ${red}Do not proceed if you are currently in the progress${white}   |"
+  echo -e "| ${red}of printing! Proceeding WILL terminate that print!${white}    |"
   back_footer
 
   local count

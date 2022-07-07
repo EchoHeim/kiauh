@@ -13,26 +13,26 @@ set -e
 
 function update_ui() {
   top_border
-  echo -e "|      ${green}~~~~~~~~~~~~~~ [ Update Menu ] ~~~~~~~~~~~~~~${white}      |"
+  echo -e "|     ${green}~~~~~~~~~~~~~~ [ Update Menu ] ~~~~~~~~~~~~~~${white}     |"
   hr
-  echo -e "| a) [Update all]        |               |                |"
-  echo -e "|                        | Installed:    | Latest:        |"
-  echo -e "| Klipper & API:         |---------------|----------------|"
-  echo -e "|  1) [Klipper]          |$(compare_klipper_versions)  |"
-  echo -e "|  2) [Moonraker]        |$(compare_moonraker_versions)  |"
-  echo -e "|                        |               |                |"
-  echo -e "| Klipper Webinterface:  |---------------|----------------|"
-  echo -e "|  3) [Mainsail]         |$(compare_mainsail_versions)  |"
-  echo -e "|  4) [Fluidd]           |$(compare_fluidd_versions)  |"
-  echo -e "|                        |               |                |"
-  echo -e "| Touchscreen GUI:       |---------------|----------------|"
-  echo -e "|  5) [KlipperScreen]    |$(compare_klipperscreen_versions)  |"
-  echo -e "|                        |               |                |"
-  echo -e "| Other:                 |---------------|----------------|"
-  echo -e "|  6) [PrettyGCode]      |$(compare_prettygcode_versions)  |"
-  echo -e "|  7) [Telegram Bot]     |$(compare_telegram_bot_versions)  |"
-  echo -e "|                        |--------------------------------|"
-  echo -e "|  8) [System]           |  $(check_system_updates)     |"
+  echo -e "| a) [Update all]        |               |              |"
+  echo -e "|                        | Installed:    | Latest:      |"
+  echo -e "| Klipper & API:         |---------------|--------------|"
+  echo -e "|  1) [Klipper]          |$(compare_klipper_versions)|"
+  echo -e "|  2) [Moonraker]        |$(compare_moonraker_versions)|"
+  echo -e "|                        |               |              |"
+  echo -e "| Klipper Webinterface:  |---------------|--------------|"
+  echo -e "|  3) [Mainsail]         |$(compare_mainsail_versions)|"
+  echo -e "|  4) [Fluidd]           |$(compare_fluidd_versions)|"
+  echo -e "|                        |               |              |"
+  echo -e "| Touchscreen GUI:       |---------------|--------------|"
+  echo -e "|  5) [KlipperScreen]    |$(compare_klipperscreen_versions)|"
+  echo -e "|                        |               |              |"
+  echo -e "| Other:                 |---------------|--------------|"
+  echo -e "|  6) [PrettyGCode]      |$(compare_prettygcode_versions)|"
+  echo -e "|  7) [Telegram Bot]     |$(compare_telegram_bot_versions)|"
+  echo -e "|                        |------------------------------|"
+  echo -e "|  8) [System]           |  $(check_system_updates)   |"
   back_footer
 }
 
@@ -82,30 +82,30 @@ function update_all() {
     
     echo
     top_border
-    echo -e "|  The following installations will be updated:           |"
+    echo -e "|  The following installations will be updated:         |"
     if [[ "${KLIPPER_UPDATE_AVAIL}" = "true" ]]; then
-      echo -e "|  ${cyan}● Klipper${white}                                              |"
+      echo -e "|  ${cyan}● Klipper${white}                                            |"
     fi
     if [[ "${MOONRAKER_UPDATE_AVAIL}" = "true" ]]; then
-      echo -e "|  ${cyan}● Moonraker${white}                                            |"
+      echo -e "|  ${cyan}● Moonraker${white}                                          |"
     fi
     if [[ "${MAINSAIL_UPDATE_AVAIL}" = "true" ]]; then
-      echo -e "|  ${cyan}● Mainsail${white}                                             |"
+      echo -e "|  ${cyan}● Mainsail${white}                                           |"
     fi
     if [[ "${FLUIDD_UPDATE_AVAIL}" = "true" ]]; then
-      echo -e "|  ${cyan}● Fluidd${white}                                               |"
+      echo -e "|  ${cyan}● Fluidd${white}                                             |"
     fi
     if [[ "${KLIPPERSCREEN_UPDATE_AVAIL}" = "true" ]]; then
-      echo -e "|  ${cyan}● KlipperScreen${white}                                        |"
+      echo -e "|  ${cyan}● KlipperScreen${white}                                      |"
     fi
     if [[ "${PGC_UPDATE_AVAIL}" = "true" ]]; then
-      echo -e "|  ${cyan}● PrettyGCode for Klipper${white}                              |"
+      echo -e "|  ${cyan}● PrettyGCode for Klipper${white}                            |"
     fi
     if [[ "${MOONRAKER_TELEGRAM_BOT_UPDATE_AVAIL}" = "true" ]]; then
-      echo -e "|  ${cyan}● MoonrakerTelegramBot${white}                                 |"
+      echo -e "|  ${cyan}● MoonrakerTelegramBot${white}                               |"
     fi
     if [[ "${SYS_UPDATE_AVAIL}" = "true" ]]; then
-      echo -e "|  ${cyan}● System${white}                                               |"
+      echo -e "|  ${cyan}● System${white}                                             |"
     fi
     bottom_border
     

@@ -231,18 +231,18 @@ function detect_conflicting_packages() {
     while true; do
       echo
       top_border
-      echo -e "| ${red}Conflicting package installations found:${white}                |"
+      echo -e "| ${red}Conflicting package installations found:${white}              |"
       [[ ${apache} == "true" ]] && \
-      echo -e "| ${red}● apache2${white}                                               |"
+      echo -e "| ${red}● apache2${white}                                             |"
       [[ ${haproxy} == "true" ]] && \
-      echo -e "| ${red}● haproxy${white}                                               |"
+      echo -e "| ${red}● haproxy${white}                                             |"
       blank_line
-      echo -e "| Having those packages installed can lead to unwanted    |"
-      echo -e "| behaviour. It's recommended to remove those packages.   |"
-      echo -e "|                                                         |"
-      echo -e "| ${green}1) Remove packages (recommend)${white}                          |"
-      echo -e "| 2) Disable only (may still cause issues)                |"
-      echo -e "| ${red}3) Skip this step (not recommended)${white}                     |"
+      echo -e "| Having those packages installed can lead to unwanted  |"
+      echo -e "| behaviour. It's recommended to remove those packages. |"
+      echo -e "|                                                       |"
+      echo -e "| ${green}1) Remove packages (recommend)${white}                        |"
+      echo -e "| 2) Disable only (may still cause issues)              |"
+      echo -e "| ${red}3) Skip this step (not recommended)${white}                   |"
       bottom_border
 
       local action

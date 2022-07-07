@@ -19,7 +19,7 @@ function check_euid() {
   if [[ ${EUID} -eq 0 ]]; then
     echo -e "${red}"
     top_border
-    echo -e "|        !!! THIS SCRIPT MUST NOT RUN AS ROOT !!!         |"
+    echo -e "|       !!! THIS SCRIPT MUST NOT RUN AS ROOT !!!        |"
     bottom_border
     echo -e "${white}"
     exit 1
@@ -56,9 +56,9 @@ function print_error() {
   [[ -z ${1} ]] && return
 
   echo -e "${red}"
-  echo -e "#=========================================================#"
+  echo -e "#=======================================================#"
   echo -e " ${1} "
-  echo -e "#=========================================================#"
+  echo -e "#=======================================================#"
   echo -e "${white}"
 }
 
@@ -66,9 +66,9 @@ function print_confirm() {
   [[ -z ${1} ]] && return
 
   echo -e "${green}"
-  echo -e "#=========================================================#"
+  echo -e "#=======================================================#"
   echo -e " ${1} "
-  echo -e "#=========================================================#"
+  echo -e "#=======================================================#"
   echo -e "${white}"
 }
 
@@ -83,11 +83,11 @@ function timestamp() {
 function init_logfile() {
   local log="/tmp/kiauh.log"
   {
-    echo -e "#==================================================================#"
+    echo -e "#================================================================#"
     echo -e "# New KIAUH session started on: $(date) #"
-    echo -e "#==================================================================#"
+    echo -e "#================================================================#"
     echo -e "KIAUH $(get_kiauh_version)"
-    echo -e "#==================================================================#"
+    echo -e "#================================================================#"
   } >> "${log}"
 }
 
@@ -181,15 +181,15 @@ function change_klipper_cfg_folder() {
   local yn
   while true; do
     top_border
-    echo -e "|  ${yellow}IMPORTANT:${white}                                             |"
-    echo -e "|  Please enter the new path in the following format:     |"
-    printf  "|  ${cyan}%-53s${white}  |\n" "${example_loc}"
+    echo -e "|  ${yellow}IMPORTANT:${white}                                           |"
+    echo -e "|  Please enter the new path in the following format:   |"
+    printf  "|  ${cyan}%-51s${white}  |\n" "${example_loc}"
     blank_line
-    echo -e "|  ${red}WARNING: ${white}                                              |"
-    echo -e "|  ${red}There will be no validation checks! Make sure to set${white}   |"
-    echo -e "|  ${red}a valid directory to prevent possible problems!${white}        |"
+    echo -e "|  ${red}WARNING: ${white}                                            |"
+    echo -e "|  ${red}There will be no validation checks! Make sure to set${white} |"
+    echo -e "|  ${red}a valid directory to prevent possible problems!${white}      |"
     blank_line
-    printf  "|  Recommended: ${cyan}%-40s${white}  |\n" "${recommended_loc}"
+    printf  "|  Recommended: ${cyan}%-38s${white}  |\n" "${recommended_loc}"
     bottom_border
     echo
     echo -e "${cyan}###### Please set the new Klipper config directory:${white} "
@@ -507,20 +507,20 @@ function check_usergroups() {
 
   if [[ ${group_dialout} == "false" || ${group_tty} == "false" ]] ; then
     top_border
-    echo -e "| ${yellow}WARNING: Your current user is not in group:${white}             |"
+    echo -e "| ${yellow}WARNING: Your current user is not in group:${white}           |"
     [[ ${group_tty} == "false" ]] && \
-    echo -e "| ${yellow}● tty${white}                                                   |"
+    echo -e "| ${yellow}● tty${white}                                                 |"
     [[ ${group_dialout} == "false" ]] && \
-    echo -e "| ${yellow}● dialout${white}                                               |"
+    echo -e "| ${yellow}● dialout${white}                                             |"
     blank_line
-    echo -e "| It is possible that you won't be able to successfully   |"
-    echo -e "| connect and/or flash the controller board without       |"
-    echo -e "| your user being a member of that group.                 |"
-    echo -e "| If you want to add the current user to the group(s)     |"
-    echo -e "| listed above, answer with 'Y'. Else skip with 'n'.      |"
+    echo -e "| It is possible that you won't be able to successfully |"
+    echo -e "| connect and/or flash the controller board without     |"
+    echo -e "| your user being a member of that group.               |"
+    echo -e "| If you want to add the current user to the group(s)   |"
+    echo -e "| listed above, answer with 'Y'. Else skip with 'n'.    |"
     blank_line
-    echo -e "| ${yellow}INFO:${white}                                                   |"
-    echo -e "| ${yellow}Relog required for group assignments to take effect!${white}    |"
+    echo -e "| ${yellow}INFO:${white}                                                 |"
+    echo -e "| ${yellow}Relog required for group assignments to take effect!${white}  |"
     bottom_border
 
     local yn
@@ -551,13 +551,13 @@ function check_usergroups() {
 function set_custom_hostname() {
   echo
   top_border
-  echo -e "|  Changing the hostname of this machine allows you to    |"
-  echo -e "|  access a webinterface that is configured for port 80   |"
-  echo -e "|  by simply typing '<hostname>.local' in the browser.    |"
-  echo -e "|                                                         |"
-  echo -e "|  E.g.: If you set the hostname to 'my-printer' you      |"
-  echo -e "|        can open Mainsail / Fluidd / Octoprint by        |"
-  echo -e "|        browsing to: http://my-printer.local             |"
+  echo -e "|  Changing the hostname of this machine allows you to  |"
+  echo -e "|  access a webinterface that is configured for port 80 |"
+  echo -e "|  by simply typing '<hostname>.local' in the browser.  |"
+  echo -e "|                                                       |"
+  echo -e "|  E.g.: If you set the hostname to 'my-printer' you    |"
+  echo -e "|        can open Mainsail / Fluidd / Octoprint by      |"
+  echo -e "|        browsing to: http://my-printer.local           |"
   bottom_border
 
   local yn
@@ -581,9 +581,9 @@ function change_hostname() {
     local new_hostname regex="^[^\-\_]+([0-9a-z]\-{0,1})+[^\-\_]+$"
     echo
     top_border
-    echo -e "|  ${green}Allowed characters: a-z, 0-9 and single '-'${white}            |"
-    echo -e "|  ${red}No special characters allowed!${white}                         |"
-    echo -e "|  ${red}No leading or trailing '-' allowed!${white}                    |"
+    echo -e "|  ${green}Allowed characters: a-z, 0-9 and single '-'${white}          |"
+    echo -e "|  ${red}No special characters allowed!${white}                       |"
+    echo -e "|  ${red}No leading or trailing '-' allowed!${white}                  |"
     bottom_border
 
     while true; do
