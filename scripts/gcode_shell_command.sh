@@ -17,12 +17,12 @@ set -e
 
 function setup_gcode_shell_command() {
   top_border
-  echo -e "| You are about to install the 'G-Code Shell Command'     |"
-  echo -e "| extension. Please make sure to read the instructions    |"
-  echo -e "| before you continue and remember that potential risks   |"
-  echo -e "| can be involved after installing this extension!        |"
+  echo -e "| You are about to install the 'G-Code Shell Command'   |"
+  echo -e "| extension. Please make sure to read the instructions  |"
+  echo -e "| before you continue and remember that potential risks |"
+  echo -e "| can be involved after installing this extension!      |"
   blank_line
-  echo -e "| ${red}You accept that you are doing this on your own risk!${white}    |"
+  echo -e "| ${red}You accept that you are doing this on your own risk!${white}  |"
   bottom_border
 
   local yn

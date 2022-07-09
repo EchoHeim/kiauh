@@ -52,13 +52,13 @@ function telegram_bot_setup_dialog() {
       printf "|${cyan}%-57s${white}|\n" " ● ${name}"
     done
     blank_line
-    echo -e "| The setup will apply the same names to Telegram Bot!    |"
+    echo -e "| The setup will apply the same names to Telegram Bot!  |"
     blank_line
-    echo -e "| Please select the number of Telegram Bot instances to   |"
-    echo -e "| install. Usually one Telegram Bot instance per          |"
-    echo -e "| Moonraker instance is required, but you may not         |"
-    echo -e "| install more Telegram Bot instances than available      |"
-    echo -e "| Moonraker instances.                                    |"
+    echo -e "| Please select the number of Telegram Bot instances to |"
+    echo -e "| install. Usually one Telegram Bot instance per        |"
+    echo -e "| Moonraker instance is required, but you may not       |"
+    echo -e "| install more Telegram Bot instances than available    |"
+    echo -e "| Moonraker instances.                                  |"
     bottom_border
 
     ### ask for amount of instances

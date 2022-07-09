@@ -13,19 +13,19 @@ set -e
 
 function accept_upload_conditions() {
   top_border
-  echo -e "|      ${red}~~~~~~~~~~~ [ Upload Agreement ] ~~~~~~~~~~~~${white}      |"
+  echo -e "|     ${red}~~~~~~~~~~~ [ Upload Agreement ] ~~~~~~~~~~~~${white}     |"
   hr
-  echo -e "| The following function will help to quickly upload      |"
-  echo -e "| logs for debugging purposes. With confirming this       |"
-  echo -e "| dialog, you agree that during that process your logs    |"
-  echo -e "| will be uploaded to: ${yellow}http://paste.c-net.org/${white}            |"
+  echo -e "| The following function will help to quickly upload    |"
+  echo -e "| logs for debugging purposes. With confirming this     |"
+  echo -e "| dialog, you agree that during that process your logs  |"
+  echo -e "| will be uploaded to: ${yellow}http://paste.c-net.org/${white}          |"
   hr
-  echo -e "| ${red}PLEASE NOTE:${white}                                            |"
-  echo -e "| Be aware that logs can contain network information,     |"
-  echo -e "| private data like usernames, filenames, or other        |"
-  echo -e "| information you may not want to make public.            |"
+  echo -e "| ${red}PLEASE NOTE:${white}                                          |"
+  echo -e "| Be aware that logs can contain network information,   |"
+  echo -e "| private data like usernames, filenames, or other      |"
+  echo -e "| information you may not want to make public.          |"
   blank_line
-  echo -e "| Do ${red}NOT${white} use this function if you don't agree!            |"
+  echo -e "| Do ${red}NOT${white} use this function if you don't agree!          |"
   bottom_border
 
   local yn
@@ -76,9 +76,9 @@ function upload_selection() {
   ### draw interface
   local i=0
   top_border
-  echo -e "|      ${yellow}~~~~~~~~~~~~~~~ [ Log Upload ] ~~~~~~~~~~~~~~${white}      |"
+  echo -e "|     ${yellow}~~~~~~~~~~~~~~~ [ Log Upload ] ~~~~~~~~~~~~~~${white}     |"
   hr
-  echo -e "| You can choose the following logfiles for uploading:    |"
+  echo -e "| You can choose the following logfiles for uploading:  |"
   blank_line
 
   for log in "${logfiles[@]}"; do

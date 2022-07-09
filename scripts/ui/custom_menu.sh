@@ -36,15 +36,15 @@ function WhetherInstall(){
 
 function custom_function_ui(){
     top_border
-    echo -e "|      ${green}~~~~~~~~~ [ Custom Function Menu ] ~~~~~~~~~~${white}      | "
+    echo -e "|     ${green}~~~~~~~~~ [ Custom Function Menu ] ~~~~~~~~~~${white}     | "
     hr
-    echo -e "|  0) Custom klipper with lodge                           |"
-    echo -e "|                                                         |"
-    echo -e "|  1) usb device auto mount                               |"
-    echo -e "|                                                         |"
-    echo -e "|  2) fix KlipperScreen                                   |"
-    echo -e "|                                                         |"
-    echo -e "|  3) config klipper cfg files                            |"
+    echo -e "|  0) Custom klipper with lodge                         |"
+    echo -e "|                                                       |"
+    echo -e "|  1) usb device auto mount                             |"
+    echo -e "|                                                       |"
+    echo -e "|  2) fix KlipperScreen                                 |"
+    echo -e "|                                                       |"
+    echo -e "|  3) config klipper cfg files                          |"
     back_footer
 }
 
@@ -79,11 +79,11 @@ function custom_function_menu(){
 
 function klipper_cfg_ui(){
     top_border
-    echo -e "|      ${green}~~~~~~~~~ [ klipper_cfg_files Menu ] ~~~~~~~~${white}      | "
+    echo -e "|     ${green}~~~~~~~~~ [ klipper_cfg_files Menu ] ~~~~~~~~${white}     | "
     hr
-    echo -e "|  1) bigtree-skr3           |  3) stm32mp157             |"
-    echo -e "|                            |                            |"
-    echo -e "|  2) Hurakan                |                            |"
+    echo -e "|  1) bigtree-skr3           |  3) stm32mp157           |"
+    echo -e "|                            |                          |"
+    echo -e "|  2) Hurakan                |                          |"
 
     back_footer
 }

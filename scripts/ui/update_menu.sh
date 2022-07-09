@@ -13,26 +13,26 @@ set -e
 
 function update_ui() {
   top_border
-  echo -e "|      ${green}~~~~~~~~~~~~~~ [ Update Menu ] ~~~~~~~~~~~~~~${white}      |"
+  echo -e "|     ${green}~~~~~~~~~~~~~~ [ Update Menu ] ~~~~~~~~~~~~~~${white}     |"
   hr
-  echo -e "| a) [Update all]        |               |                |"
-  echo -e "|                        | Installed:    | Latest:        |"
-  echo -e "| Klipper & API:         |---------------|----------------|"
-  echo -e "|  1) [Klipper]          |$(compare_klipper_versions)  |"
-  echo -e "|  2) [Moonraker]        |$(compare_moonraker_versions)  |"
-  echo -e "|                        |               |                |"
-  echo -e "| Klipper Webinterface:  |---------------|----------------|"
-  echo -e "|  3) [Mainsail]         |$(compare_mainsail_versions)  |"
-  echo -e "|  4) [Fluidd]           |$(compare_fluidd_versions)  |"
-  echo -e "|                        |               |                |"
-  echo -e "| Touchscreen GUI:       |---------------|----------------|"
-  echo -e "|  5) [KlipperScreen]    |$(compare_klipperscreen_versions)  |"
-  echo -e "|                        |               |                |"
-  echo -e "| Other:                 |---------------|----------------|"
-  echo -e "|  6) [PrettyGCode]      |$(compare_prettygcode_versions)  |"
-  echo -e "|  7) [Telegram Bot]     |$(compare_telegram_bot_versions)  |"
-  echo -e "|                        |--------------------------------|"
-  echo -e "|  8) [System]           |  $(check_system_updates)     |"
+  echo -e "| a) [Update all]        |               |              |"
+  echo -e "|                        | Installed:    | Latest:      |"
+  echo -e "| Klipper & API:         |---------------|--------------|"
+  echo -e "|  1) [Klipper]          |$(compare_klipper_versions)|"
+  echo -e "|  2) [Moonraker]        |$(compare_moonraker_versions)|"
+  echo -e "|                        |               |              |"
+  echo -e "| Klipper Webinterface:  |---------------|--------------|"
+  echo -e "|  3) [Mainsail]         |$(compare_mainsail_versions)|"
+  echo -e "|  4) [Fluidd]           |$(compare_fluidd_versions)|"
+  echo -e "|                        |               |              |"
+  echo -e "| Touchscreen GUI:       |---------------|--------------|"
+  echo -e "|  5) [KlipperScreen]    |$(compare_klipperscreen_versions)|"
+  echo -e "|                        |               |              |"
+  echo -e "| Other:                 |---------------|--------------|"
+  echo -e "|  6) [PrettyGCode]      |$(compare_prettygcode_versions)|"
+  echo -e "|  7) [Telegram Bot]     |$(compare_telegram_bot_versions)|"
+  echo -e "|                        |------------------------------|"
+  echo -e "|  8) [System]           |  $(check_system_updates)   |"
   back_footer
 }
 
@@ -88,7 +88,10 @@ function update_all() {
     
     echo
     top_border
+<<<<<<< HEAD
 
+=======
+>>>>>>> 41a50d5077d961fe294031c5de910d23145293f3
     echo -e "|  The following installations will be updated:         |"
 
     [[ "${update_arr[*]}" =~ "klipper" ]] && \
@@ -132,6 +135,9 @@ function update_all() {
       *)
         error_msg "Invalid command!";;
     esac
+<<<<<<< HEAD
     
+=======
+>>>>>>> 41a50d5077d961fe294031c5de910d23145293f3
   done
 }
