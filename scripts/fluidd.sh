@@ -173,13 +173,13 @@ function download_fluidd() {
 
   mkdir "${FLUIDD_DIR}" && cd "${FLUIDD_DIR}"
 
-  if wget "${url}"; then
+  #if wget "${url}"; then
     ok_msg "Download complete!"
-  else
+  #else
     status_msg "Downloading Fluidd from url failed!"
     cp ${KIAUH_SRCDIR}/resources/fluidd.zip ./
     ok_msg "Copy archive fluidd.zip complete!"
-  fi
+  #fi
 
   status_msg "Extracting archive ..."
   unzip -q -o ./*.zip && ok_msg "Done!"
