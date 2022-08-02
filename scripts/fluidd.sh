@@ -358,7 +358,7 @@ function fluidd_port_check() {
         select_fluidd_port
       fi
     else
-      DEFAULT_PORT=$(grep listen "${KIAUH_SRCDIR}/resources/klipper_webui_nginx.cfg" | head -1 | sed 's/^\s*//' | cut -d" " -f2 | cut -d";" -f1)
+      DEFAULT_PORT=$(grep listen "${KIAUH_SRCDIR}/resources/fluidd" | head -1 | sed 's/^\s*//' | cut -d" " -f2 | cut -d";" -f1)
       SET_LISTEN_PORT=${DEFAULT_PORT}
     fi
     SET_NGINX_CFG="true"
@@ -404,6 +404,7 @@ function select_fluidd_port() {
 }
 
 function patch_fluidd_update_manager() {
+  local patched="false"
   local moonraker_configs
   moonraker_configs=$(find "${KLIPPER_CONFIG}" -type f -name "moonraker.conf" | sort)
 
@@ -424,5 +425,10 @@ path: ~/fluidd
 MOONRAKER_CONF
 
     fi
+        patched="true"
   done
+
+  if [[ ${patched} == "true" ]]; then
+        do_action_service "restart" "moonraker"
+  fi
 }

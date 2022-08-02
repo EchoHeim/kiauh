@@ -377,16 +377,34 @@ function ms_theme_installer_menu() {
 }
 
 function ms_theme_install() {
-  local theme_url=${1} theme_name theme_note
-  theme_name=${2} theme_note=${3}
+  read_kiauh_ini "${FUNCNAME[0]}"
 
-  local config_folders target_folders=()
-  config_folders=$(find "${KLIPPER_CONFIG}" -mindepth 1 -maxdepth 1 -type d | sort)
+  local theme_url
+  local theme_name
+  local theme_note
+  theme_url=${1}
+  theme_name=${2}
+  theme_note=${3}
 
-  ### build target folder array
-  for folder in ${config_folders}; do
-    target_folders+=("${folder}")
-  done
+  local folder_arr
+  local folder_names="${multi_instance_names}"
+  local target_folders=()
+
+  IFS=',' read -r -a folder_arr <<< "${folder_names}"
+
+  ### build theme target folder array
+  if (( ${#folder_arr[@]} > 1 )); then
+    for folder in "${folder_arr[@]}"; do
+      ### instance names/identifier of only numbers need to be prefixed with 'printer_'
+      if [[ ${folder} =~ ^[0-9]+$ ]]; then
+        target_folders+=("${KLIPPER_CONFIG}/printer_${folder}")
+      else
+        target_folders+=("${KLIPPER_CONFIG}/${folder}")
+      fi
+    done
+  else
+    target_folders+=("${KLIPPER_CONFIG}")
+  fi
 
   if (( ${#target_folders[@]} > 1 )); then
     top_border
@@ -430,7 +448,10 @@ function ms_theme_delete() {
     target_folders+=("${folder}")
   done
 
-  if (( ${#target_folders[@]} > 0 )); then
+  if (( ${#target_folders[@]} == 0 )); then
+    status_msg "No Themes installed!\n"
+    return
+  elif (( ${#target_folders[@]} > 1 )); then
     top_border
     echo -e "| Please select the printer you want to remove the      |"
     echo -e "| theme installation from.                              |"
@@ -447,9 +468,6 @@ function ms_theme_delete() {
       [[ ${target} =~ ${re} && ${target} -lt ${#target_folders[@]} ]] && break
       error_msg "Invalid command!"
     done
-  else
-    status_msg "No Themes installed!\n"
-    return
   fi
 
   status_msg "Removing ${target_folders[${target}]} ..."
@@ -498,7 +516,7 @@ function mainsail_port_check() {
         select_mainsail_port
       fi
     else
-      DEFAULT_PORT=$(grep listen "${KIAUH_SRCDIR}/resources/klipper_webui_nginx.cfg" | head -1 | sed 's/^\s*//' | cut -d" " -f2 | cut -d";" -f1)
+      DEFAULT_PORT=$(grep listen "${KIAUH_SRCDIR}/resources/mainsail" | head -1 | sed 's/^\s*//' | cut -d" " -f2 | cut -d";" -f1)
       SET_LISTEN_PORT=${DEFAULT_PORT}
     fi
     SET_NGINX_CFG="true"
@@ -551,6 +569,7 @@ function enable_mainsail_remotemode() {
 }
 
 function patch_mainsail_update_manager() {
+  local patched="false"
   local moonraker_configs
   moonraker_configs=$(find "${KLIPPER_CONFIG}" -type f -name "moonraker.conf" | sort)
 
@@ -571,5 +590,11 @@ path: ~/mainsail
 MOONRAKER_CONF
 
     fi
+
+    patched="true"
   done
+
+  if [[ ${patched} == "true" ]]; then
+    do_action_service "restart" "moonraker"
+  fi
 }

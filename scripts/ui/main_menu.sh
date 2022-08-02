@@ -94,53 +94,55 @@ function print_klipper_branch() {
 }
 
 function main_menu() {
-    print_header && main_ui
+  print_header && main_ui
 
-    local action
-    while true; do
-        read -p "${cyan}####### Perform action:${white} " action
-        case "${action}" in
-        "start klipper") do_action_service "start" "klipper"; main_ui;;
-        "stop klipper") do_action_service "stop" "klipper"; main_ui;;
-        "restart klipper") do_action_service "restart" "klipper"; main_ui;;
-        "start moonraker") do_action_service "start" "moonraker"; main_ui;;
-        "stop moonraker") do_action_service "stop" "moonraker"; main_ui;;
-        "restart moonraker")do_action_service "restart" "moonraker"; main_ui;;
-        "start octoprint") do_action_service "start" "octoprint"; main_ui;;
-        "stop octoprint") do_action_service "stop" "octoprint"; main_ui;;
-        "restart octoprint") do_action_service "restart" "octoprint"; main_ui;;
-        update) do_action "update_kiauh" "main_ui";;
-        0) clear && print_header
-            upload_selection
-            break;;
-        1) clear && print_header
-            install_menu
-            break;;
-        2) clear && print_header
-            update_menu
-            break;;
-        3) clear && print_header
-            remove_menu
-            break;;
-        4) clear && print_header
-            advanced_menu
-            break;;
-        5) clear && print_header
-            backup_menu
-            break;;
-        6) clear && print_header
-            settings_menu
-            break;;
-        F|f) clear && print_header
-            custom_function_menu 
-            break;;
-        Q|q)
-            echo -e "\n${green}###### Happy printing! ######${white}";
-            echo
-            exit 0;;
-        *)
-            deny_action "main_ui";;
-        esac
-    done
-    clear; main_menu
+  ### initialize kiauh.ini
+  init_ini
+
+  local action
+  while true; do
+    read -p "${cyan}####### Perform action:${white} " action
+    case "${action}" in
+      "start klipper") do_action_service "start" "klipper"; main_ui;;
+      "stop klipper") do_action_service "stop" "klipper"; main_ui;;
+      "restart klipper") do_action_service "restart" "klipper"; main_ui;;
+      "start moonraker") do_action_service "start" "moonraker"; main_ui;;
+      "stop moonraker") do_action_service "stop" "moonraker"; main_ui;;
+      "restart moonraker")do_action_service "restart" "moonraker"; main_ui;;
+      "start octoprint") do_action_service "start" "octoprint"; main_ui;;
+      "stop octoprint") do_action_service "stop" "octoprint"; main_ui;;
+      "restart octoprint") do_action_service "restart" "octoprint"; main_ui;;
+      update) do_action "update_kiauh" "main_ui";;
+      0)clear && print_header
+        upload_selection
+        break;;
+      1)clear && print_header
+        install_menu
+        break;;
+      2) clear && print_header
+        update_menu
+        break;;
+      3) clear && print_header
+        remove_menu
+        break;;
+      4)clear && print_header
+        advanced_menu
+        break;;
+      5)clear && print_header
+        backup_menu
+        break;;
+      6)clear && print_header
+        settings_menu
+        break;;
+      F|f) clear && print_header
+        custom_function_menu 
+        break;;
+      Q|q)
+        echo -e "${green}###### Happy printing! ######${white}"; echo
+        exit 0;;
+      *)
+        deny_action "main_ui";;
+    esac
+  done
+  clear; main_menu
 }
