@@ -60,7 +60,7 @@ function usb_device_mount() {
 }
 
 function fix_klipperscreen() {
-    if [ -e "/etc/X11/Xwrapper.config" ]; then
+    if [[ -e "/etc/X11/Xwrapper.config" && $(print_status "klipperscreen") == "Installed!" ]]; then
         if [ `grep -c "allowed_users=anybody" "/etc/X11/Xwrapper.config"` -ne '1' ];then
             sudo bash -c 'echo "allowed_users=anybody" >> /etc/X11/Xwrapper.config'
         fi

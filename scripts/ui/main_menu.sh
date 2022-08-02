@@ -15,10 +15,10 @@ function main_ui() {
     top_border
     echo -e "|     $(title_msg "~~~~~~~~~~~~~~~ [ Main Menu ] ~~~~~~~~~~~~~~~")     |"
     hr
-    echo -e "|  0) [Log-Upload]   |     Klipper: $(print_status "klipper")  |"
-    echo -e "|                    |        Repo: $(print_klipper_repo)  |"
-    echo -e "|                    |      Branch: $(print_klipper_branch)  |"
-    echo -e "|  1) [Install]      |                                  |"
+    echo -e "|  0) [Log-Upload]   |    Klipper: $(print_status "klipper")   |"
+    echo -e "|                    |       Repo: $(print_klipper_repo)  |"
+    echo -e "|                    |     Branch: $(print_klipper_branch)  |"
+    echo -e "|  1) [Install]      |----------------------------------|"
     echo -e "|  2) [Update]       |     Moonraker: $(print_status "moonraker")|"
     echo -e "|  3) [Remove]       |                                  |"
     echo -e "|  4) [Advanced]     |      Mainsail: $(print_status "mainsail")|"
@@ -34,7 +34,7 @@ function main_ui() {
 function get_kiauh_version() {
     local version
     cd "${KIAUH_SRCDIR}"
-    version="v4.0.0-13"
+    version="v4.0.0-14"
     echo "${version}"
 }
 
@@ -75,7 +75,7 @@ function print_klipper_repo() {
         repo="${cyan}Klipper3d/klipper${white}"
     fi
 
-    printf "%-28s" "${repo}"
+    printf "%-29s" "${repo}"
 }
 
 function print_klipper_branch() {
@@ -90,7 +90,7 @@ function print_klipper_branch() {
         fi
     fi
 
-    printf "%-28s" "${repo}"
+    printf "%-29s" "${repo}"
 }
 
 function main_menu() {

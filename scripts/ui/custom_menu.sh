@@ -40,11 +40,9 @@ function custom_function_ui(){
     hr
     echo -e "|  0) Custom klipper with lodge                         |"
     echo -e "|                                                       |"
-    echo -e "|  1) usb device auto mount                             |"
+    echo -e "|  1) fix KlipperScreen                                 |"
     echo -e "|                                                       |"
-    echo -e "|  2) fix KlipperScreen                                 |"
-    echo -e "|                                                       |"
-    echo -e "|  3) config klipper cfg files                          |"
+    echo -e "|  2) config klipper cfg files                          |"
     back_footer
 }
 
@@ -61,10 +59,8 @@ function custom_function_menu(){
             0)
                 do_action "klipper_lodge_repo" "custom_function_ui";;
             1) 
-                do_action "usb_device_mount" "custom_function_ui";;
-            2) 
                 do_action "fix_klipperscreen" "custom_function_ui";;
-            3) 
+            2) 
                 do_action "klipper_cfg_menu" "";;
             B|b)
                 clear; main_menu; break;;
