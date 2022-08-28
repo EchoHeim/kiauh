@@ -31,8 +31,9 @@ function update_ui() {
     echo -e "| Other:                 |---------------|--------------|"
     echo -e "|  6) [PrettyGCode]      |$(compare_prettygcode_versions)|"
     echo -e "|  7) [Telegram Bot]     |$(compare_telegram_bot_versions)|"
+    echo -e "|  8) [Obico for Klipper]|$(compare_moonraker_obico_versions)|"
     echo -e "|                        |------------------------------|"
-    echo -e "|  8) [System]           |  $(check_system_updates)   |"
+    echo -e "|  9) [System]           |  $(check_system_updates)   |"
     back_footer
 }
 
@@ -43,30 +44,32 @@ function update_menu() {
     while true; do
         read -p "${cyan}####### Perform action:${white} " action
         case "${action}" in
-            0)
-                do_action "toggle_backups" "update_ui";;
-            1)
-                do_action "update_klipper" "update_ui";;
-            2)
-                do_action "update_moonraker" "update_ui";;
-            3)
-                do_action "update_mainsail" "update_ui";;
-            4)
-                do_action "update_fluidd" "update_ui";;
-            5)
-                do_action "update_klipperscreen" "update_ui";;
-            6)
-                do_action "update_pgc_for_klipper" "update_ui";;
-            7)
-                do_action "update_telegram_bot" "update_ui";;
-            8)
-                do_action "update_system" "update_ui";;
-            a)
-                do_action "update_all" "update_ui";;
-            B|b)
-                clear; main_menu; break;;
-            *)
-                deny_action "update_ui";;
+        0)
+            do_action "toggle_backups" "update_ui";;
+        1)
+            do_action "update_klipper" "update_ui";;
+        2)
+            do_action "update_moonraker" "update_ui";;
+        3)
+            do_action "update_mainsail" "update_ui";;
+        4)
+            do_action "update_fluidd" "update_ui";;
+        5)
+            do_action "update_klipperscreen" "update_ui";;
+        6)
+            do_action "update_pgc_for_klipper" "update_ui";;
+        7)
+            do_action "update_telegram_bot" "update_ui";;
+        8)
+            do_action "update_moonraker_obico" "update_ui";;
+        9)
+            do_action "update_system" "update_ui";;
+        a)
+            do_action "update_all" "update_ui";;
+        B|b)
+            clear; main_menu; break;;
+        *)
+            deny_action "update_ui";;
         esac
     done
     update_menu
