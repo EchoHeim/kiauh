@@ -61,11 +61,24 @@ function usb_device_mount() {
 
 function fix_klipperscreen() {
     if [[ -e "/etc/X11/Xwrapper.config" && $(get_klipperscreen_status) == "Installed!" ]]; then
+        
+        # KlipperScreen display
         if [ `grep -c "allowed_users=anybody" "/etc/X11/Xwrapper.config"` -ne '1' ];then
             sudo bash -c 'echo "allowed_users=anybody" >> /etc/X11/Xwrapper.config'
         fi
         if [ `grep -c "needs_root_rights=yes" "/etc/X11/Xwrapper.config"` -ne '1' ];then
             sudo bash -c 'echo "needs_root_rights=yes" >> /etc/X11/Xwrapper.config'
+        fi
+
+        # KlipperScreen USB-HID touch
+        if [[ ! $(dpkg-query -f'${Status}' --show xserver-xorg-input-libinput 2>/dev/null) = *\ installed ]]; then
+            status_msg "Installing xserver-xorg-input-libinput..."
+            sudo apt install xserver-xorg-input-libinput -y
+        fi
+        if [[ ! -e "/usr/share/X11/xorg.conf.d/40-libinput.conf" ]]; then
+            status_msg "Copy xserver input cfg file..."
+            sudo mkdir -p /usr/share/X11/xorg.conf.d
+            sudo cp ${LCF_SRC_DIR}/40-libinput.conf /usr/share/X11/xorg.conf.d/40-libinput.conf -fr
         fi
 
         print_confirm "KlipperScreen restoration complete!"
