@@ -12,7 +12,6 @@
 set -e
 
 function main_ui() {
-
     top_border
     echo -e "|     $(title_msg "~~~~~~~~~~~~~~~ [ Main Menu ] ~~~~~~~~~~~~~~~")     |"
     hr
@@ -31,13 +30,12 @@ function main_ui() {
     echo -e "|  $(print_kiauh_version) |     Octoprint: $(print_status "octoprint")|"
     custom_function
     quit_footer
-
 }
 
 function get_kiauh_version() {
     local version
     cd "${KIAUH_SRCDIR}"
-    version="v4.0.0-15"
+    version="v4.1.0-1"
     echo "${version}"
 }
 
