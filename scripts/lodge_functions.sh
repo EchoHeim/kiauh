@@ -111,3 +111,25 @@ function config_klipper_cfgfile() {
     [ $? == 0 ] && ok_msg "config_klipper_cfgfile OK"
 }
 
+function config_klipper_host_MCU() {
+
+    if [[ -d "${HOME}/klipper" && $(get_klipper_status) != "Not installed!" && $(get_klipper_status) != "Incomplete!" ]]; then
+        cd ~/klipper/
+        sudo cp "./scripts/klipper-mcu-start.sh" /etc/init.d/klipper_mcu
+        sudo update-rc.d klipper_mcu defaults
+
+        cp ${KIAUH_SRCDIR}/resources/lodge_custom/.config ~/klipper/
+        make
+
+        sudo service klipper stop
+        make flash
+        sudo service klipper start
+
+        sudo usermod -a -G tty `whoami`
+
+        ok_msg "config_klipper_host_MCU OK"
+    else
+        print_error "Klipper not installed correctly!"
+    fi
+}
+

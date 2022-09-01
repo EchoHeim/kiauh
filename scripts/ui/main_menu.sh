@@ -35,7 +35,7 @@ function main_ui() {
 function get_kiauh_version() {
     local version
     cd "${KIAUH_SRCDIR}"
-    version="v4.1.0-1"
+    version="v4.1.0-2"
     echo "${version}"
 }
 

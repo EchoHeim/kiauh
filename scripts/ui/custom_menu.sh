@@ -43,6 +43,8 @@ function custom_function_ui(){
     echo -e "|  1) fix KlipperScreen                                 |"
     echo -e "|                                                       |"
     echo -e "|  2) config klipper cfg files                          |"
+    echo -e "|                                                       |"
+    echo -e "|  3) klipper host MCU                                  |"
     back_footer
 }
 
@@ -62,6 +64,8 @@ function custom_function_menu(){
                 do_action "fix_klipperscreen" "custom_function_ui";;
             2) 
                 do_action "klipper_cfg_menu" "";;
+            3) 
+                do_action "config_klipper_host_MCU" "custom_function_ui";;
             B|b)
                 clear; main_menu; break;;
             *)
