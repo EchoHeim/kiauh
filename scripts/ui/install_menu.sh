@@ -30,6 +30,7 @@ function install_ui() {
     echo -e "|                          |                            |"
     echo -e "| Touchscreen GUI:         | Webcam Streamer:           |"
     echo -e "|  5) [KlipperScreen]      | 10) [MJPG-Streamer]        |"
+    echo -e "|                          | 11) [Crowsnest]            |"
     back_footer
 
 }
@@ -67,6 +68,8 @@ function install_menu() {
                 do_action "moonraker_obico_setup_dialog" "install_ui";;
             10)
                 do_action "install_mjpg-streamer" "install_ui";;
+            11)
+                do_action "install_Crowsnest" "install_ui";;
             B|b)
                 clear; main_menu; break;;
             *)
