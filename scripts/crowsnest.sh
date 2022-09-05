@@ -16,7 +16,7 @@ set -e
 #=================================================#
 
 function install_Crowsnest() {
-  local repo="clone https://github.com/mainsail-crew/crowsnest.git"
+  local repo="https://github.com/mainsail-crew/crowsnest.git"
 
   ### return early if webcamd.service already exists
   if [[ -d "${HOME}/crowsnest" ]]; then
@@ -27,14 +27,14 @@ function install_Crowsnest() {
   status_msg "Initializing Crowsnest ..."
 
   ### check and install dependencies if missing
-  local dep=(git cmake build-essential imagemagick libv4l-dev ffmpeg)
-  if apt-cache search libjpeg62-turbo-dev | grep -Eq "^libjpeg62-turbo-dev "; then
-    dep+=(libjpeg62-turbo-dev)
-  elif apt-cache search libjpeg8-dev | grep -Eq "^libjpeg8-dev "; then
-    dep+=(libjpeg8-dev)
-  fi
+#   local dep=(git cmake build-essential imagemagick libv4l-dev ffmpeg)
+#   if apt-cache search libjpeg62-turbo-dev | grep -Eq "^libjpeg62-turbo-dev "; then
+#     dep+=(libjpeg62-turbo-dev)
+#   elif apt-cache search libjpeg8-dev | grep -Eq "^libjpeg8-dev "; then
+#     dep+=(libjpeg8-dev)
+#   fi
 
-  dependency_check "${dep[@]}"
+#   dependency_check "${dep[@]}"
 
   ### step 1: clone Crowsnest
   status_msg "Cloning Crowsnest from ${repo} ..."
@@ -56,7 +56,7 @@ function install_Crowsnest() {
   fi
   ok_msg "Compiling complete!"
 
-  ### step 7: check if user is in group "video"
+  ### step 3: check if user is in group "video"
   local usergroup_changed="false"
   if ! groups "${USER}" | grep -q "video"; then
     status_msg "Adding user '${USER}' to group 'video' ..."
@@ -81,5 +81,6 @@ function install_Crowsnest() {
 function remove_Crowsnest() {
     cd ~/crowsnest
     make uninstall
+    [[ -d "${HOME}/crowsnest" ]] && rm -rf "${HOME}/crowsnest"
     print_confirm "Crowsnest successfully removed!"
 }

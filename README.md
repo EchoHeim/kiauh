@@ -91,3 +91,5 @@ git clone -b lodge --depth 1 https://github.com/EchoHeim/kiauh.git
 ## 💖 lodge branch functions
 
 - New custom menu
+
+> The specific instructions can be found [here](https://shilong.js.org/#/blog/ToolBox/Klipper%E5%AE%89%E8%A3%85).
