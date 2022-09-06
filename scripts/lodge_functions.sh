@@ -112,7 +112,6 @@ function config_klipper_cfgfile() {
 }
 
 function config_klipper_host_MCU() {
-
     if [[ -d "${HOME}/klipper" && $(get_klipper_status) != "Not installed!" && $(get_klipper_status) != "Incomplete!" ]]; then
         cd ~/klipper/
         sudo cp "./scripts/klipper-mcu-start.sh" /etc/init.d/klipper_mcu
@@ -133,3 +132,15 @@ function config_klipper_host_MCU() {
     fi
 }
 
+function config_shaper_auto_calibration() {
+    status_msg "Installing dependency packages..."
+
+    sudo apt update
+    sudo apt install python3-numpy python3-matplotlib libatlas-base-dev -y
+
+    status_msg "Installing NumPy..."
+
+    ~/klippy-env/bin/pip install -v numpy
+
+    ok_msg "config_shaper_auto_calibration OK"
+}

@@ -19,14 +19,14 @@ function WhetherInstall(){
 
         read -p "${cyan}###### Installing the above packages? (Y/n):${default} " yn
         case "$yn" in
-        Y|y|Yes|yes|"")
-            echo
-            sudo apt-get update --allow-releaseinfo-change && sudo apt install ${inst_pkg[@]} -y
-            echo -e "\nDependencies installed!"
-            ;;
+            Y|y|Yes|yes|"")
+                echo
+                sudo apt-get update --allow-releaseinfo-change && sudo apt install ${inst_pkg[@]} -y
+                echo -e "\nDependencies installed!"
+                ;;
 
-        N|n|No|no)
-            exit 0;;
+            N|n|No|no)
+                exit 0;;
         esac
     fi
     unset inst_pkg
@@ -38,13 +38,13 @@ function custom_function_ui(){
     top_border
     echo -e "|     ${green}~~~~~~~~~ [ Custom Function Menu ] ~~~~~~~~~~${white}     | "
     hr
-    echo -e "|  0) Custom klipper with lodge                         |"
-    echo -e "|                                                       |"
-    echo -e "|  1) fix KlipperScreen                                 |"
-    echo -e "|                                                       |"
-    echo -e "|  2) config klipper cfg files                          |"
-    echo -e "|                                                       |"
-    echo -e "|  3) klipper host MCU                                  |"
+    echo -e "|                          |                            |"
+    echo -e "| Function Fix:            | Add-on Features:           |"
+    echo -e "|  1) [fix KlipperScreen]  |  3) [Host MCU]             |"
+    echo -e "|  2) [klipper cfg]        |  4) [Measuring Resonances] |"
+    echo -e "|                          |                            |"
+    hr
+    echo -e "|  c) Custom klipper with lodge                         |"
     back_footer
 }
 
@@ -58,7 +58,7 @@ function custom_function_menu(){
     while true; do
         read -p "${cyan}Perform action:${white} " action; echo
         case "$action" in
-            0)
+            C|c)
                 do_action "klipper_lodge_repo" "custom_function_ui";;
             1) 
                 do_action "fix_klipperscreen" "custom_function_ui";;
@@ -66,6 +66,8 @@ function custom_function_menu(){
                 do_action "klipper_cfg_menu" "";;
             3) 
                 do_action "config_klipper_host_MCU" "custom_function_ui";;
+            4) 
+                do_action "config_shaper_auto_calibration" "custom_function_ui";;
             B|b)
                 clear; main_menu; break;;
             *)

@@ -134,8 +134,16 @@ function download_mainsail_macros() {
       if [[ ! -f "${path}/mainsail.cfg" ]]; then
         status_msg "Downloading mainsail.cfg to ${path} ..."
         log_info "downloading mainsail.cfg to: ${path}"
-        wget "${ms_cfg}" -O "${path}/mainsail.cfg"
-
+        
+        if wget "${ms_cfg}" -O "${path}/mainsail.cfg"; then
+          ok_msg "Download complete!"
+        else
+          status_msg "Downloading mainsail.cfg failed!"
+          rm "${path}/mainsail.cfg" -f
+          cp ${KIAUH_SRCDIR}/resources/mainsail.cfg ${path}/mainsail.cfg
+          ok_msg "Copy archive mainsail.cfg complete!"
+        fi
+        
         ### replace user 'pi' with current username to prevent issues in cases where the user is not called 'pi'
         log_info "modify mainsail.cfg"
         sed -i "/^path: \/home\/pi\/gcode_files/ s/\/home\/pi/\/home\/${USER}/" "${path}/mainsail.cfg"
@@ -168,14 +176,16 @@ function download_mainsail() {
 
   if wget "${url}"; then
     ok_msg "Download complete!"
-    status_msg "Extracting archive ..."
-    unzip -q -o ./*.zip && ok_msg "Done!"
-    status_msg "Remove downloaded archive ..."
-    rm -rf ./*.zip && ok_msg "Done!"
   else
     print_error "Downloading Mainsail from\n ${url}\n failed!"
-    exit 1
+    cp ${KIAUH_SRCDIR}/resources/mainsail.zip ./
+    ok_msg "Copy archive mainsail.zip complete!"
   fi
+
+  status_msg "Extracting archive ..."
+  unzip -q -o ./*.zip && ok_msg "Done!"
+  status_msg "Remove downloaded archive ..."
+  rm -rf ./*.zip && ok_msg "Done!"
 
   ### check for moonraker multi-instance and if multi-instance was found, enable mainsails remoteMode
   if [[ $(moonraker_systemd | wc -w) -gt 1 ]]; then
