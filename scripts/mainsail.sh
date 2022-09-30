@@ -45,7 +45,7 @@ function install_mainsail() {
     while true; do
       echo
       top_border
-      echo -e "| Install MJGP-Streamer for webcam support?             |"
+      echo -e "| Install MJPG-Streamer for webcam support?             |"
       bottom_border
       read -p "${cyan}###### Please select (y/N):${white} " yn
       case "${yn}" in
@@ -56,6 +56,30 @@ function install_mainsail() {
         N|n|No|no|"")
           select_msg "No"
           install_mjpg_streamer="false"
+          break;;
+        *)
+          error_msg "Invalid command!";;
+      esac
+    done
+  fi
+
+  ### ask user to install Crowsnest
+  local install_Crowsnest
+  if [[ ! -f "${SYSTEMD}/crowsnest.service" ]]; then
+    while true; do
+      echo
+      top_border
+      echo -e "| Install Crowsnest for webcam support?             |"
+      bottom_border
+      read -p "${cyan}###### Please select (y/N):${white} " yn
+      case "${yn}" in
+        Y|y|Yes|yes)
+          select_msg "Yes"
+          install_Crowsnest="true"
+          break;;
+        N|n|No|no|"")
+          select_msg "No"
+          install_Crowsnest="false"
           break;;
         *)
           error_msg "Invalid command!";;
@@ -84,6 +108,9 @@ function install_mainsail() {
 
   ### install mjpg-streamer
   [[ ${install_mjpg_streamer} == "true" ]] && install_mjpg-streamer
+
+  ### install Crowsnest
+  [[ ${install_Crowsnest} == "true" ]] && install_Crowsnest
 
   fetch_webui_ports #WIP
 
@@ -574,8 +601,9 @@ function select_mainsail_port() {
 function enable_mainsail_remotemode() {
   [[ ! -f "${MAINSAIL_DIR}/config.json" ]] && return
 
-  rm -f "${MAINSAIL_DIR}/config.json"
-  echo -e "{\n    \"remoteMode\":true\n}" >> "${MAINSAIL_DIR}/config.json"
+  status_msg "Setting instance storage location to 'browser' ..."
+  sed -i 's|"instancesDB": "moonraker"|"instancesDB": "browser"|' "${MAINSAIL_DIR}/config.json"
+  ok_msg "Done!"
 }
 
 function patch_mainsail_update_manager() {
