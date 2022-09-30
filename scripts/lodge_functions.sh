@@ -22,6 +22,7 @@ function udisk_auto_mount() {
         sudo bash -c 'echo "MountFlags=shared" >> /usr/lib/systemd/system/systemd-udevd.service'
     fi
 
+    sync
     sudo systemctl daemon-reload
     sudo service systemd-udevd --full-restart
 }
@@ -44,6 +45,7 @@ function usb_camera_auto_play(){
         fi
     fi
     rm -f conf
+    sync
 }
 
 function usb_device_mount() {
@@ -57,6 +59,7 @@ function usb_device_mount() {
     else
         print_error "MJPG not installed!"
     fi
+    sync
 }
 
 function fix_klipperscreen() {
@@ -85,6 +88,7 @@ function fix_klipperscreen() {
     else
         print_error "KlipperScreen not installed correctly!"
     fi
+    sync
 }
 
 function klipper_lodge_repo() {
@@ -95,6 +99,7 @@ function klipper_lodge_repo() {
             echo "https://github.com/EchoHeim/klipper,lodge" >> ${HOME}/kiauh/klipper_repos.txt
         fi
     fi
+    sync
     print_confirm "lodge custom klipper added successfully!"
 }
 
@@ -107,6 +112,7 @@ function config_klipper_cfgfile() {
         "stm32mp157") 
             cp ${KIAUH_SRCDIR}/resources/lodge_custom/stm32mp157/* ${KLIPPER_CONFIG} -f ;;
     esac
+    sync
 
     [ $? == 0 ] && ok_msg "config_klipper_cfgfile OK"
 }
@@ -130,6 +136,7 @@ function config_klipper_host_MCU() {
     else
         print_error "Klipper not installed correctly!"
     fi
+    sync
 }
 
 function config_shaper_auto_calibration() {
@@ -142,5 +149,6 @@ function config_shaper_auto_calibration() {
 
     ~/klippy-env/bin/pip install -v numpy
 
+    sync
     ok_msg "config_shaper_auto_calibration OK"
 }
