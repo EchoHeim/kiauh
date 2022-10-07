@@ -39,9 +39,12 @@ function custom_function_ui(){
     echo -e "|     ${green}~~~~~~~~~ [ Custom Function Menu ] ~~~~~~~~~~${white}     | "
     hr
     echo -e "|                          |                            |"
-    echo -e "| Function Fix:            | Add-on Features:           |"
-    echo -e "|  1) [fix KlipperScreen]  |  3) [Host MCU]             |"
-    echo -e "|  2) [klipper cfg]        |  4) [Measuring Resonances] |"
+    echo -e "| Klipper Config:          | Add-on Features:           |"
+    echo -e "|  s) [SKR-3]              |  1) [fix KlipperScreen]    |"
+    echo -e "|  h) [Hurakan]            |  2) [Host MCU]             |"
+    echo -e "|  m) [STM32MP157]         |  3) [Measuring Resonances] |"
+    echo -e "|                          |  4) [U-drive auto-mount]   |"
+    echo -e "|                          |  5) [mDNS]                 |"
     echo -e "|                          |                            |"
     hr
     echo -e "|  c) Custom klipper with lodge                         |"
@@ -63,11 +66,21 @@ function custom_function_menu(){
             1) 
                 do_action "fix_klipperscreen" "custom_function_ui";;
             2) 
-                do_action "klipper_cfg_menu" "";;
-            3) 
                 do_action "config_klipper_host_MCU" "custom_function_ui";;
-            4) 
+            3) 
                 do_action "config_shaper_auto_calibration" "custom_function_ui";;
+            4) 
+                do_action "udisk_auto_mount" "custom_function_ui";;
+            5) 
+                do_action "mDNS_DependencyPackages" "custom_function_ui";;
+
+            S|s)
+                do_action "config_klipper_cfgfile skr3" "custom_function_ui";;
+            H|h) 
+                do_action "config_klipper_cfgfile Hurakan" "custom_function_ui";;
+            M|m) 
+                do_action "config_klipper_cfgfile stm32mp157" "custom_function_ui";;
+
             B|b)
                 clear; main_menu; break;;
             *)
@@ -77,40 +90,4 @@ function custom_function_menu(){
     custom_function_ui
 }
 
-#-----------------------------------------------------------------------------------
 
-function klipper_cfg_ui(){
-    top_border
-    echo -e "|     ${green}~~~~~~~~~ [ klipper_cfg_files Menu ] ~~~~~~~~${white}     | "
-    hr
-    echo -e "|  1) bigtree-skr3           |  3) stm32mp157           |"
-    echo -e "|                            |                          |"
-    echo -e "|  2) Hurakan                |                          |"
-
-    back_footer
-}
-
-function klipper_cfg_menu(){
-    dep_pkg=(git tofrodos)
-    detect_pack
-    WhetherInstall
-    unset dep_pkg
-
-    do_action "" "klipper_cfg_ui"
-    while true; do
-        read -p "${cyan}Perform action:${white} " action; echo
-        case "$action" in
-            1)
-                do_action "config_klipper_cfgfile skr3" "klipper_cfg_ui";;
-            2) 
-                do_action "config_klipper_cfgfile Hurakan" "klipper_cfg_ui";;
-            3) 
-                do_action "config_klipper_cfgfile stm32mp157" "klipper_cfg_ui";;
-            B|b)
-                clear; custom_function_menu; break;;
-            *)
-                deny_action "klipper_cfg_ui";;
-        esac
-    done
-    klipper_cfg_ui
-}

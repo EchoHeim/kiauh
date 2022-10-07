@@ -2,14 +2,13 @@ LCF_SRC_DIR="${KIAUH_SRCDIR}/resources/lodge_custom"
 SYS_UDEV_RULE_DIR=/etc/udev/rules.d
 
 function udisk_auto_mount() {
-    USB_RULES_SRC="${LCF_SRC_DIR}/10-usb.rules"
-    USB_UDEV_SRC="${LCF_SRC_DIR}/usb_udev.sh"
+    USB_RULES_SRC="${LCF_SRC_DIR}/usb/15-udev.rules"
+    USB_UDEV_SRC="${LCF_SRC_DIR}/usb/usb_udev.sh"
 
-    cp $USB_UDEV_SRC ${HOME}/scripts
+    sudo cp $USB_UDEV_SRC /etc/scripts
     sudo cp $USB_RULES_SRC $SYS_UDEV_RULE_DIR
     fromdos ${HOME}/scripts/usb_udev.sh
 
-    sudo sed -i 's/%user%/'''`whoami`'''/' $SYS_UDEV_RULE_DIR/10-usb.rules
     sudo sed -i 's/%user%/'''`whoami`'''/' ${HOME}/scripts/usb_udev.sh
 
     if [ `grep -c "PrivateMounts=yes" "/usr/lib/systemd/system/systemd-udevd.service"` -eq '1' ];then
@@ -28,39 +27,31 @@ function udisk_auto_mount() {
 }
 
 function usb_camera_auto_play(){
-    WEB_CAMERA_LAUNCH="${LCF_SRC_DIR}/web_camera.sh"
-    SYNC_SRC="${LCF_SRC_DIR}/sync.sh"
-
-    cp $SYNC_SRC ${HOME}/scripts
-    cp $WEB_CAMERA_LAUNCH ${HOME}/scripts
-    fromdos ${HOME}/scripts/sync.sh
-    fromdos ${HOME}/scripts/web_camera.sh
-
-    sudo sed -i 's/%user%/'''`whoami`'''/' ${HOME}/scripts/web_camera.sh
-    sudo sed -i 's/%user%/'''`whoami`'''/' ${HOME}/scripts/sync.sh
-
-    if ! crontab -l > conf; then
-        if [ `grep -c "scripts/sync.sh" "conf"` -eq '0' ];then
-            echo "*/1 * * * * /home/`whoami`/scripts/sync.sh" >> conf && crontab conf
-        fi
-    fi
-    rm -f conf
-    sync
-}
-
-function usb_device_mount() {
     if [ -d "${HOME}/mjpg-streamer" ]; then
-        [ ! -d "${HOME}/scripts" ] && mkdir ${HOME}/scripts
+        WEB_CAMERA_LAUNCH="${LCF_SRC_DIR}/web_camera.sh"
+        SYNC_SRC="${LCF_SRC_DIR}/sync.sh"
 
-        udisk_auto_mount
-        usb_camera_auto_play
+        cp $SYNC_SRC ${HOME}/scripts
+        cp $WEB_CAMERA_LAUNCH ${HOME}/scripts
+        fromdos ${HOME}/scripts/sync.sh
+        fromdos ${HOME}/scripts/web_camera.sh
 
+        sudo sed -i 's/%user%/'''`whoami`'''/' ${HOME}/scripts/web_camera.sh
+        sudo sed -i 's/%user%/'''`whoami`'''/' ${HOME}/scripts/sync.sh
+
+        if ! crontab -l > conf; then
+            if [ `grep -c "scripts/sync.sh" "conf"` -eq '0' ];then
+                echo "*/1 * * * * /home/`whoami`/scripts/sync.sh" >> conf && crontab conf
+            fi
+        fi
+        rm -f conf
         print_confirm "enable mjpg_streamer complete!"
     else
         print_error "MJPG not installed!"
     fi
     sync
 }
+
 
 function fix_klipperscreen() {
     if [[ -e "/etc/X11/Xwrapper.config" && $(get_klipperscreen_status) == "Installed!" ]]; then
@@ -103,18 +94,41 @@ function klipper_lodge_repo() {
     print_confirm "lodge custom klipper added successfully!"
 }
 
-function config_klipper_cfgfile() {
-    case "$1" in
-        "skr3")
-            cp ${KIAUH_SRCDIR}/resources/lodge_custom/skr-3/* ${KLIPPER_CONFIG} -f ;;
-        "Hurakan") 
-            cp ${KIAUH_SRCDIR}/resources/lodge_custom/Hurakan/* ${KLIPPER_CONFIG} -f ;;
-        "stm32mp157") 
-            cp ${KIAUH_SRCDIR}/resources/lodge_custom/stm32mp157/* ${KLIPPER_CONFIG} -f ;;
-    esac
-    sync
+function mDNS_DependencyPackages() {
+# Many people prefer to access their machines using the name.
+# local addressing scheme available via mDNS (zeroconf, bonjour) instead of an IP address. 
+# This is simple to enable on the hurakan but requires the installation of 
+# the following packages which should be installed from the factory:
 
-    [ $? == 0 ] && ok_msg "config_klipper_cfgfile OK"
+    sudo apt update
+
+    sudo apt install avahi-daemon bind9-host geoip-database -y
+    sudo apt install libavahi-common-data libavahi-common3 libavahi-core7 -y
+    sudo apt install libdaemon0 libgeoip1 libnss-mdns libnss-mymachines -y
+
+    sync
+}
+
+function config_klipper_cfgfile() {
+    if [[ -d "${KLIPPER_CONFIG}" ]]; then
+        case "$1" in
+            "skr3")
+                cp ${KIAUH_SRCDIR}/resources/lodge_custom/skr-3/* ${KLIPPER_CONFIG} -f 
+                ;;
+            "Hurakan")
+                cp ${KIAUH_SRCDIR}/resources/lodge_custom/Hurakan/*.cfg ${KLIPPER_CONFIG} -f
+                [[ ! -d ${KLIPPER_CONFIG}/.theme ]] && mkdir -p ${KLIPPER_CONFIG}/.theme
+                cp ${KIAUH_SRCDIR}/resources/lodge_custom/Hurakan/theme/* ${KLIPPER_CONFIG}/.theme -f 
+                ;;
+            "stm32mp157")
+                cp ${KIAUH_SRCDIR}/resources/lodge_custom/stm32mp157/* ${KLIPPER_CONFIG} -f 
+                ;;
+        esac
+        sync
+        ok_msg "config_klipper_cfgfile OK"
+    else
+        warn_msg "No config directory found! Skipping Configure ..."
+    fi
 }
 
 function config_klipper_host_MCU() {

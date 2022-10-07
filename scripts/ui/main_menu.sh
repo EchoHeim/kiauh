@@ -33,7 +33,7 @@ function main_ui() {
 }
 
 function get_kiauh_version() {
-    local version="v4.1.0-4"
+    local version="v4.1.0-5"
     echo "${version}"
 }
 
