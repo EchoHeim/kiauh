@@ -1,15 +1,10 @@
 LCF_SRC_DIR="${KIAUH_SRCDIR}/resources/lodge_custom"
-SYS_UDEV_RULE_DIR=/etc/udev/rules.d
 
 function udisk_auto_mount() {
-    USB_RULES_SRC="${LCF_SRC_DIR}/usb/15-udev.rules"
-    USB_UDEV_SRC="${LCF_SRC_DIR}/usb/usb_udev.sh"
+    sudo cp ${LCF_SRC_DIR}/usb/usb_udev.sh /etc/scripts
+    sudo cp ${LCF_SRC_DIR}/usb/15-udev.rules /etc/udev/rules.d
 
-    sudo cp $USB_UDEV_SRC /etc/scripts
-    sudo cp $USB_RULES_SRC $SYS_UDEV_RULE_DIR
-    fromdos ${HOME}/scripts/usb_udev.sh
-
-    sudo sed -i 's/%user%/'''`whoami`'''/' ${HOME}/scripts/usb_udev.sh
+    sudo sed -i 's/%user%/'''`whoami`'''/' /etc/scripts/usb_udev.sh
 
     if [ `grep -c "PrivateMounts=yes" "/usr/lib/systemd/system/systemd-udevd.service"` -eq '1' ];then
         sudo sed -i 's/PrivateMounts=yes/PrivateMounts=no/' /usr/lib/systemd/system/systemd-udevd.service
