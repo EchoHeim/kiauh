@@ -88,9 +88,13 @@ function install_Crowsnest() {
 #=================================================#
 
 function remove_Crowsnest() {
-    cd ~/crowsnest
-    make uninstall
-    [[ -d "${HOME}/crowsnest" ]] && rm -rf "${HOME}/crowsnest"
-    [[ -e "${KLIPPER_CONFIG}/crowsnest.conf" ]] && rm -rf "${KLIPPER_CONFIG}/crowsnest.conf"
-    print_confirm "Crowsnest successfully removed!"
+    if [[ -d "${HOME}/crowsnest" ]];then
+        cd ~/crowsnest
+        make uninstall
+        [[ -d "${HOME}/crowsnest" ]] && rm -rf "${HOME}/crowsnest"
+        [[ -e "${KLIPPER_CONFIG}/crowsnest.conf" ]] && rm -rf "${KLIPPER_CONFIG}/crowsnest.conf"
+        print_confirm "Crowsnest successfully removed!"
+    else
+        print_confirm "Crowsnest not installed!"
+    fi
 }

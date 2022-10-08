@@ -70,6 +70,9 @@ function fix_klipperscreen() {
             sudo cp ${LCF_SRC_DIR}/40-libinput.conf /usr/share/X11/xorg.conf.d/40-libinput.conf -fr
         fi
 
+        # KlipperScreen Chinese Fonts
+        sudo apt install fonts-arphic-bkai00mp fonts-arphic-bsmi00lp fonts-arphic-gbsn00lp fonts-arphic-gkai00mp fonts-arphic-ukai fonts-arphic-uming -y
+
         print_confirm "KlipperScreen restoration complete!"
     else
         print_error "KlipperScreen not installed correctly!"
@@ -176,9 +179,13 @@ function OS_clean() {
     status_msg "Remove git proxy..."
     cd ~
     [[ -f .gitconfig ]] && rm -rf .gitconfig
+    ok_msg "Done!"
 
     status_msg "Delete klipper logs..."
-    rm klipper_logs/*
+    if [ ! "`ls -A klipper_logs`" = "" ]; then
+        rm klipper_logs/*
+        ok_msg "Done!"
+    fi
 
     status_msg "Clear shell history command..."
     history -c
@@ -186,6 +193,7 @@ function OS_clean() {
     cd ~
     [[ -f .bash_history ]] && rm -rf .bash_history
     [[ -f .zsh_history ]] && rm -rf .zsh_history
+    ok_msg "Done!"
 
     status_msg "Cancel SSH timeout disconnection..."
  # Reference: https://blog.csdn.net/weixin_39534395/article/details/119229057
@@ -207,16 +215,20 @@ function OS_clean() {
     elif [ `grep -c "ClientAliveCountMax 20" "/etc/ssh/sshd_config"` -eq '0' ];then
         sudo bash -c 'echo "ClientAliveCountMax 20" >> /etc/ssh/sshd_config'
     fi
+    ok_msg "Done!"
 
     # ------------------------------------------------ # 
     status_msg "klipper clears the compilation history..."
     cd ~/klipper
     make clean
+    ok_msg "Done!"
 
     sudo rm /etc/NetworkManager/system-connections/*
-    ok_msg "Delete wifi history connection OK"
+    status_msg "Delete wifi history connection ..."
     sync
-    ok_msg "The system will reboot in 5 seconds!"
+    ok_msg "Done!"
+
+    status_msg "The system will reboot in 5 seconds!"
     sleep 5
     reboot
 }
