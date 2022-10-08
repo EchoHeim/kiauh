@@ -176,21 +176,20 @@ function config_shaper_auto_calibration() {
 }
 
 function OS_clean() {
-    status_msg "Remove git proxy..."
     cd ~
+    status_msg "Remove git proxy..."
     [[ -f .gitconfig ]] && rm -rf .gitconfig
     ok_msg "Done!"
 
     status_msg "Delete klipper logs..."
-    if [ ! "`ls -A klipper_logs`" = "" ]; then
-        rm klipper_logs/*
-        ok_msg "Done!"
-    fi
+    [[ ! "`ls -A klipper_logs`" = "" ]] && rm klipper_logs/*
+    ok_msg "Done!"
 
     status_msg "Clear shell history command..."
+    set -o history
+    history -r
     history -c
     history -w
-    cd ~
     [[ -f .bash_history ]] && rm -rf .bash_history
     [[ -f .zsh_history ]] && rm -rf .zsh_history
     ok_msg "Done!"
@@ -223,12 +222,13 @@ function OS_clean() {
     make clean
     ok_msg "Done!"
 
-    sudo rm /etc/NetworkManager/system-connections/*
     status_msg "Delete wifi history connection ..."
+    cd /etc/NetworkManager/system-connections
+    [[ ! "`ls -A ./`" = "" ]] && sudo rm ./*
     sync
     ok_msg "Done!"
 
-    status_msg "The system will reboot in 5 seconds!"
-    sleep 5
+    status_msg "The system will reboot in 10 seconds!"
+    sleep 10
     reboot
 }
