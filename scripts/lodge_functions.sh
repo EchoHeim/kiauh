@@ -148,6 +148,17 @@ function config_klipper_host_MCU() {
     sync
 }
 
+function Create_can0_cfg() {
+ # Reference: https://www.klipper3d.org/CANBUS.html#host-hardware
+
+    cd /etc/network/interfaces.d
+    [[ -f can0 ]] && sudo rm -rf can0
+    sudo cp ${KIAUH_SRCDIR}/resources/lodge_custom/can0 ./
+    
+    sync
+    ok_msg "Create can0 configuration file OK"
+}
+
 function config_shaper_auto_calibration() {
     status_msg "Installing dependency packages..."
 
@@ -155,9 +166,57 @@ function config_shaper_auto_calibration() {
     sudo apt install python3-numpy python3-matplotlib libatlas-base-dev -y
 
     status_msg "Installing NumPy..."
-
     ~/klippy-env/bin/pip install -v numpy
 
     sync
     ok_msg "config_shaper_auto_calibration OK"
+}
+
+function OS_clean() {
+    status_msg "Remove git proxy..."
+    cd ~
+    [[ -f .gitconfig ]] && rm -rf .gitconfig
+
+    status_msg "Delete klipper logs..."
+    rm klipper_logs/*
+
+    status_msg "Clear shell history command..."
+    history -c
+    history -w
+    cd ~
+    [[ -f .bash_history ]] && rm -rf .bash_history
+    [[ -f .zsh_history ]] && rm -rf .zsh_history
+
+    status_msg "Cancel SSH timeout disconnection..."
+ # Reference: https://blog.csdn.net/weixin_39534395/article/details/119229057
+
+    if [ `grep -c "#TCPKeepAlive yes" "/etc/ssh/sshd_config"` -eq '1' ];then
+        sudo sed -i 's/#TCPKeepAlive yes/TCPKeepAlive yes/' /etc/ssh/sshd_config
+    elif [ `grep -c "TCPKeepAlive yes" "/etc/ssh/sshd_config"` -eq '0' ];then
+        sudo bash -c 'echo "TCPKeepAlive yes" >> /etc/ssh/sshd_config'
+    fi
+
+    if [ `grep -c "#ClientAliveInterval 0" "/etc/ssh/sshd_config"` -eq '1' ];then
+        sudo sed -i 's/#ClientAliveInterval 0/ClientAliveInterval 360/' /etc/ssh/sshd_config
+    elif [ `grep -c "ClientAliveInterval 360" "/etc/ssh/sshd_config"` -eq '0' ];then
+        sudo bash -c 'echo "ClientAliveInterval 360" >> /etc/ssh/sshd_config'
+    fi
+
+    if [ `grep -c "#ClientAliveCountMax 3" "/etc/ssh/sshd_config"` -eq '1' ];then
+        sudo sed -i 's/#ClientAliveCountMax 3/ClientAliveCountMax 20/' /etc/ssh/sshd_config
+    elif [ `grep -c "ClientAliveCountMax 20" "/etc/ssh/sshd_config"` -eq '0' ];then
+        sudo bash -c 'echo "ClientAliveCountMax 20" >> /etc/ssh/sshd_config'
+    fi
+
+    # ------------------------------------------------ # 
+    status_msg "klipper clears the compilation history..."
+    cd ~/klipper
+    make clean
+
+    sudo rm /etc/NetworkManager/system-connections/*
+    ok_msg "Delete wifi history connection OK"
+    sync
+    ok_msg "The system will reboot in 5 seconds!"
+    sleep 5
+    reboot
 }

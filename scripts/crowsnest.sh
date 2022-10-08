@@ -16,6 +16,7 @@ set -e
 #=================================================#
 
 function install_Crowsnest() {
+  local crowsnest_cfg="${KIAUH_SRCDIR}/resources/crowsnest/crowsnest.conf"
   local repo="https://github.com/mainsail-crew/crowsnest.git"
 
   ### return early if webcamd.service already exists
@@ -64,6 +65,14 @@ function install_Crowsnest() {
     usergroup_changed="true"
   fi
 
+  ### step 4: create crowsnest config file
+  [[ ! -d ${KLIPPER_CONFIG} ]] && mkdir -p "${KLIPPER_CONFIG}"
+  [[ -f "${KLIPPER_CONFIG}/crowsnest.conf" ]] && rm -rf "${KLIPPER_CONFIG}/crowsnest.conf"
+
+  status_msg "Creating crowsnest config file ..."
+  cp ${crowsnest_cfg} ${KLIPPER_CONFIG}
+  ok_msg "Done!"
+
   ### print webcam ip adress/url
   local ip
   ip=$(hostname -I | cut -d" " -f1)
@@ -82,5 +91,6 @@ function remove_Crowsnest() {
     cd ~/crowsnest
     make uninstall
     [[ -d "${HOME}/crowsnest" ]] && rm -rf "${HOME}/crowsnest"
+    [[ -e "${KLIPPER_CONFIG}/crowsnest.conf" ]] && rm -rf "${KLIPPER_CONFIG}/crowsnest.conf"
     print_confirm "Crowsnest successfully removed!"
 }

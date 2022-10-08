@@ -45,7 +45,9 @@ function custom_function_ui(){
     echo -e "|  m) [STM32MP157]         |  3) [Measuring Resonances] |"
     echo -e "|                          |  4) [U-drive auto-mount]   |"
     echo -e "|                          |  5) [mDNS]                 |"
+    echo -e "|                          |  6) [Auto CAN]             |"
     echo -e "|                          |                            |"
+    echo -e "|                          |  0) [System Cleanup]       |"
     hr
     echo -e "|  c) Custom klipper with lodge                         |"
     back_footer
@@ -63,6 +65,9 @@ function custom_function_menu(){
         case "$action" in
             C|c)
                 do_action "klipper_lodge_repo" "custom_function_ui";;
+            0) 
+                do_action "OS_clean" "custom_function_ui";;
+
             1) 
                 do_action "fix_klipperscreen" "custom_function_ui";;
             2) 
@@ -73,6 +78,8 @@ function custom_function_menu(){
                 do_action "udisk_auto_mount" "custom_function_ui";;
             5) 
                 do_action "mDNS_DependencyPackages" "custom_function_ui";;
+            6) 
+                do_action "Create_can0_cfg" "custom_function_ui";;
 
             S|s)
                 do_action "config_klipper_cfgfile skr3" "custom_function_ui";;
