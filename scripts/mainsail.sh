@@ -69,7 +69,7 @@ function install_mainsail() {
     while true; do
       echo
       top_border
-      echo -e "| Install Crowsnest for webcam support?             |"
+      echo -e "| Install Crowsnest for webcam support?                 |"
       bottom_border
       read -p "${cyan}###### Please select (y/N):${white} " yn
       case "${yn}" in

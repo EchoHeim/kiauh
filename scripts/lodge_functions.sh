@@ -19,6 +19,8 @@ function udisk_auto_mount() {
     sync
     sudo systemctl daemon-reload
     sudo service systemd-udevd --full-restart
+
+    ok_msg "Auto-mounting of u-disk is enabled!"
 }
 
 function usb_camera_auto_play(){
@@ -177,17 +179,14 @@ function config_shaper_auto_calibration() {
 
 function OS_clean() {
     cd ~
-    status_msg "Remove git proxy..."
-    [[ -f .gitconfig ]] && rm -rf .gitconfig
-    ok_msg "Done!"
-
+    
     status_msg "Delete klipper logs..."
     [[ ! "`ls -A klipper_logs`" = "" ]] && rm klipper_logs/*
     ok_msg "Done!"
 
     status_msg "Clear shell history command..."
     set -o history
-    history -r
+#   history -r
     history -c
     history -w
     [[ -f .bash_history ]] && rm -rf .bash_history
@@ -226,6 +225,10 @@ function OS_clean() {
     cd /etc/NetworkManager/system-connections
     [[ ! "`ls -A ./`" = "" ]] && sudo rm ./*
     sync
+    ok_msg "Done!"
+
+    status_msg "Remove git proxy..."
+    [[ -f .gitconfig ]] && rm -rf .gitconfig
     ok_msg "Done!"
 
     status_msg "The system will reboot in 10 seconds!"
