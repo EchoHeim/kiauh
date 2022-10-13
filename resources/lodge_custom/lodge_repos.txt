@@ -15,4 +15,3 @@
 https://github.com/Klipper3d/klipper,master
 https://github.com/EchoHeim/klipper,lodge
 https://github.com/bigtreetech/klipper,hurakan
-https://github.com/bigtreetech/klipper,hurakan-py3

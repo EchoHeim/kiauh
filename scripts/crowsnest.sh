@@ -42,7 +42,7 @@ function install_Crowsnest() {
   [[ -d "${HOME}/crowsnest" ]] && rm -rf "${HOME}/crowsnest"
 
   cd "${HOME}" || exit 1
-  if ! git clone --depth 1 "${repo}" ; then
+  if ! git clone "${repo}" ; then
     print_error "Cloning Crowsnest from\n ${repo}\n failed!"
     exit 1
   fi

@@ -51,7 +51,7 @@ function klipperscreen_setup() {
 
   # clone into fresh KlipperScreen dir
   cd "${HOME}" || exit 1
-  if ! git clone --depth 1 "${KLIPPERSCREEN_REPO}" "${KLIPPERSCREEN_DIR}"; then
+  if ! git clone "${KLIPPERSCREEN_REPO}" "${KLIPPERSCREEN_DIR}"; then
     print_error "Cloning KlipperScreen from\n ${KLIPPERSCREEN_REPO}\n failed!"
     exit 1
   fi

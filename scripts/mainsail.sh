@@ -467,7 +467,7 @@ function ms_theme_install() {
   status_msg "Installing '${theme_name}' to ${target_folders[${target}]} ..."
   cd "${target_folders[${target}]}"
 
-  if git clone --depth 1 "${theme_url}" ".theme"; then
+  if git clone "${theme_url}" ".theme"; then
     ok_msg "Theme installation complete!"
     [[ -n ${theme_note} ]] && echo "${yellow}###### Theme Info: ${theme_note}${white}"
     ok_msg "Please remember to delete your browser cache!\n"

@@ -44,7 +44,7 @@ function install_mjpg-streamer() {
   [[ -d "${HOME}/mjpg-streamer" ]] && rm -rf "${HOME}/mjpg-streamer"
 
   cd "${HOME}" || exit 1
-  if ! git clone --depth 1 "${repo}" "${HOME}/mjpg-streamer"; then
+  if ! git clone "${repo}" "${HOME}/mjpg-streamer"; then
     print_error "Cloning MJPG-Streamer from\n ${repo}\n failed!"
     exit 1
   fi
