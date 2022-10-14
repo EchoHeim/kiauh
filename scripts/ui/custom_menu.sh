@@ -38,18 +38,17 @@ function custom_function_ui(){
     top_border
     echo -e "|     ${green}~~~~~~~~~ [ Custom Function Menu ] ~~~~~~~~~~${white}     | "
     hr
+    echo -e "| Machine Config:          | Add-on Features:           |"
     echo -e "|                          |                            |"
-    echo -e "| Klipper Config:          | Add-on Features:           |"
-    echo -e "|  s) [SKR-3]              |  1) [fix KlipperScreen]    |"
-    echo -e "|  h) [Hurakan]            |  2) [Host MCU]             |"
-    echo -e "|  m) [STM32MP157]         |  3) [Measuring Resonances] |"
-    echo -e "|                          |  4) [U-drive auto-mount]   |"
-    echo -e "|                          |  5) [mDNS]                 |"
-    echo -e "|                          |  6) [Auto CAN]             |"
+    echo -e "| s) [SKR-3]               | 1) [fix KlipperScreen]     |"
+    echo -e "|                          | 2) [Host MCU]              |"
+    echo -e "| h) [Hurakan]             | 3) [Measuring Resonances]  |"
+    echo -e "|                          | 4) [U-disk Automount]      |"
+    echo -e "| m) [STM32MP157]          | 5) [Install mDNS service]  |"
+    echo -e "|                          | 6) [add CAN file]          |"
     echo -e "|                          |                            |"
-    echo -e "|                          |  0) [System Cleanup]       |"
     hr
-    echo -e "|  c) Custom klipper with lodge                         |"
+    echo -e "|  c) Cleanup System                                    |"
     back_footer
 }
 
@@ -63,11 +62,6 @@ function custom_function_menu(){
     while true; do
         read -p "${cyan}Perform action:${white} " action; echo
         case "$action" in
-            C|c)
-                do_action "klipper_lodge_repo" "custom_function_ui";;
-            0) 
-                do_action "OS_clean" "custom_function_ui";;
-
             1) 
                 do_action "fix_klipperscreen" "custom_function_ui";;
             2) 
@@ -88,6 +82,9 @@ function custom_function_menu(){
             M|m) 
                 do_action "config_klipper_cfgfile stm32mp157" "custom_function_ui";;
 
+            C|c)
+                do_action "OS_clean" "custom_function_ui";;
+
             B|b)
                 clear; main_menu; break;;
             *)
@@ -96,5 +93,3 @@ function custom_function_menu(){
     done
     custom_function_ui
 }
-
-

@@ -1,5 +1,17 @@
 LCF_SRC_DIR="${KIAUH_SRCDIR}/resources/lodge_custom"
 
+function klipper_lodge_repo() {
+    if [ ! -e "${HOME}/kiauh/klipper_repos.txt" ]; then
+        cp ${LCF_SRC_DIR}/lodge_repos.txt ${HOME}/kiauh/klipper_repos.txt
+    else
+        if [ `grep -c "https://github.com/EchoHeim/klipper,lodge" "${HOME}/kiauh/klipper_repos.txt"` -ne '1' ];then
+            echo "https://github.com/EchoHeim/klipper,lodge" >> ${HOME}/kiauh/klipper_repos.txt
+        fi
+    fi
+    sync
+    # print_confirm "lodge custom klipper added successfully!"
+}
+
 function udisk_auto_mount() {
     sudo cp ${LCF_SRC_DIR}/usb/usb_udev.sh /etc/scripts
     sudo cp ${LCF_SRC_DIR}/usb/15-udev.rules /etc/udev/rules.d
@@ -20,7 +32,7 @@ function udisk_auto_mount() {
     sudo systemctl daemon-reload
     sudo service systemd-udevd --full-restart
 
-    ok_msg "Auto-mounting of u-disk is enabled!"
+    print_confirm "Auto-mounting of u-disk is enabled!"
 }
 
 function usb_camera_auto_play(){
@@ -49,10 +61,8 @@ function usb_camera_auto_play(){
     sync
 }
 
-
 function fix_klipperscreen() {
     if [[ -e "/etc/X11/Xwrapper.config" && $(get_klipperscreen_status) == "Installed!" ]]; then
-        
         # KlipperScreen display
         if [ `grep -c "allowed_users=anybody" "/etc/X11/Xwrapper.config"` -ne '1' ];then
             sudo bash -c 'echo "allowed_users=anybody" >> /etc/X11/Xwrapper.config'
@@ -71,9 +81,12 @@ function fix_klipperscreen() {
             sudo mkdir -p /usr/share/X11/xorg.conf.d
             sudo cp ${LCF_SRC_DIR}/40-libinput.conf /usr/share/X11/xorg.conf.d/40-libinput.conf -fr
         fi
-
+        
         # KlipperScreen Chinese Fonts
         sudo apt install fonts-arphic-bkai00mp fonts-arphic-bsmi00lp fonts-arphic-gbsn00lp fonts-arphic-gkai00mp fonts-arphic-ukai fonts-arphic-uming -y
+        
+        ok_msg "Reboot KlipperScreen!"
+        sudo systemctl restart KlipperScreen.service
 
         print_confirm "KlipperScreen restoration complete!"
     else
@@ -82,30 +95,18 @@ function fix_klipperscreen() {
     sync
 }
 
-function klipper_lodge_repo() {
-    if [ ! -e "${HOME}/kiauh/klipper_repos.txt" ]; then
-        cp ${LCF_SRC_DIR}/lodge_repos.txt ${HOME}/kiauh/klipper_repos.txt
-    else
-        if [ `grep -c "https://github.com/EchoHeim/klipper,lodge" "${HOME}/kiauh/klipper_repos.txt"` -ne '1' ];then
-            echo "https://github.com/EchoHeim/klipper,lodge" >> ${HOME}/kiauh/klipper_repos.txt
-        fi
-    fi
-    sync
-    print_confirm "lodge custom klipper added successfully!"
-}
-
 function mDNS_DependencyPackages() {
 # Many people prefer to access their machines using the name.
 # local addressing scheme available via mDNS (zeroconf, bonjour) instead of an IP address. 
 # This is simple to enable on the hurakan but requires the installation of 
 # the following packages which should be installed from the factory:
-
     sudo apt update
 
     sudo apt install avahi-daemon bind9-host geoip-database -y
     sudo apt install libavahi-common-data libavahi-common3 libavahi-core7 -y
     sudo apt install libdaemon0 libgeoip1 libnss-mdns libnss-mymachines -y
 
+    print_confirm "mDNS service is installed!"
     sync
 }
 
@@ -125,9 +126,9 @@ function config_klipper_cfgfile() {
                 ;;
         esac
         sync
-        ok_msg "config_klipper_cfgfile OK"
+        print_confirm "config_klipper_cfgfile OK"
     else
-        warn_msg "No config directory found! Skipping Configure ..."
+        print_error "No config directory found! Skipping Configure ..."
     fi
 }
 
@@ -146,7 +147,7 @@ function config_klipper_host_MCU() {
 
         sudo usermod -a -G tty `whoami`
 
-        ok_msg "config_klipper_host_MCU OK"
+        print_confirm "config_klipper_host_MCU OK"
     else
         print_error "Klipper not installed correctly!"
     fi
@@ -161,7 +162,7 @@ function Create_can0_cfg() {
     sudo cp ${KIAUH_SRCDIR}/resources/lodge_custom/can0 ./
     
     sync
-    ok_msg "Create can0 configuration file OK"
+    print_confirm "Create can0 configuration file OK"
 }
 
 function config_shaper_auto_calibration() {
@@ -174,7 +175,7 @@ function config_shaper_auto_calibration() {
     ~/klippy-env/bin/pip install -v numpy
 
     sync
-    ok_msg "config_shaper_auto_calibration OK"
+    print_confirm "config_shaper_auto_calibration OK"
 }
 
 function OS_clean() {
@@ -231,7 +232,7 @@ function OS_clean() {
     [[ -f .gitconfig ]] && rm -rf .gitconfig
     ok_msg "Done!"
 
-    status_msg "The system will reboot in 10 seconds!"
+    warn_msg "The system will reboot in 10 seconds!"
     sleep 10
     reboot
 }
