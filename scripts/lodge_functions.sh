@@ -185,15 +185,6 @@ function OS_clean() {
     [[ ! "`ls -A klipper_logs`" = "" ]] && rm klipper_logs/*
     ok_msg "Done!"
 
-    status_msg "Clear shell history command..."
-    set -o history
-#   history -r
-    history -c
-    history -w
-    [[ -f .bash_history ]] && rm -rf .bash_history
-    [[ -f .zsh_history ]] && rm -rf .zsh_history
-    ok_msg "Done!"
-
     status_msg "Cancel SSH timeout disconnection..."
  # Reference: https://blog.csdn.net/weixin_39534395/article/details/119229057
 
@@ -229,9 +220,21 @@ function OS_clean() {
     ok_msg "Done!"
 
     status_msg "Remove git proxy..."
+    cd ~
     [[ -f .gitconfig ]] && rm -rf .gitconfig
     ok_msg "Done!"
 
+    status_msg "Clear shell history command file..."
+    cd ~
+    [[ -f .bash_history ]] && rm -rf .bash_history
+    [[ -f .zsh_history ]] && rm -rf .zsh_history
+
+    warn_msg "You need to run the following command to clear the history cmd:"
+    warn_msg "source ${KIAUH_SRCDIR}/OS_bash_clean.sh"
+
+    ok_msg "Done!"
+
+    echo ""
     warn_msg "The system will reboot in 10 seconds!"
     sleep 10
     reboot
