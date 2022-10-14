@@ -228,14 +228,13 @@ function OS_clean() {
     cd ~
     [[ -f .bash_history ]] && rm -rf .bash_history
     [[ -f .zsh_history ]] && rm -rf .zsh_history
-
+    ok_msg "Done!"
+    echo ""
+    
     warn_msg "You need to run the following command to clear the history cmd:"
     warn_msg "source ${KIAUH_SRCDIR}/OS_bash_clean.sh"
-
-    ok_msg "Done!"
-
     echo ""
-    warn_msg "The system will reboot in 10 seconds!"
-    sleep 10
-    reboot
+
+    print_confirm "This kiauh script will exit!"
+    exit 0
 }
