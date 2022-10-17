@@ -96,10 +96,10 @@ function fix_klipperscreen() {
 }
 
 function mDNS_DependencyPackages() {
-# Many people prefer to access their machines using the name.
-# local addressing scheme available via mDNS (zeroconf, bonjour) instead of an IP address. 
-# This is simple to enable on the hurakan but requires the installation of 
-# the following packages which should be installed from the factory:
+ # Many people prefer to access their machines using the name.
+ # local addressing scheme available via mDNS (zeroconf, bonjour) instead of an IP address. 
+ # This is simple to enable on the hurakan but requires the installation of 
+ # the following packages which should be installed from the factory:
     sudo apt update
 
     sudo apt install avahi-daemon bind9-host geoip-database -y
@@ -207,7 +207,7 @@ function OS_clean() {
     fi
     ok_msg "Done!"
 
-    # ------------------------------------------------ # 
+    # ------------------------------------------------ #
     status_msg "klipper clears the compilation history..."
     cd ~/klipper
     make clean
@@ -228,6 +228,8 @@ function OS_clean() {
     cd ~
     [[ -f .bash_history ]] && rm -rf .bash_history
     [[ -f .zsh_history ]] && rm -rf .zsh_history
+    [[ -f .kiauh.ini ]] && rm -rf .kiauh.ini
+    rm -rf kiauh*
     ok_msg "Done!"
     echo ""
     
@@ -235,6 +237,7 @@ function OS_clean() {
     warn_msg "source ${KIAUH_SRCDIR}/OS_bash_clean.sh"
     echo ""
 
-    print_confirm "This kiauh script will exit!"
+    print_confirm " This kiauh script will exit!"
+    sleep 3
     exit 0
 }
