@@ -229,7 +229,6 @@ function OS_clean() {
     [[ -f .bash_history ]] && rm -rf .bash_history
     [[ -f .zsh_history ]] && rm -rf .zsh_history
     [[ -f .kiauh.ini ]] && rm -rf .kiauh.ini
-    rm -rf kiauh*
     ok_msg "Done!"
     echo ""
     
