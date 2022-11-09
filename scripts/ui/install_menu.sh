@@ -12,7 +12,6 @@
 set -e
 
 function install_ui() {
-
     top_border
     echo -e "|     ${green}~~~~~~~~~~~ [ Installation Menu ] ~~~~~~~~~~~${white}     |"
     hr
@@ -32,7 +31,6 @@ function install_ui() {
     echo -e "|  5) [KlipperScreen]      | 10) [MJPG-Streamer]        |"
     echo -e "|                          | 11) [Crowsnest]            |"
     back_footer
-
 }
 
 function install_menu() {

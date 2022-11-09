@@ -12,6 +12,10 @@
 set -e
 
 function main_ui() {
+    echo -e "${yellow}/=======================================================\\"
+    echo -e "| Please read the newest changelog carefully:           |"
+    echo -e "| https://git.io/JnmlX                                  |"
+    echo -e "\=======================================================/${white}"
     top_border
     echo -e "|     $(title_msg "~~~~~~~~~~~~~~~ [ Main Menu ] ~~~~~~~~~~~~~~~")     |"
     hr
@@ -33,7 +37,7 @@ function main_ui() {
 }
 
 function get_kiauh_version() {
-    local version="v4.1.2-2"
+    local version="v5.0.1-1"
     echo "${version}"
 }
 
@@ -96,7 +100,8 @@ function print_klipper_branch() {
 }
 
 function main_menu() {
-    print_header && main_ui
+    clear && print_header
+    main_ui
 
     ### initialize kiauh.ini
     init_ini
