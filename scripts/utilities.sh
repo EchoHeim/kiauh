@@ -536,9 +536,23 @@ function set_hostname() {
   status_msg "Please wait ..."
   sudo hostnamectl set-hostname "${new_hostname}"
 
+  set_hostname_Env ${1}
+}
+
+function set_hostname_Env() {
+  local new_hostname=${1}
+  local current_hostname=`hostname`
+
+  local f_os_info="/etc/os-release"
+  local f_board_info="/etc/board-release"
+
+  [[ -f ${f_os_info} ]] && sudo sed -i "s/"${current_hostname}"/"${new_hostname}"/" ${f_os_info}
+  [[ -f ${f_board_info} ]] && sudo sed -i "s/"${current_hostname}"/"${new_hostname}"/" ${f_board_info}
+
   #write new hostname to /etc/hosts
   status_msg "Writing new hostname to /etc/hosts ..."
-  echo "127.0.0.1       ${new_hostname}" | sudo tee -a /etc/hosts &>/dev/null
+  sudo sed -i "s/"${current_hostname}"/"${new_hostname}"/" /etc/hosts
+#   echo "127.0.0.1       ${new_hostname}" | sudo tee -a /etc/hosts &>/dev/null
   ok_msg "New hostname successfully configured!"
   ok_msg "Remember to reboot for the changes to take effect!"
 }

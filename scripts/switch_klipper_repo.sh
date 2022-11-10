@@ -12,9 +12,6 @@
 set -e
 
 function change_klipper_repo_menu() {
-  # add custom klipper by lodge
-  klipper_lodge_repo
-
   local repo_file="${KIAUH_SRCDIR}/klipper_repos.txt"
   local repo branch repos=() branches=()
 

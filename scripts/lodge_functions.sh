@@ -1,17 +1,5 @@
 LCF_SRC_DIR="${KIAUH_SRCDIR}/resources/lodge_custom"
 
-function klipper_lodge_repo() {
-    if [ ! -e "${HOME}/kiauh/klipper_repos.txt" ]; then
-        cp ${LCF_SRC_DIR}/lodge_repos.txt ${HOME}/kiauh/klipper_repos.txt
-    else
-        if [ `grep -c "https://github.com/EchoHeim/klipper,lodge" "${HOME}/kiauh/klipper_repos.txt"` -ne '1' ];then
-            echo "https://github.com/EchoHeim/klipper,lodge" >> ${HOME}/kiauh/klipper_repos.txt
-        fi
-    fi
-    sync
-    # print_confirm "lodge custom klipper added successfully!"
-}
-
 function udisk_auto_mount() {
     sudo cp ${LCF_SRC_DIR}/usb/usb_udev.sh /etc/scripts
     sudo cp ${LCF_SRC_DIR}/usb/15-udev.rules /etc/udev/rules.d
@@ -76,11 +64,11 @@ function fix_klipperscreen() {
             status_msg "Installing xserver-xorg-input-libinput..."
             sudo apt install xserver-xorg-input-libinput -y
         fi
-        if [[ ! -e "/usr/share/X11/xorg.conf.d/40-libinput.conf" ]]; then
-            status_msg "Copy xserver input cfg file..."
-            sudo mkdir -p /usr/share/X11/xorg.conf.d
-            sudo cp ${LCF_SRC_DIR}/40-libinput.conf /usr/share/X11/xorg.conf.d/40-libinput.conf -fr
-        fi
+        # if [[ ! -e "/usr/share/X11/xorg.conf.d/40-libinput.conf" ]]; then
+        #     status_msg "Copy xserver input cfg file..."
+        #     sudo mkdir -p /usr/share/X11/xorg.conf.d
+        #     sudo cp ${LCF_SRC_DIR}/40-libinput.conf /usr/share/X11/xorg.conf.d/40-libinput.conf -fr
+        # fi
         
         # KlipperScreen Chinese Fonts
         sudo apt install fonts-arphic-bkai00mp fonts-arphic-bsmi00lp fonts-arphic-gbsn00lp fonts-arphic-gkai00mp fonts-arphic-ukai fonts-arphic-uming -y
@@ -158,12 +146,22 @@ function config_klipper_host_MCU() {
 }
 
 function Create_can0_cfg() {
- # Reference: https://www.klipper3d.org/CANBUS.html#host-hardware
+    # Reference: https://www.klipper3d.org/CANBUS.html#host-hardware
+
+    cd ~
+    touch can0
+
+    cat <<-EOF > can0
+	allow-hotplug can0
+	iface can0 can static
+	    bitrate 500000
+	    up ifconfig \$IFACE txqueuelen 1024
+	EOF
 
     cd /etc/network/interfaces.d
     [[ -f can0 ]] && sudo rm -rf can0
-    sudo cp ${KIAUH_SRCDIR}/resources/lodge_custom/can0 ./
-    
+    sudo mv ~/can0 ./
+
     sync
     print_confirm "Create can0 configuration file OK"
 }
@@ -182,7 +180,6 @@ function config_shaper_auto_calibration() {
 }
 
 function OS_clean() {
-    
     local printer_data="${HOME}/printer_data"
     local cfg_dir="${printer_data}/config"
     local log_dir="${printer_data}/logs"
@@ -191,10 +188,11 @@ function OS_clean() {
     
     status_msg "Delete klipper logs..."
     [[ ! "`ls -A ${log_dir}`" = "" ]] && rm ${log_dir}/*
+    sync
     ok_msg "Done!"
 
+    # Reference: https://blog.csdn.net/weixin_39534395/article/details/119229057
     status_msg "Cancel SSH timeout disconnection..."
- # Reference: https://blog.csdn.net/weixin_39534395/article/details/119229057
 
     if [ `grep -c "#TCPKeepAlive yes" "/etc/ssh/sshd_config"` -eq '1' ];then
         sudo sed -i 's/#TCPKeepAlive yes/TCPKeepAlive yes/' /etc/ssh/sshd_config

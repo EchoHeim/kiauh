@@ -32,16 +32,6 @@ function install_Crowsnest() {
 
   status_msg "Initializing Crowsnest ..."
 
-  ### check and install dependencies if missing
-#   local dep=(git cmake build-essential imagemagick libv4l-dev ffmpeg)
-#   if apt-cache search libjpeg62-turbo-dev | grep -Eq "^libjpeg62-turbo-dev "; then
-#     dep+=(libjpeg62-turbo-dev)
-#   elif apt-cache search libjpeg8-dev | grep -Eq "^libjpeg8-dev "; then
-#     dep+=(libjpeg8-dev)
-#   fi
-
-#   dependency_check "${dep[@]}"
-
   ### step 1: clone Crowsnest
   status_msg "Cloning Crowsnest from ${repo} ..."
   [[ -d "${HOME}/crowsnest" ]] && rm -rf "${HOME}/crowsnest"
@@ -77,9 +67,8 @@ function install_Crowsnest() {
   status_msg "Creating crowsnest config file ..."
   cp ${crowsnest_cfg} ${cfg_dir}
 
-  status_msg "Creating crowsnest config file ..."
-  [[ -f "/etc/systemd/system/crowsnest.service" ]] && sudo rm -rf "/etc/systemd/system/crowsnest.service"
-  sudo cp ${crowsnest_service} /etc/systemd/system/
+  status_msg "Change crowsnest.service path ..."
+  sudo sed -i 's/klipper_config/printer_data\/config/' /etc/systemd/system/crowsnest.service
 
   ok_msg "Done!"
 
