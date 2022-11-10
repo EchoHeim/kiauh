@@ -202,6 +202,10 @@ function compare_klipperscreen_versions() {
 #================================================#
 
 function patch_klipperscreen_update_manager() {
+  local printer_data="${HOME}/printer_data"
+  local cfg_dir="${printer_data}/config"
+  local log_dir="${printer_data}/logs"
+
   local patched="false"
   local moonraker_configs
   moonraker_configs=$(find "${cfg_dir}" -type f -name "moonraker.conf" | sort)
