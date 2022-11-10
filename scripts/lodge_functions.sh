@@ -111,18 +111,21 @@ function mDNS_DependencyPackages() {
 }
 
 function config_klipper_cfgfile() {
-    if [[ -d "${KLIPPER_CONFIG}" ]]; then
+    local printer_data="${HOME}/printer_data"
+    local cfg_dir="${printer_data}/config"
+
+    if [[ -d "${cfg_dir}" ]]; then
         case "$1" in
             "skr3")
-                cp ${KIAUH_SRCDIR}/resources/lodge_custom/skr-3/* ${KLIPPER_CONFIG} -f 
+                cp ${KIAUH_SRCDIR}/resources/lodge_custom/skr-3/* ${cfg_dir} -f 
                 ;;
             "Hurakan")
-                cp ${KIAUH_SRCDIR}/resources/lodge_custom/Hurakan/*.cfg ${KLIPPER_CONFIG} -f
-                [[ ! -d ${KLIPPER_CONFIG}/.theme ]] && mkdir -p ${KLIPPER_CONFIG}/.theme
-                cp ${KIAUH_SRCDIR}/resources/lodge_custom/Hurakan/theme/* ${KLIPPER_CONFIG}/.theme -f 
+                cp ${KIAUH_SRCDIR}/resources/lodge_custom/Hurakan/*.cfg ${cfg_dir} -f
+                [[ ! -d ${cfg_dir}/.theme ]] && mkdir -p ${cfg_dir}/.theme
+                cp ${KIAUH_SRCDIR}/resources/lodge_custom/Hurakan/theme/* ${cfg_dir}/.theme -f 
                 ;;
             "stm32mp157")
-                cp ${KIAUH_SRCDIR}/resources/lodge_custom/stm32mp157/* ${KLIPPER_CONFIG} -f 
+                cp ${KIAUH_SRCDIR}/resources/lodge_custom/stm32mp157/* ${cfg_dir} -f 
                 ;;
         esac
         sync
@@ -179,10 +182,15 @@ function config_shaper_auto_calibration() {
 }
 
 function OS_clean() {
+    
+    local printer_data="${HOME}/printer_data"
+    local cfg_dir="${printer_data}/config"
+    local log_dir="${printer_data}/logs"
+
     cd ~
     
     status_msg "Delete klipper logs..."
-    [[ ! "`ls -A klipper_logs`" = "" ]] && rm klipper_logs/*
+    [[ ! "`ls -A ${log_dir}`" = "" ]] && rm ${log_dir}/*
     ok_msg "Done!"
 
     status_msg "Cancel SSH timeout disconnection..."

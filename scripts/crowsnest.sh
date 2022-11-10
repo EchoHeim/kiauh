@@ -17,6 +17,11 @@ set -e
 
 function install_Crowsnest() {
   local crowsnest_cfg="${KIAUH_SRCDIR}/resources/crowsnest/crowsnest.conf"
+  local crowsnest_service="${KIAUH_SRCDIR}/resources/crowsnest/crowsnest.service"
+
+  local printer_data="${HOME}/printer_data"
+  local cfg_dir="${printer_data}/config"
+
   local repo="https://github.com/mainsail-crew/crowsnest.git"
 
   ### return early if webcamd.service already exists
@@ -66,11 +71,16 @@ function install_Crowsnest() {
   fi
 
   ### step 4: create crowsnest config file
-  [[ ! -d ${KLIPPER_CONFIG} ]] && mkdir -p "${KLIPPER_CONFIG}"
-  [[ -f "${KLIPPER_CONFIG}/crowsnest.conf" ]] && rm -rf "${KLIPPER_CONFIG}/crowsnest.conf"
+  [[ ! -d ${cfg_dir} ]] && mkdir -p "${cfg_dir}"
+  [[ -f "${cfg_dir}/crowsnest.conf" ]] && rm -rf "${cfg_dir}/crowsnest.conf"
 
   status_msg "Creating crowsnest config file ..."
-  cp ${crowsnest_cfg} ${KLIPPER_CONFIG}
+  cp ${crowsnest_cfg} ${cfg_dir}
+
+  status_msg "Creating crowsnest config file ..."
+  [[ -f "/etc/systemd/system/crowsnest.service" ]] && sudo rm -rf "/etc/systemd/system/crowsnest.service"
+  sudo cp ${crowsnest_service} /etc/systemd/system/
+
   ok_msg "Done!"
 
   ### print webcam ip adress/url
@@ -88,11 +98,14 @@ function install_Crowsnest() {
 #=================================================#
 
 function remove_Crowsnest() {
+    local printer_data="${HOME}/printer_data"
+    local cfg_dir="${printer_data}/config"
+
     if [[ -d "${HOME}/crowsnest" ]];then
         cd ~/crowsnest
         make uninstall
         [[ -d "${HOME}/crowsnest" ]] && rm -rf "${HOME}/crowsnest"
-        [[ -e "${KLIPPER_CONFIG}/crowsnest.conf" ]] && rm -rf "${KLIPPER_CONFIG}/crowsnest.conf"
+        [[ -e "${cfg_dir}/crowsnest.conf" ]] && rm -rf "${cfg_dir}/crowsnest.conf"
         print_confirm "Crowsnest successfully removed!"
     else
         print_confirm "Crowsnest not installed!"

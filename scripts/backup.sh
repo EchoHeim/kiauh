@@ -35,15 +35,15 @@ function backup_klipper_config_dir() {
     check_for_backup_dir
     local current_date config_folder_name
 
-    if [[ -d "${KLIPPER_CONFIG}" ]]; then
+    if [[ -d "${cfg_dir}" ]]; then
         current_date=$(get_date)
-        config_folder_name="$(echo "${KLIPPER_CONFIG}" | rev | cut -d"/" -f1 | rev)"
+        config_folder_name="$(echo "${cfg_dir}" | rev | cut -d"/" -f1 | rev)"
 
         status_msg "Timestamp: ${current_date}"
         status_msg "Create backup of the Klipper config directory ..."
 
         mkdir -p "${BACKUP_DIR}/${config_folder_name}/${current_date}"
-        cp -r "${KLIPPER_CONFIG}" "${_}"
+        cp -r "${cfg_dir}" "${_}"
 
         print_confirm "Configuration directory backup complete!"
     else

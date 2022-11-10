@@ -102,9 +102,9 @@ function remove_klipperscreen() {
   fi
 
   ### remove KlipperScreen log symlink in config dir
-  if [[ -e "${KLIPPER_CONFIG}/KlipperScreen.log" ]]; then
+  if [[ -e "${cfg_dir}/KlipperScreen.log" ]]; then
     status_msg "Removing KlipperScreen log symlink ..."
-    rm -f "${KLIPPER_CONFIG}/KlipperScreen.log" && ok_msg "File removed!"
+    rm -f "${cfg_dir}/KlipperScreen.log" && ok_msg "File removed!"
   fi
 
   print_confirm "KlipperScreen successfully removed!"
@@ -204,7 +204,7 @@ function compare_klipperscreen_versions() {
 function patch_klipperscreen_update_manager() {
   local patched="false"
   local moonraker_configs
-  moonraker_configs=$(find "${KLIPPER_CONFIG}" -type f -name "moonraker.conf" | sort)
+  moonraker_configs=$(find "${cfg_dir}" -type f -name "moonraker.conf" | sort)
 
   for conf in ${moonraker_configs}; do
     if ! grep -Eq "^\[update_manager KlipperScreen\]\s*$" "${conf}"; then

@@ -39,29 +39,29 @@ function install_mainsail() {
   ### check if another site already listens to port 80
   mainsail_port_check
 
-#  ### ask user to install mjpg-streamer
-#  local install_mjpg_streamer
-#  if [[ ! -f "${SYSTEMD}/webcamd.service" ]]; then
-#    while true; do
-#      echo
-#      top_border
-#      echo -e "| Install MJPG-Streamer for webcam support?             |"
-#      bottom_border
-#      read -p "${cyan}###### Please select (y/N):${white} " yn
-#      case "${yn}" in
-#        Y|y|Yes|yes)
-#          select_msg "Yes"
-#          install_mjpg_streamer="true"
-#          break;;
-#        N|n|No|no|"")
-#          select_msg "No"
-#          install_mjpg_streamer="false"
-#          break;;
-#        *)
-#          error_msg "Invalid command!";;
-#      esac
-#    done
-#  fi
+  ### ask user to install mjpg-streamer
+  local install_mjpg_streamer
+  if [[ ! -f "${SYSTEMD}/webcamd.service" ]]; then
+  while true; do
+    echo
+    top_border
+    echo -e "| Install MJPG-Streamer for webcam support?             |"
+    bottom_border
+    read -p "${cyan}###### Please select (y/N):${white} " yn
+      case "${yn}" in
+      Y|y|Yes|yes)
+        select_msg "Yes"
+        install_mjpg_streamer="true"
+        break;;
+      N|n|No|no|"")
+        select_msg "No"
+        install_mjpg_streamer="false"
+        break;;
+      *)
+        error_msg "Invalid command!";;
+      esac
+    done
+  fi
 
   ### ask user to install Crowsnest
   local install_Crowsnest
@@ -499,7 +499,7 @@ function ms_theme_delete() {
 
   regex="\/home\/${USER}\/([A-Za-z0-9_]+)\/config\/\.theme"
   theme_folders=$(find "${HOME}" -maxdepth 3 -type d -regextype posix-extended -regex "${regex}" | sort)
-#  theme_folders=$(find "${KLIPPER_CONFIG}" -mindepth 1 -type d -name ".theme" | sort)
+ #  theme_folders=$(find "${cfg_dir}" -mindepth 1 -type d -name ".theme" | sort)
 
   ### build target folder array
   for folder in ${theme_folders}; do
