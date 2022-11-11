@@ -481,7 +481,7 @@ function change_hostname() {
     local new_hostname regex="^[^\-\_]+([0-9a-zA-Z]\-{0,1})+[^\-\_]+$"
     echo
     top_border
-    echo -e "|  ${green}Allowed characters: A-Z, a-z, 0-9 and single '-'${white}          |"
+    echo -e "|  ${green}Allowed characters: A-Z, a-z, 0-9 and single '-'${white}     |"
     echo -e "|  ${red}No special characters allowed!${white}                       |"
     echo -e "|  ${red}No leading or trailing '-' allowed!${white}                  |"
     bottom_border
@@ -527,7 +527,7 @@ function set_hostname_Env() {
   #write new hostname to /etc/hosts
   status_msg "Writing new hostname to /etc/hosts ..."
   sudo sed -i "s/"${current_hostname}"/"${new_hostname}"/" /etc/hosts
-#   echo "127.0.0.1       ${new_hostname}" | sudo tee -a /etc/hosts &>/dev/null
+  # echo "127.0.0.1       ${new_hostname}" | sudo tee -a /etc/hosts &>/dev/null
   ok_msg "New hostname successfully configured!"
   ok_msg "Remember to reboot for the changes to take effect!"
 }

@@ -64,12 +64,7 @@ function fix_klipperscreen() {
             status_msg "Installing xserver-xorg-input-libinput..."
             sudo apt install xserver-xorg-input-libinput -y
         fi
-        # if [[ ! -e "/usr/share/X11/xorg.conf.d/40-libinput.conf" ]]; then
-        #     status_msg "Copy xserver input cfg file..."
-        #     sudo mkdir -p /usr/share/X11/xorg.conf.d
-        #     sudo cp ${LCF_SRC_DIR}/40-libinput.conf /usr/share/X11/xorg.conf.d/40-libinput.conf -fr
-        # fi
-        
+
         # KlipperScreen Chinese Fonts
         sudo apt install fonts-arphic-bkai00mp fonts-arphic-bsmi00lp fonts-arphic-gbsn00lp fonts-arphic-gkai00mp fonts-arphic-ukai fonts-arphic-uming -y
         
