@@ -46,7 +46,7 @@ function install_Crowsnest() {
   ### step 2: compiling Crowsnest
   status_msg "Compiling Crowsnest ..."
   cd "${HOME}/crowsnest"
-  if ! make install; then
+  if ! sudo make install; then
     print_error "Compiling Crowsnest failed!"
     exit 1
   fi
