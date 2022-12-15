@@ -66,7 +66,7 @@ function fix_klipperscreen() {
         fi
 
         # KlipperScreen Chinese Fonts
-        sudo apt install fonts-arphic-bkai00mp fonts-arphic-bsmi00lp fonts-arphic-gbsn00lp fonts-arphic-gkai00mp fonts-arphic-ukai fonts-arphic-uming -y
+        # sudo apt install fonts-arphic-bkai00mp fonts-arphic-bsmi00lp fonts-arphic-gbsn00lp fonts-arphic-gkai00mp fonts-arphic-ukai fonts-arphic-uming -y
         
         ok_msg "Reboot KlipperScreen!"
         sudo systemctl restart KlipperScreen.service
