@@ -45,6 +45,10 @@ function klipperscreen_setup() {
   local dep=(wget curl unzip dfu-util)
   local conf_template="${KIAUH_SRCDIR}/resources/KlipperScreen.conf"
 
+  local printer_data="${HOME}/printer_data"
+  local cfg_dir="${printer_data}/config"
+  local cfg="${printer_data}/config/KlipperScreen.conf"
+
   dependency_check "${dep[@]}"
   status_msg "Cloning KlipperScreen from ${KLIPPERSCREEN_REPO} ..."
 
