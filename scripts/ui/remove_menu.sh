@@ -72,5 +72,4 @@ function remove_menu() {
         esac
     done
     remove_menu
-
 }

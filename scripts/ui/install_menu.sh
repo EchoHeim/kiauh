@@ -68,6 +68,7 @@ function install_menu() {
         do_action "install_mjpg-streamer" "install_ui";;
       11)
         do_action "install_Crowsnest" "install_ui";;
+
       B|b)
         clear; main_menu; break;;
       *)

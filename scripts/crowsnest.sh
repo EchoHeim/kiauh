@@ -9,94 +9,233 @@
 # This file may be distributed under the terms of the GNU GPLv3 license #
 #=======================================================================#
 
+#=======================================================================#
+# Crowsnest Installer brought to you by KwadFan <me@stephanwe.de>       #
+# Copyright (C) 2022 KwadFan <me@stephanwe.de>                          #
+# https://github.com/KwadFan/crowsnest                                  #
+#=======================================================================#
+
+# Error Handling
 set -e
 
-#=================================================#
-#=============== INSTALL Crowsnest ===============#
-#=================================================#
+# Helper messages
 
-function install_Crowsnest() {
-  local crowsnest_cfg="${KIAUH_SRCDIR}/resources/crowsnest/crowsnest.conf"
-  local crowsnest_service="${KIAUH_SRCDIR}/resources/crowsnest/crowsnest.service"
-
-  local printer_data="${HOME}/printer_data"
-  local cfg_dir="${printer_data}/config"
-
-  local repo="https://github.com/mainsail-crew/crowsnest.git"
-
-  ### return early if webcamd.service already exists
-  if [[ -d "${HOME}/crowsnest" ]]; then
-    print_error "Looks like Crowsnest is already installed!\n Please remove it first before you try to re-install it!"
-    return
-  fi
-
-  status_msg "Initializing Crowsnest ..."
-
-  ### step 1: clone Crowsnest
-  status_msg "Cloning Crowsnest from ${repo} ..."
-  [[ -d "${HOME}/crowsnest" ]] && rm -rf "${HOME}/crowsnest"
-
-  cd "${HOME}" || exit 1
-  if ! git clone "${repo}" ; then
-    print_error "Cloning Crowsnest from\n ${repo}\n failed!"
-    exit 1
-  fi
-  ok_msg "Cloning complete!"
-
-  ### step 2: compiling Crowsnest
-  status_msg "Compiling Crowsnest ..."
-  cd "${HOME}/crowsnest"
-  if ! sudo make install; then
-    print_error "Compiling Crowsnest failed!"
-    exit 1
-  fi
-  ok_msg "Compiling complete!"
-
-  ### step 3: check if user is in group "video"
-  local usergroup_changed="false"
-  if ! groups "${USER}" | grep -q "video"; then
-    status_msg "Adding user '${USER}' to group 'video' ..."
-    sudo usermod -a -G video "${USER}" && ok_msg "Done!"
-    usergroup_changed="true"
-  fi
-
-  ### step 4: create crowsnest config file
-  [[ ! -d ${cfg_dir} ]] && mkdir -p "${cfg_dir}"
-  [[ -f "${cfg_dir}/crowsnest.conf" ]] && rm -rf "${cfg_dir}/crowsnest.conf"
-
-  status_msg "Creating crowsnest config file ..."
-  cp ${crowsnest_cfg} ${cfg_dir}
-
-  status_msg "Change crowsnest.service path ..."
-  sudo sed -i 's/klipper_config/printer_data\/config/' /etc/systemd/system/crowsnest.service
-
-  ok_msg "Done!"
-
-  ### print webcam ip adress/url
-  local ip
-  ip=$(hostname -I | cut -d" " -f1)
-  local cam_url="http://${ip}:8080/?action=stream"
-  local cam_url_alt="http://${ip}/webcam/?action=stream"
-  echo -e " ${cyan}● Webcam URL:${white} ${cam_url}"
-  echo -e " ${cyan}● Webcam URL:${white} ${cam_url_alt}"
-  echo
+function multi_instance_message(){
+  echo -e "Crowsnest is NOT designed to support multi instances."
+  echo -e "A workaround for this is to choose the most used instance as a 'master'"
+  echo -e "Use this instance to set up your 'crowsnest.conf' and steering it's service.\n"
+  echo -e "Found the following instances:\n"
+  for i in ${1}; do
+    select_msg "${i}"
+  done
+  echo -e "\nLaunching crowsnest's configuration tool ..."
+  continue_config
 }
 
-#=================================================#
-#================ REMOVE Crowsnest ===============#
-#=================================================#
+# Helper funcs
+function clone_crowsnest(){
+  $(command -v git) clone "${CROWSNEST_REPO}" -b master "${CROWSNEST_DIR}"
+}
 
-function remove_Crowsnest() {
-    local printer_data="${HOME}/printer_data"
-    local cfg_dir="${printer_data}/config"
-
-    if [[ -d "${HOME}/crowsnest" ]];then
-        cd ~/crowsnest
-        make uninstall
-        [[ -d "${HOME}/crowsnest" ]] && rm -rf "${HOME}/crowsnest"
-        [[ -e "${cfg_dir}/crowsnest.conf" ]] && rm -rf "${cfg_dir}/crowsnest.conf"
-        print_confirm "Crowsnest successfully removed!"
-    else
-        print_confirm "Crowsnest not installed!"
+function check_multi_instance(){
+  local -a instances
+  readarray -t instances < <(find "${HOME}" -regex "${HOME}/[a-zA-Z0-9_]+_data/*" -printf "%P\n" 2> /dev/null | sort)
+  if [[ "${#instances[@]}" -gt 1 ]]; then
+    status_msg "Multi instance install detected ..."
+    multi_instance_message "${instances[*]}"
+    if [[ -d "${HOME}/crowsnest" ]]; then
+      pushd "${HOME}/crowsnest" &> /dev/null || exit 1
+      if ! make config ;then
+        error_msg "Something went wrong! Please try again..."
+        if [[ -f "tools/.config" ]]; then
+          rm -f tools/.config
+        fi
+        exit 1
+      fi
+      if [[ ! -f "tools/.config" ]]; then
+        log_error "failure while generating .config"
+        error_msg "Generating .config failed, installation aborted"
+        exit 1
+      fi
+      popd &> /dev/null || exit 1
     fi
+  fi
+}
+
+function continue_config() {
+  local reply
+  while true; do
+    read -erp "${cyan}###### Continue with configuration? (y/N):${white} " reply
+    case "${reply}" in
+      Y|y|Yes|yes)
+        select_msg "Yes"
+        break;;
+      N|n|No|no|"")
+        select_msg "No"
+        warn_msg "Installation aborted by user ... Exiting!"
+        exit 1;;
+      *)
+        error_msg "Invalid Input!\n";;
+    esac
+  done
+  return 0
+}
+
+# Install func
+function install_crowsnest(){
+
+  # Step 1: jump to home directory
+  pushd "${HOME}" &> /dev/null || exit 1
+
+  # Step 2: Clone crowsnest repo
+  status_msg "Cloning 'crowsnest' repository ..."
+  if [[ ! -d "${HOME}/crowsnest" && -z "$(ls -A "${HOME}/crowsnest" 2> /dev/null)" ]]; then
+    clone_crowsnest
+  else
+    ok_msg "crowsnest repository already exists ..."
+  fi
+
+  # Step 3: Install dependencies
+  dependency_check git make
+
+  # Step 4: Check for Multi Instance
+  check_multi_instance
+
+  # Step 5: Launch crowsnest installer
+  pushd "${HOME}/crowsnest" &> /dev/null || exit 1
+  title_msg "Installer will prompt you for sudo password!"
+  status_msg "Launching crowsnest installer ..."
+  if ! sudo make install; then
+    error_msg "Something went wrong! Please try again..."
+    exit 1
+  fi
+
+  # Step 5: Leave directory (twice due two pushd)
+  popd &> /dev/null || exit 1
+  popd &> /dev/null || exit 1
+}
+
+# Remove func
+function remove_crowsnest(){
+  pushd "${HOME}/crowsnest" &> /dev/null || exit 1
+  title_msg "Uninstaller will prompt you for sudo password!"
+  status_msg "Launching crowsnest uninstaller ..."
+  if ! make uninstall; then
+    error_msg "Something went wrong! Please try again..."
+    exit 1
+  fi
+  if [[ -e "${CROWSNEST_DIR}" ]]; then
+    status_msg "Removing crowsnest directory ..."
+    rm -rf "${CROWSNEST_DIR}"
+    ok_msg "Directory removed!"
+  fi
+}
+
+# Status funcs
+get_crowsnest_status(){
+  local -a files
+  files=(
+    "${CROWSNEST_DIR}"
+    "/usr/local/bin/crowsnest"
+    "/etc/logrotate.d/crowsnest"
+    "/etc/systemd/system/crowsnest.service"
+    "$(find "${HOME}" -name 'crowsnest.env' 2> /dev/null ||
+    echo "${HOME}/printer_data/systemd/crowsnest.env")"
+    )
+    # Contains ugly hackaround for multi instance... :(
+  local count
+  count=0
+
+  for file in "${files[@]}"; do
+    [[ -e "${file}" ]] && count=$(( count +1 ))
+  done
+  if [[ "${count}" -eq "${#files[*]}" ]]; then
+    echo "Installed"
+  elif [[ "${count}" -gt 0 ]]; then
+    echo "Incomplete!"
+  else
+    echo "Not installed!"
+  fi
+}
+
+# Update funcs
+# Shameless stolen from KlipperScreen.sh
+function get_local_crowsnest_commit() {
+  [[ ! -d ${CROWSNEST_DIR} || ! -d "${CROWSNEST_DIR}/.git" ]] && return
+
+  local commit
+  cd "${CROWSNEST_DIR}"
+  commit="$(git describe HEAD --always --tags | cut -d "-" -f 1,2)"
+  echo "${commit}"
+}
+
+function get_remote_crowsnest_commit() {
+  [[ ! -d ${CROWSNEST_DIR} || ! -d "${CROWSNEST_DIR}/.git" ]] && return
+
+  local commit
+  cd "${CROWSNEST_DIR}" && git fetch origin -q
+  commit=$(git describe origin/master --always --tags | cut -d "-" -f 1,2)
+  echo "${commit}"
+}
+
+function compare_crowsnest_versions() {
+  local versions local_ver remote_ver
+  local_ver="$(get_local_crowsnest_commit)"
+  remote_ver="$(get_remote_crowsnest_commit)"
+
+  if [[ ${local_ver} != "${remote_ver}" ]]; then
+    versions="${yellow}$(printf " %-14s" "${local_ver}")${white}"
+    versions+="|${green}$(printf " %-13s" "${remote_ver}")${white}"
+    # add moonraker to application_updates_available in kiauh.ini
+    add_to_application_updates "crowsnest"
+  else
+    versions="${green}$(printf " %-14s" "${local_ver}")${white}"
+    versions+="|${green}$(printf " %-13s" "${remote_ver}")${white}"
+  fi
+
+  echo "${versions}"
+}
+
+function install_crowsnest_dependencies() {
+  local packages
+  local install_script="${CROWSNEST_DIR}/tools/install.sh"
+
+  ### read PKGLIST from official install-script
+  status_msg "Reading dependencies..."
+  # shellcheck disable=SC2016
+  packages="$(grep "PKGLIST=" "${install_script}" | cut -d'"' -f2 | sed 's/\${PKGLIST}//g' | tr -d '\n')"
+
+  echo "${cyan}${packages}${white}" | tr '[:space:]' '\n'
+    read -r -a packages <<< "${packages}"
+
+  ### Update system package info
+  status_msg "Updating package lists..."
+  if ! sudo apt-get update --allow-releaseinfo-change; then
+    log_error "failure while updating package lists"
+    error_msg "Updating package lists failed!"
+    exit 1
+  fi
+
+  ### Install required packages
+  status_msg "Installing required packages..."
+  if ! sudo apt-get install --yes "${packages[@]}"; then
+    log_error "failure while installing required crowsnest packages"
+    error_msg "Installing required packages failed!"
+    exit 1
+  fi
+}
+
+function update_crowsnest() {
+  do_action_service "stop" "crowsnest"
+
+  if [[ ! -d ${CROWSNEST_DIR} ]]; then
+    clone_crowsnest
+  else
+    status_msg "Updating Crowsnest ..."
+    cd "${CROWSNEST_DIR}" && git pull
+    ### read PKGLIST and install possible new dependencies
+    install_crowsnest_dependencies
+  fi
+  ok_msg "Update complete!"
+  do_action_service "restart" "crowsnest"
 }
