@@ -36,28 +36,41 @@ function backup_menu() {
     while true; do
         read -p "${cyan}####### Perform action:${white} " action
         case "${action}" in
-            1)
-                do_action "backup_klipper" "backup_ui";;
-            2)
-                do_action "backup_moonraker" "backup_ui";;
-            3)
-                do_action "backup_klipper_config_dir" "backup_ui";;
-            4)
-                do_action "backup_moonraker_database" "backup_ui";;
-            5)
-                do_action "backup_mainsail" "backup_ui";;
-            6)
-                do_action "backup_fluidd" "backup_ui";;
-            7)
-                do_action "backup_klipperscreen" "backup_ui";;
-            8)
-                do_action "backup_octoprint" "backup_ui";;
-            9)
-                do_action "backup_telegram_bot" "backup_ui";;
-            B|b)
-                clear; main_menu; break;;
-            *)
-                deny_action "backup_ui";;
+        1)
+            do_action "backup_klipper" "backup_ui"
+            ;;
+        2)
+            do_action "backup_moonraker" "backup_ui"
+            ;;
+        3)
+            do_action "backup_klipper_config_dir" "backup_ui"
+            ;;
+        4)
+            do_action "backup_moonraker_database" "backup_ui"
+            ;;
+        5)
+            do_action "backup_mainsail" "backup_ui"
+            ;;
+        6)
+            do_action "backup_fluidd" "backup_ui"
+            ;;
+        7)
+            do_action "backup_klipperscreen" "backup_ui"
+            ;;
+        8)
+            do_action "backup_octoprint" "backup_ui"
+            ;;
+        9)
+            do_action "backup_telegram_bot" "backup_ui"
+            ;;
+        B | b)
+            clear
+            main_menu
+            break
+            ;;
+        *)
+            deny_action "backup_ui"
+            ;;
         esac
     done
     backup_menu

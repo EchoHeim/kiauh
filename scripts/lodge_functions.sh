@@ -4,15 +4,15 @@ function udisk_auto_mount() {
     sudo cp ${LCF_SRC_DIR}/usb/usb_udev.sh /etc/scripts
     sudo cp ${LCF_SRC_DIR}/usb/15-udev.rules /etc/udev/rules.d
 
-    sudo sed -i 's/%user%/'''`whoami`'''/' /etc/scripts/usb_udev.sh
+    sudo sed -i 's/%user%/'''$(whoami)'''/' /etc/scripts/usb_udev.sh
 
-    if [ `grep -c "PrivateMounts=yes" "/usr/lib/systemd/system/systemd-udevd.service"` -eq '1' ];then
+    if [ $(grep -c "PrivateMounts=yes" "/usr/lib/systemd/system/systemd-udevd.service") -eq '1' ]; then
         sudo sed -i 's/PrivateMounts=yes/PrivateMounts=no/' /usr/lib/systemd/system/systemd-udevd.service
-    elif [ `grep -c "PrivateMounts=no" "/usr/lib/systemd/system/systemd-udevd.service"` -eq '0' ];then
+    elif [ $(grep -c "PrivateMounts=no" "/usr/lib/systemd/system/systemd-udevd.service") -eq '0' ]; then
         sudo bash -c 'echo "PrivateMounts=no" >> /usr/lib/systemd/system/systemd-udevd.service'
     fi
 
-    if [ `grep -c "MountFlags=shared" "/usr/lib/systemd/system/systemd-udevd.service"` -ne '1' ];then
+    if [ $(grep -c "MountFlags=shared" "/usr/lib/systemd/system/systemd-udevd.service") -ne '1' ]; then
         sudo bash -c 'echo "MountFlags=shared" >> /usr/lib/systemd/system/systemd-udevd.service'
     fi
 
@@ -23,7 +23,7 @@ function udisk_auto_mount() {
     print_confirm "Auto-mounting of u-disk is enabled!"
 }
 
-function usb_camera_auto_play(){
+function usb_camera_auto_play() {
     if [ -d "${HOME}/mjpg-streamer" ]; then
         WEB_CAMERA_LAUNCH="${LCF_SRC_DIR}/web_camera.sh"
         SYNC_SRC="${LCF_SRC_DIR}/sync.sh"
@@ -33,12 +33,12 @@ function usb_camera_auto_play(){
         fromdos ${HOME}/scripts/sync.sh
         fromdos ${HOME}/scripts/web_camera.sh
 
-        sudo sed -i 's/%user%/'''`whoami`'''/' ${HOME}/scripts/web_camera.sh
-        sudo sed -i 's/%user%/'''`whoami`'''/' ${HOME}/scripts/sync.sh
+        sudo sed -i 's/%user%/'''$(whoami)'''/' ${HOME}/scripts/web_camera.sh
+        sudo sed -i 's/%user%/'''$(whoami)'''/' ${HOME}/scripts/sync.sh
 
-        if ! crontab -l > conf; then
-            if [ `grep -c "scripts/sync.sh" "conf"` -eq '0' ];then
-                echo "*/1 * * * * /home/`whoami`/scripts/sync.sh" >> conf && crontab conf
+        if ! crontab -l >conf; then
+            if [ $(grep -c "scripts/sync.sh" "conf") -eq '0' ]; then
+                echo "*/1 * * * * /home/$(whoami)/scripts/sync.sh" >>conf && crontab conf
             fi
         fi
         rm -f conf
@@ -52,10 +52,10 @@ function usb_camera_auto_play(){
 function fix_klipperscreen() {
     if [[ -e "/etc/X11/Xwrapper.config" && $(get_klipperscreen_status) == "Installed!" ]]; then
         # KlipperScreen display
-        if [ `grep -c "allowed_users=anybody" "/etc/X11/Xwrapper.config"` -ne '1' ];then
+        if [ $(grep -c "allowed_users=anybody" "/etc/X11/Xwrapper.config") -ne '1' ]; then
             sudo bash -c 'echo "allowed_users=anybody" >> /etc/X11/Xwrapper.config'
         fi
-        if [ `grep -c "needs_root_rights=yes" "/etc/X11/Xwrapper.config"` -ne '1' ];then
+        if [ $(grep -c "needs_root_rights=yes" "/etc/X11/Xwrapper.config") -ne '1' ]; then
             sudo bash -c 'echo "needs_root_rights=yes" >> /etc/X11/Xwrapper.config'
         fi
 
@@ -67,7 +67,7 @@ function fix_klipperscreen() {
 
         # KlipperScreen Chinese Fonts
         # sudo apt install fonts-arphic-bkai00mp fonts-arphic-bsmi00lp fonts-arphic-gbsn00lp fonts-arphic-gkai00mp fonts-arphic-ukai fonts-arphic-uming -y
-        
+
         ok_msg "Reboot KlipperScreen!"
         sudo systemctl restart KlipperScreen.service
 
@@ -79,10 +79,10 @@ function fix_klipperscreen() {
 }
 
 function mDNS_DependencyPackages() {
- # Many people prefer to access their machines using the name.
- # local addressing scheme available via mDNS (zeroconf, bonjour) instead of an IP address. 
- # This is simple to enable on the hurakan but requires the installation of 
- # the following packages which should be installed from the factory:
+    # Many people prefer to access their machines using the name.
+    # local addressing scheme available via mDNS (zeroconf, bonjour) instead of an IP address.
+    # This is simple to enable on the hurakan but requires the installation of
+    # the following packages which should be installed from the factory:
     sudo apt update
 
     sudo apt install avahi-daemon bind9-host geoip-database -y
@@ -99,17 +99,17 @@ function config_klipper_cfgfile() {
 
     if [[ -d "${cfg_dir}" ]]; then
         case "$1" in
-            "skr3")
-                cp ${KIAUH_SRCDIR}/resources/lodge_custom/skr-3/* ${cfg_dir} -f 
-                ;;
-            "Hurakan")
-                cp ${KIAUH_SRCDIR}/resources/lodge_custom/Hurakan/*.cfg ${cfg_dir} -f
-                [[ ! -d ${cfg_dir}/.theme ]] && mkdir -p ${cfg_dir}/.theme
-                cp ${KIAUH_SRCDIR}/resources/lodge_custom/Hurakan/theme/* ${cfg_dir}/.theme -f 
-                ;;
-            "stm32mp157")
-                cp ${KIAUH_SRCDIR}/resources/lodge_custom/stm32mp157/* ${cfg_dir} -f 
-                ;;
+        "skr3")
+            cp ${KIAUH_SRCDIR}/resources/lodge_custom/skr-3/* ${cfg_dir} -f
+            ;;
+        "Hurakan")
+            cp ${KIAUH_SRCDIR}/resources/lodge_custom/Hurakan/*.cfg ${cfg_dir} -f
+            [[ ! -d ${cfg_dir}/.theme ]] && mkdir -p ${cfg_dir}/.theme
+            cp ${KIAUH_SRCDIR}/resources/lodge_custom/Hurakan/theme/* ${cfg_dir}/.theme -f
+            ;;
+        "stm32mp157")
+            cp ${KIAUH_SRCDIR}/resources/lodge_custom/stm32mp157/* ${cfg_dir} -f
+            ;;
         esac
         sync
         print_confirm "config_klipper_cfgfile OK"
@@ -131,7 +131,7 @@ function config_klipper_host_MCU() {
         make flash
         sudo service klipper start
 
-        sudo usermod -a -G tty `whoami`
+        sudo usermod -a -G tty $(whoami)
 
         print_confirm "config_klipper_host_MCU OK"
     else
@@ -146,7 +146,7 @@ function Create_can0_cfg() {
     cd ~
     touch can0
 
-    cat <<-EOF > can0
+    cat <<-EOF >can0
 	allow-hotplug can0
 	iface can0 can static
 	    bitrate 500000
@@ -180,30 +180,30 @@ function OS_clean() {
     local log_dir="${printer_data}/logs"
 
     cd ~
-    
+
     status_msg "Delete klipper logs..."
-    [[ ! "`ls -A ${log_dir}`" = "" ]] && rm ${log_dir}/*
+    [[ ! "$(ls -A ${log_dir})" = "" ]] && rm ${log_dir}/*
     sync
     ok_msg "Done!"
 
     # Reference: https://blog.csdn.net/weixin_39534395/article/details/119229057
     status_msg "Cancel SSH timeout disconnection..."
 
-    if [ `grep -c "#TCPKeepAlive yes" "/etc/ssh/sshd_config"` -eq '1' ];then
+    if [ $(grep -c "#TCPKeepAlive yes" "/etc/ssh/sshd_config") -eq '1' ]; then
         sudo sed -i 's/#TCPKeepAlive yes/TCPKeepAlive yes/' /etc/ssh/sshd_config
-    elif [ `grep -c "TCPKeepAlive yes" "/etc/ssh/sshd_config"` -eq '0' ];then
+    elif [ $(grep -c "TCPKeepAlive yes" "/etc/ssh/sshd_config") -eq '0' ]; then
         sudo bash -c 'echo "TCPKeepAlive yes" >> /etc/ssh/sshd_config'
     fi
 
-    if [ `grep -c "#ClientAliveInterval 0" "/etc/ssh/sshd_config"` -eq '1' ];then
+    if [ $(grep -c "#ClientAliveInterval 0" "/etc/ssh/sshd_config") -eq '1' ]; then
         sudo sed -i 's/#ClientAliveInterval 0/ClientAliveInterval 360/' /etc/ssh/sshd_config
-    elif [ `grep -c "ClientAliveInterval 360" "/etc/ssh/sshd_config"` -eq '0' ];then
+    elif [ $(grep -c "ClientAliveInterval 360" "/etc/ssh/sshd_config") -eq '0' ]; then
         sudo bash -c 'echo "ClientAliveInterval 360" >> /etc/ssh/sshd_config'
     fi
 
-    if [ `grep -c "#ClientAliveCountMax 3" "/etc/ssh/sshd_config"` -eq '1' ];then
+    if [ $(grep -c "#ClientAliveCountMax 3" "/etc/ssh/sshd_config") -eq '1' ]; then
         sudo sed -i 's/#ClientAliveCountMax 3/ClientAliveCountMax 20/' /etc/ssh/sshd_config
-    elif [ `grep -c "ClientAliveCountMax 20" "/etc/ssh/sshd_config"` -eq '0' ];then
+    elif [ $(grep -c "ClientAliveCountMax 20" "/etc/ssh/sshd_config") -eq '0' ]; then
         sudo bash -c 'echo "ClientAliveCountMax 20" >> /etc/ssh/sshd_config'
     fi
     ok_msg "Done!"
@@ -216,7 +216,7 @@ function OS_clean() {
 
     status_msg "Delete wifi history connection ..."
     cd /etc/NetworkManager/system-connections
-    [[ ! "`ls -A ./`" = "" ]] && sudo rm ./*
+    [[ ! "$(ls -A ./)" = "" ]] && sudo rm ./*
     sync
     ok_msg "Done!"
 
@@ -232,7 +232,7 @@ function OS_clean() {
     [[ -f .kiauh.ini ]] && rm -rf .kiauh.ini
     ok_msg "Done!"
     echo ""
-    
+
     warn_msg "You need to run the following command to clear the history cmd:"
     warn_msg "source ${KIAUH_SRCDIR}/OS_bash_clean.sh"
     echo ""

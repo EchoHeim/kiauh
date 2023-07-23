@@ -26,13 +26,13 @@ for script in "${KIAUH_SRCDIR}/scripts/ui/"*.sh; do . "${script}"; done
 #===================================================#
 
 function update_kiauh() {
-  status_msg "Updating KIAUH ..."
+    status_msg "Updating KIAUH ..."
 
-  cd "${KIAUH_SRCDIR}"
-  git reset --hard && git pull
+    cd "${KIAUH_SRCDIR}"
+    git reset --hard && git pull
 
-  ok_msg "Update complete! Please restart KIAUH."
-  exit 0
+    ok_msg "Update complete! Please restart KIAUH."
+    exit 0
 }
 
 #===================================================#
@@ -40,49 +40,52 @@ function update_kiauh() {
 #===================================================#
 
 function kiauh_update_avail() {
-  [[ ! -d "${KIAUH_SRCDIR}/.git" ]] && return
-  local origin head
+    [[ ! -d "${KIAUH_SRCDIR}/.git" ]] && return
+    local origin head
 
-  cd "${KIAUH_SRCDIR}"
+    cd "${KIAUH_SRCDIR}"
 
-  ### abort if not on lodge branch
-  ! git branch -a | grep -q "\* lodge" && return
+    ### abort if not on lodge branch
+    ! git branch -a | grep -q "\* lodge" && return
 
-  ### compare commit hash
-  git fetch -q
-  origin=$(git rev-parse --short=8 origin/lodge)
-  head=$(git rev-parse --short=8 HEAD)
+    ### compare commit hash
+    git fetch -q
+    origin=$(git rev-parse --short=8 origin/lodge)
+    head=$(git rev-parse --short=8 HEAD)
 
-  if [[ ${origin} != "${head}" ]]; then
-    echo "true"
-  fi
+    if [[ ${origin} != "${head}" ]]; then
+        echo "true"
+    fi
 }
 
 function kiauh_update_dialog() {
-  [[ ! $(kiauh_update_avail) == "true" ]] && return
-  top_border
-  echo -e "|${green}              New KIAUH update available!              ${white}|"
-  hr
-  echo -e "|${green}  View Changelog: https://git.io/JnmlX                 ${white}|"
-  blank_line
-  echo -e "|${yellow}  It is recommended to keep KIAUH up to date. Updates  ${white}|"
-  echo -e "|${yellow}  usually contain bugfixes, important changes or new   ${white}|"
-  echo -e "|${yellow}  features. Please consider updating!                  ${white}|"
-  bottom_border
+    [[ ! $(kiauh_update_avail) == "true" ]] && return
+    top_border
+    echo -e "|${green}              New KIAUH update available!              ${white}|"
+    hr
+    echo -e "|${green}  View Changelog: https://git.io/JnmlX                 ${white}|"
+    blank_line
+    echo -e "|${yellow}  It is recommended to keep KIAUH up to date. Updates  ${white}|"
+    echo -e "|${yellow}  usually contain bugfixes, important changes or new   ${white}|"
+    echo -e "|${yellow}  features. Please consider updating!                  ${white}|"
+    bottom_border
 
-  local yn
-  read -p "${cyan}###### Do you want to update now? (Y/n):${white} " yn
-  while true; do
-    case "${yn}" in
-      Y|y|Yes|yes|"")
-        do_action "update_kiauh"
-        break;;
-      N|n|No|no)
-        break;;
-      *)
-        deny_action "kiauh_update_dialog";;
-    esac
-  done
+    local yn
+    read -p "${cyan}###### Do you want to update now? (Y/n):${white} " yn
+    while true; do
+        case "${yn}" in
+        Y | y | Yes | yes | "")
+            do_action "update_kiauh"
+            break
+            ;;
+        N | n | No | no)
+            break
+            ;;
+        *)
+            deny_action "kiauh_update_dialog"
+            ;;
+        esac
+    done
 }
 
 check_euid

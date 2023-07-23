@@ -28,12 +28,12 @@ function hr() {
     echo -e "|-------------------------------------------------------|"
 }
 
-custom_function(){
+custom_function() {
     hr
     echo -e "| ${cyan} lodge Custom ${white}                    ${red}F) Function${white}         |"
 }
 
-quit_footer(){
+quit_footer() {
     hr
     echo -e "|                                   ${red}Q) Quit${white}             |"
     bottom_border
