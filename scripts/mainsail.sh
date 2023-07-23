@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #=======================================================================#
-# Copyright (C) 2020 - 2022 Dominik Willner <th33xitus@gmail.com>       #
+# Copyright (C) 2020 - 2023 Dominik Willner <th33xitus@gmail.com>       #
 #                                                                       #
 # This file is part of KIAUH - Klipper Installation And Update Helper   #
 # https://github.com/th33xitus/kiauh                                    #
@@ -16,10 +16,24 @@ set -e
 #===================================================#
 
 function install_mainsail() {
-  ### exit early if moonraker not found
   if [[ -z $(moonraker_systemd) ]]; then
-    local error="Moonraker not installed! Please install Moonraker first!"
-    print_error "${error}" && return
+    local error="Moonraker not installed! It's recommended to install Moonraker first!"
+    print_error "${error}"
+    while true; do
+      local yn
+      read -p "${cyan}###### Proceed to install Mainsail without installing Moonraker? (y/N):${white} " yn
+      case "${yn}" in
+        Y|y|Yes|yes)
+          select_msg "Yes"
+          break;;
+        N|n|No|no|"")
+          select_msg "No"
+          abort_msg "Exiting Mainsail setup ...\n"
+          return;;
+        *)
+          error_msg "Invalid Input!";;
+      esac
+    done
   fi
 
   ### checking dependencies
@@ -30,7 +44,7 @@ function install_mainsail() {
 
   status_msg "Initializing Mainsail installation ..."
   ### first, we create a backup of the full klipper_config dir - safety first!
-  backup_klipper_config_dir
+  #backup_klipper_config_dir
 
   ### check for other enabled web interfaces
   unset SET_LISTEN_PORT
@@ -119,22 +133,21 @@ function install_mainsail() {
 }
 
 function install_mainsail_macros() {
+  local yn
   while true; do
     echo
     top_border
-    echo -e "| It is recommended to have some important macros in    |"
-    echo -e "| your printer configuration to have Mainsail fully     |"
-    echo -e "| functional and working.                               |"
+    echo -e "| It is recommended to use special macros in order to   |"
+    echo -e "| have Mainsail fully functional and working.           |"
     blank_line
     echo -e "| The recommended macros for Mainsail can be seen here: |"
-    echo -e "| https://docs.mainsail.xyz/configuration#macros        |"
+    echo -e "| https://github.com/mainsail-crew/mainsail-config      |"
     blank_line
-    echo -e "| If you already have these macros in your config file, |"
-    echo -e "| skip this step and answer with 'no'.                  |"
+    echo -e "| If you already use these macros skip this step.       |"
     echo -e "| Otherwise you should consider to answer with 'yes' to |"
-    echo -e "| add the recommended example macros to your config.    |"
+    echo -e "| download the recommended macros.                      |"
     bottom_border
-    read -p "${cyan}###### Add the recommended macros? (Y/n):${white} " yn
+    read -p "${cyan}###### Download the recommended macros? (Y/n):${white} " yn
     case "${yn}" in
       Y|y|Yes|yes|"")
         select_msg "Yes"
@@ -151,10 +164,10 @@ function install_mainsail_macros() {
 }
 
 function download_mainsail_macros() {
-  local ms_cfg path configs regex
+  local ms_cfg_repo path configs regex line gcode_dir
 
-  ms_cfg="https://raw.githubusercontent.com/mainsail-crew/mainsail-config/master/mainsail.cfg"
-  regex="\/home\/${USER}\/([A-Za-z0-9_]+)\/config\/printer\.cfg"
+  ms_cfg_repo="https://github.com/mainsail-crew/mainsail-config.git"
+  regex="${HOME//\//\\/}\/([A-Za-z0-9_]+)\/config\/printer\.cfg"
   configs=$(find "${HOME}" -maxdepth 3 -regextype posix-extended -regex "${regex}" | sort)
 
   if [[ -n ${configs} ]]; then
@@ -186,12 +199,64 @@ function download_mainsail_macros() {
       fi
     done
   else
+
+  if [[ -z ${configs} ]]; then
+    print_error "No printer.cfg found! Installation of Macros will be skipped ..."
+
     log_error "execution stopped! reason: no printer.cfg found"
     return
   fi
+
+  status_msg "Cloning mainsail-config ..."
+  [[ -d "${HOME}/mainsail-config" ]] && rm -rf "${HOME}/mainsail-config"
+  if git clone "${ms_cfg_repo}" "${HOME}/mainsail-config"; then
+    for config in ${configs}; do
+      path=$(echo "${config}" | rev | cut -d"/" -f2- | rev)
+
+      if [[ -e "${path}/mainsail.cfg" && ! -h "${path}/mainsail.cfg" ]]; then
+        warn_msg "Attention! Existing mainsail.cfg detected!"
+        warn_msg "The file will be renamed to 'mainsail.bak.cfg' to be able to continue with the installation."
+        if ! mv "${path}/mainsail.cfg" "${path}/mainsail.bak.cfg"; then
+          error_msg "Renaming mainsail.cfg failed! Aborting installation ..."
+          return
+        fi
+      fi
+
+      if [[ -h "${path}/mainsail.cfg" ]]; then
+        warn_msg "Recreating symlink in ${path} ..."
+        rm -rf "${path}/mainsail.cfg"
+      fi
+
+      if ! ln -sf "${HOME}/mainsail-config/client.cfg" "${path}/mainsail.cfg"; then
+        error_msg "Creating symlink failed! Aborting installation ..."
+        return
+      fi
+
+      if ! grep -Eq "^\[include mainsail.cfg\]$" "${path}/printer.cfg"; then
+        log_info "${path}/printer.cfg"
+        sed -i "1 i [include mainsail.cfg]" "${path}/printer.cfg"
+      fi
+
+      line=$(($(grep -n "\[include mainsail.cfg\]" "${path}/printer.cfg" | tail -1 | cut -d: -f1) + 1))
+      gcode_dir=${path/config/gcodes}
+      if ! grep -Eq "^\[virtual_sdcard\]$" "${path}/printer.cfg"; then
+        log_info "${path}/printer.cfg"
+        sed -i "${line} i \[virtual_sdcard]\npath: ${gcode_dir}\non_error_gcode: CANCEL_PRINT\n" "${path}/printer.cfg"
+      fi
+    done
+  else
+    print_error "Cloning failed! Aborting installation ..."
+    log_error "execution stopped! reason: cloning failed"
+    return
+  fi
+
+  patch_mainsail_config_update_manager
+
+  ok_msg "Done!"
 }
 
 function download_mainsail() {
+  local services
   local url
   url=$(get_mainsail_download_url)
 
@@ -216,8 +281,9 @@ function download_mainsail() {
   status_msg "Remove downloaded archive ..."
   rm -rf ./*.zip && ok_msg "Done!"
 
-  ### check for moonraker multi-instance and if multi-instance was found, enable mainsails remoteMode
-  if [[ $(moonraker_systemd | wc -w) -gt 1 ]]; then
+  ### check for moonraker multi-instance and if no-instance or multi-instance was found, enable mainsails remoteMode
+  services=$(moonraker_systemd)
+  if [[ ( -z "${services}" ) || ( $(echo "${services}" | wc -w) -gt 1 ) ]]; then
     enable_mainsail_remotemode
   fi
 }
@@ -233,7 +299,7 @@ function remove_mainsail_dir() {
   rm -rf "${MAINSAIL_DIR}" && ok_msg "Directory removed!"
 }
 
-function remove_mainsail_config() {
+function remove_mainsail_nginx_config() {
   if [[ -e "/etc/nginx/sites-available/mainsail" ]]; then
     status_msg "Removing Mainsail configuration for Nginx ..."
     sudo rm "/etc/nginx/sites-available/mainsail" && ok_msg "File removed!"
@@ -260,7 +326,7 @@ function remove_mainsail_logs() {
 function remove_mainsail_log_symlinks() {
   local files regex
 
-  regex="\/home\/${USER}\/([A-Za-z0-9_]+)\/logs\/mainsail-.*"
+  regex="${HOME//\//\\/}\/([A-Za-z0-9_]+)\/logs\/mainsail-.*"
   files=$(find "${HOME}" -maxdepth 3 -regextype posix-extended -regex "${regex}" 2> /dev/null | sort)
 
   if [[ -n ${files} ]]; then
@@ -285,9 +351,18 @@ function remove_legacy_mainsail_log_symlinks() {
   fi
 }
 
+function remove_mainsail_config() {
+  if [[ -d "${HOME}/mainsail-config"  ]]; then
+    status_msg "Removing ${HOME}/mainsail-config ..."
+    rm -rf "${HOME}/mainsail-config"
+    ok_msg "${HOME}/mainsail-config removed!"
+    print_confirm "Mainsail-Config successfully removed!"
+  fi
+}
+
 function remove_mainsail() {
   remove_mainsail_dir
-  remove_mainsail_config
+  remove_mainsail_nginx_config
   remove_mainsail_logs
   remove_mainsail_log_symlinks
   remove_legacy_mainsail_log_symlinks
@@ -336,19 +411,25 @@ function get_mainsail_status() {
 }
 
 function get_local_mainsail_version() {
-  [[ ! -f "${MAINSAIL_DIR}/.version" ]] && return
-
+  local versionfile="${MAINSAIL_DIR}/.version"
+  local relinfofile="${MAINSAIL_DIR}/release_info.json"
   local version
-  version=$(head -n 1 "${MAINSAIL_DIR}/.version")
+
+  if [[ -f ${relinfofile} ]]; then
+    version=$(grep -o '"version":"[^"]*' "${relinfofile}" | grep -o '[^"]*$')
+  elif [[ -f ${versionfile} ]]; then
+    version=$(head -n 1 "${versionfile}")
+  fi
+
   echo "${version}"
 }
 
 function get_remote_mainsail_version() {
   [[ ! $(dpkg-query -f'${Status}' --show curl 2>/dev/null) = *\ installed ]] && return
 
-  local version
-  version=$(get_mainsail_download_url | rev | cut -d"/" -f2 | rev)
-  echo "${version}"
+  local tags
+  tags=$(curl -s "https://api.github.com/repos/mainsail-crew/mainsail/tags" | grep "name" | cut -d'"' -f4)
+  echo "${tags}" | head -1
 }
 
 function compare_mainsail_versions() {
@@ -386,7 +467,7 @@ function print_theme_list() {
 
 function ms_theme_installer_menu() {
   local theme_list theme_author theme_repo theme_name theme_note theme_url
-  local theme_csv_url="https://raw.githubusercontent.com/mainsail-crew/docs/master/_data/themes.csv"
+  local theme_csv_url="https://raw.githubusercontent.com/mainsail-crew/gb-docs/main/_data/themes.csv"
   theme_list=$(curl -s -L "${theme_csv_url}")
 
   top_border
@@ -497,7 +578,7 @@ function ms_theme_install() {
 function ms_theme_delete() {
   local regex theme_folders target_folders=()
 
-  regex="\/home\/${USER}\/([A-Za-z0-9_]+)\/config\/\.theme"
+  regex="${HOME//\//\\/}\/([A-Za-z0-9_]+)\/config\/\.theme"
   theme_folders=$(find "${HOME}" -maxdepth 3 -type d -regextype posix-extended -regex "${regex}" | sort)
  #  theme_folders=$(find "${cfg_dir}" -mindepth 1 -type d -name ".theme" | sort)
 
@@ -539,27 +620,28 @@ function ms_theme_delete() {
 #================================================#
 
 function get_mainsail_download_url() {
-  local ms_tags tags latest_tag latest_url stable_tag stable_url url
+  local releases_by_tag tags tag unstable_url url
 
-  ms_tags="https://api.github.com/repos/mainsail-crew/mainsail/tags"
-  tags=$(curl -s "${ms_tags}" | grep "name" | cut -d'"' -f4)
-
-  ### latest download url including pre-releases (alpha, beta, rc)
-  latest_tag=$(echo "${tags}" | head -1)
-  latest_url="https://github.com/mainsail-crew/mainsail/releases/download/${latest_tag}/mainsail.zip"
-
-  ### get stable mainsail download url
-  stable_tag=$(echo "${tags}" | grep -E "^v([0-9]+\.?){3}$" | head -1)
-  stable_url="https://github.com/mainsail-crew/mainsail/releases/download/${stable_tag}/mainsail.zip"
+  ### latest stable download url
+  url="https://github.com/mainsail-crew/mainsail/releases/latest/download/mainsail.zip"
 
   read_kiauh_ini "${FUNCNAME[0]}"
   if [[ ${mainsail_install_unstable} == "true" ]]; then
-    url="${latest_url}"
-    echo "${url}"
-  else
-    url="${stable_url}"
-    echo "${url}"
+    releases_by_tag="https://api.github.com/repos/mainsail-crew/mainsail/tags"
+    tags=$(curl -s "${releases_by_tag}" | grep "name" | cut -d'"' -f4)
+    tag=$(echo "${tags}" | head -1)
+
+    ### latest unstable download url including pre-releases (alpha, beta, rc)
+    unstable_url="https://github.com/mainsail-crew/mainsail/releases/download/${tag}/mainsail.zip"
+
+    if [[ ${unstable_url} == *"download//"* ]]; then
+      warn_msg "Download URL broken! Falling back to URL of latest stable release!"
+    else
+      url=${unstable_url}
+    fi
   fi
+
+  echo "${url}"
 }
 
 function mainsail_port_check() {
@@ -631,7 +713,7 @@ function enable_mainsail_remotemode() {
 
 function patch_mainsail_update_manager() {
   local patched moonraker_configs regex
-  regex="\/home\/${USER}\/([A-Za-z0-9_]+)\/config\/moonraker\.conf"
+  regex="${HOME//\//\\/}\/([A-Za-z0-9_]+)\/config\/moonraker\.conf"
   moonraker_configs=$(find "${HOME}" -maxdepth 3 -type f -regextype posix-extended -regex "${regex}" | sort)
 
   patched="false"
@@ -649,6 +731,39 @@ type: web
 channel: stable
 repo: mainsail-crew/mainsail
 path: ~/mainsail
+MOONRAKER_CONF
+
+    fi
+
+    patched="true"
+  done
+
+  if [[ ${patched} == "true" ]]; then
+    do_action_service "restart" "moonraker"
+  fi
+}
+
+function patch_mainsail_config_update_manager() {
+  local patched moonraker_configs regex
+  regex="${HOME//\//\\/}\/([A-Za-z0-9_]+)\/config\/moonraker\.conf"
+  moonraker_configs=$(find "${HOME}" -maxdepth 3 -type f -regextype posix-extended -regex "${regex}" | sort)
+
+  patched="false"
+  for conf in ${moonraker_configs}; do
+    if ! grep -Eq "^\[update_manager mainsail-config\]\s*$" "${conf}"; then
+      ### add new line to conf if it doesn't end with one
+      [[ $(tail -c1 "${conf}" | wc -l) -eq 0 ]] && echo "" >> "${conf}"
+
+      ### add Mainsails update manager section to moonraker.conf
+      status_msg "Adding Mainsail-Config to update manager in file:\n       ${conf}"
+      /bin/sh -c "cat >> ${conf}" << MOONRAKER_CONF
+
+[update_manager mainsail-config]
+type: git_repo
+primary_branch: master
+path: ~/mainsail-config
+origin: https://github.com/mainsail-crew/mainsail-config.git
+managed_services: klipper
 MOONRAKER_CONF
 
     fi

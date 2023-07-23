@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #=======================================================================#
-# Copyright (C) 2020 - 2022 Dominik Willner <th33xitus@gmail.com>       #
+# Copyright (C) 2020 - 2023 Dominik Willner <th33xitus@gmail.com>       #
 #                                                                       #
 # This file is part of KIAUH - Klipper Installation And Update Helper   #
 # https://github.com/th33xitus/kiauh                                    #
@@ -27,6 +27,8 @@ function main_ui() {
     echo -e "|  6) [Settings]      |  Telegram Bot: $(print_status "telegram_bot")|"
     echo -e "|                     |     Crowsnest: $(print_status "crowsnest")|"
     echo -e "|                     |         Obico: $(print_status "moonraker_obico")|"
+    echo -e "|                     |OctoEverywhere: $(print_status "octoeverywhere")|"
+    echo -e "|                     |   Mobileraker: $(print_status "mobileraker")|"
     echo -e "|                     |                                 |"
     echo -e "|  $(print_kiauh_version) |     Octoprint: $(print_status "octoprint")|"
     custom_function
@@ -72,7 +74,7 @@ function print_klipper_repo() {
 
     if [[ ${klipper_status} == "Not installed!" ]]; then
         repo="${red}-${white}"
-    elif [[ -n ${repo} && ${repo} != "KLIPPER3D/KLIPPER"  ]]; then
+    elif [[ -n ${repo} && ${repo} != "KLIPPER3D/KLIPPER" ]]; then
         repo="${cyan}${custom_repo}${white}"
     else
         repo="${cyan}Klipper3d/klipper${white}"
@@ -85,9 +87,9 @@ function print_klipper_branch() {
     if [[ ${klipper_status} == "Not installed!" ]]; then
         repo="${red}-${white}"
     else
-        if [ -d "${HOME}/klipper" ];then
+        if [ -d "${HOME}/klipper" ]; then
             cd ${HOME}/klipper
-            repo="${cyan}`git branch | sed -n '/\* /s///p'`${white}"
+            repo="${cyan}$(git branch | sed -n '/\* /s///p')${white}"
         else
             repo="${red}-${white}"
         fi
@@ -103,53 +105,108 @@ function main_menu() {
     ### initialize kiauh.ini
     init_ini
 
-  local action
-  while true; do
-    read -p "${cyan}####### Perform action:${white} " action
-    case "${action}" in
-      "start klipper") do_action_service "start" "klipper"; main_ui;;
-      "stop klipper") do_action_service "stop" "klipper"; main_ui;;
-      "restart klipper") do_action_service "restart" "klipper"; main_ui;;
-      "start moonraker") do_action_service "start" "moonraker"; main_ui;;
-      "stop moonraker") do_action_service "stop" "moonraker"; main_ui;;
-      "restart moonraker")do_action_service "restart" "moonraker"; main_ui;;
-      "start octoprint") do_action_service "start" "octoprint"; main_ui;;
-      "stop octoprint") do_action_service "stop" "octoprint"; main_ui;;
-      "restart octoprint") do_action_service "restart" "octoprint"; main_ui;;
-      "start crowsnest") do_action_service "start" "crowsnest"; main_ui;;
-      "stop crowsnest") do_action_service "stop" "crowsnest"; main_ui;;
-      "restart crowsnest") do_action_service "restart" "crowsnest"; main_ui;;
-      update) do_action "update_kiauh" "main_ui";;
-      0)clear && print_header
-        upload_selection
-        break;;
-      1)clear && print_header
-        install_menu
-        break;;
-      2) clear && print_header
-        update_menu
-        break;;
-      3) clear && print_header
-        remove_menu
-        break;;
-      4)clear && print_header
-        backup_menu
-        break;;
-      5)clear && print_header
-        advanced_menu
-        break;;
-      6)clear && print_header
-        settings_menu
-        break;;
-      F|f) clear && print_header
-        custom_function_menu 
-        break;;
-      Q|q)
-        echo -e "${green}###### Happy printing! ######${white}"; echo
-        exit 0;;
-      *)
-        deny_action "main_ui";;
-    esac
-  done
-  main_menu
+    local action
+    while true; do
+        read -p "${cyan}####### Perform action:${white} " action
+        case "${action}" in
+        "start klipper")
+            do_action_service "start" "klipper"
+            main_ui
+            ;;
+        "stop klipper")
+            do_action_service "stop" "klipper"
+            main_ui
+            ;;
+        "restart klipper")
+            do_action_service "restart" "klipper"
+            main_ui
+            ;;
+        "start moonraker")
+            do_action_service "start" "moonraker"
+            main_ui
+            ;;
+        "stop moonraker")
+            do_action_service "stop" "moonraker"
+            main_ui
+            ;;
+        "restart moonraker")
+            do_action_service "restart" "moonraker"
+            main_ui
+            ;;
+        "start octoprint")
+            do_action_service "start" "octoprint"
+            main_ui
+            ;;
+        "stop octoprint")
+            do_action_service "stop" "octoprint"
+            main_ui
+            ;;
+        "restart octoprint")
+            do_action_service "restart" "octoprint"
+            main_ui
+            ;;
+        "start crowsnest")
+            do_action_service "start" "crowsnest"
+            main_ui
+            ;;
+        "stop crowsnest")
+            do_action_service "stop" "crowsnest"
+            main_ui
+            ;;
+        "restart crowsnest")
+            do_action_service "restart" "crowsnest"
+            main_ui
+            ;;
+        update) do_action "update_kiauh" "main_ui" ;;
+        0)
+            clear && print_header
+            upload_selection
+            break
+            ;;
+        1)
+            clear && print_header
+            install_menu
+            break
+            ;;
+        2)
+            clear && print_header
+            update_menu
+            break
+            ;;
+        3)
+            clear && print_header
+            remove_menu
+            break
+            ;;
+        4)
+            clear && print_header
+            backup_menu
+            break
+            ;;
+        5)
+            clear && print_header
+            advanced_menu
+            break
+            ;;
+        6)
+            clear && print_header
+            settings_menu
+            break
+            ;;
+        F | f)
+            clear && print_header
+            custom_function_menu
+            break
+            ;;
+        Q | q)
+            echo -e "${green}###### Happy printing! ######${white}"
+            echo
+            exit 0
+            ;;
+        *)
+            deny_action "main_ui"
+            ;;
+        esac
+    done
+    main_menu
 }

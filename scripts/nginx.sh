@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #=======================================================================#
-# Copyright (C) 2020 - 2022 Dominik Willner <th33xitus@gmail.com>       #
+# Copyright (C) 2020 - 2023 Dominik Willner <th33xitus@gmail.com>       #
 #                                                                       #
 # This file is part of KIAUH - Klipper Installation And Update Helper   #
 # https://github.com/th33xitus/kiauh                                    #
@@ -79,7 +79,7 @@ function symlink_webui_nginx_log() {
   interface=${1}
   access_log="/var/log/nginx/${interface}-access.log"
   error_log="/var/log/nginx/${interface}-error.log"
-  regex="\/home\/${USER}\/([A-Za-z0-9_]+)\/logs"
+  regex="${HOME//\//\\/}\/([A-Za-z0-9_]+)\/logs"
   logpaths=$(find "${HOME}" -maxdepth 2 -type d -regextype posix-extended -regex "${regex}" | sort)
 
   for path in ${logpaths}; do

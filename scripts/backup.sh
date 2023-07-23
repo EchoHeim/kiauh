@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #=======================================================================#
-# Copyright (C) 2020 - 2022 Dominik Willner <th33xitus@gmail.com>       #
+# Copyright (C) 2020 - 2023 Dominik Willner <th33xitus@gmail.com>       #
 #                                                                       #
 # This file is part of KIAUH - Klipper Installation And Update Helper   #
 # https://github.com/th33xitus/kiauh                                    #
@@ -158,7 +158,7 @@ function backup_octoprint() {
 
 function backup_klipperscreen() {
     local current_date
-    if [[ -d ${KLIPPERSCREEN_DIR} ]] ; then
+    if [[ -d ${KLIPPERSCREEN_DIR} ]]; then
         status_msg "Creating KlipperScreen backup ..."
         check_for_backup_dir
         current_date=$(get_date)
@@ -174,7 +174,7 @@ function backup_klipperscreen() {
 function backup_telegram_bot() {
     local current_date
 
-    if [[ -d ${TELEGRAM_BOT_DIR} ]] ; then
+    if [[ -d ${TELEGRAM_BOT_DIR} ]]; then
         status_msg "Creating MoonrakerTelegramBot backup ..."
         check_for_backup_dir
         current_date=$(get_date)

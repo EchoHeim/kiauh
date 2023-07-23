@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #=======================================================================#
-# Copyright (C) 2020 - 2022 Dominik Willner <th33xitus@gmail.com>       #
+# Copyright (C) 2020 - 2023 Dominik Willner <th33xitus@gmail.com>       #
 #                                                                       #
 # This file is part of KIAUH - Klipper Installation And Update Helper   #
 # https://github.com/th33xitus/kiauh                                    #
@@ -110,7 +110,7 @@ function telegram_bot_setup_dialog() {
 }
 
 function install_telegram_bot_dependencies() {
-  local packages
+  local packages log_name="Telegram Bot"
   local install_script="${TELEGRAM_BOT_DIR}/scripts/install.sh"
 
   ### read PKGLIST from official install-script
@@ -121,21 +121,11 @@ function install_telegram_bot_dependencies() {
   echo "${cyan}${packages}${white}" | tr '[:space:]' '\n'
   read -r -a packages <<< "${packages}"
 
-  ### Update system package info
-  status_msg "Updating package lists..."
-  if ! sudo apt-get update --allow-releaseinfo-change; then
-    log_error "failure while updating package lists"
-    error_msg "Updating package lists failed!"
-    exit 1
-  fi
+  ### Update system package lists if stale
+  update_system_package_lists
 
   ### Install required packages
-  status_msg "Installing required packages..."
-  if ! sudo apt-get install --yes "${packages[@]}"; then
-    log_error "failure while installing required moonraker-telegram-bot packages"
-    error_msg "Installing required packages failed!"
-    exit 1
-  fi
+  install_system_packages "${log_name}" "packages[@]"
 }
 
 function create_telegram_bot_virtualenv() {
@@ -328,11 +318,11 @@ function write_telegram_bot_service() {
     else
       sudo sed -i "s|%INST%|${i}|" "${service}"
     fi
-    sudo sed -i "s|%USER%|${USER}|g; s|%ENV%|${TELEGRAM_BOT_ENV}|; s|%ENV_FILE%|${env_file}|" "${service}"
+    sudo sed -i "s|%USER%|${USER}|g; s|%TELEGRAM_BOT_DIR%|${TELEGRAM_BOT_DIR}|; s|%ENV%|${TELEGRAM_BOT_ENV}|; s|%ENV_FILE%|${env_file}|" "${service}"
 
     status_msg "Creating environment file for instance ${i} ..."
     cp "${env_template}" "${env_file}"
-    sed -i "s|%USER%|${USER}|; s|%CFG%|${cfg}|; s|%LOG%|${log}|" "${env_file}"
+    sed -i "s|%USER%|${USER}|; s|%TELEGRAM_BOT_DIR%|${TELEGRAM_BOT_DIR}|; s|%CFG%|${cfg}|; s|%LOG%|${log}|" "${env_file}"
   fi
 }
 
@@ -376,7 +366,7 @@ function remove_telegram_bot_env() {
 }
 
 function remove_telegram_bot_env_file() {
-  local files regex="\/home\/${USER}\/([A-Za-z0-9_]+)\/systemd\/moonraker-telegram-bot\.env"
+  local files regex="${HOME//\//\\/}\/([A-Za-z0-9_]+)\/systemd\/moonraker-telegram-bot\.env"
   files=$(find "${HOME}" -maxdepth 3 -regextype posix-extended -regex "${regex}" | sort)
 
   if [[ -n ${files} ]]; then
@@ -389,7 +379,7 @@ function remove_telegram_bot_env_file() {
 }
 
 function remove_telegram_bot_logs() {
-  local files regex="\/home\/${USER}\/([A-Za-z0-9_]+)\/logs\/telegram\.log.*"
+  local files regex="${HOME//\//\\/}\/([A-Za-z0-9_]+)\/logs\/telegram\.log.*"
   files=$(find "${HOME}" -maxdepth 3 -regextype posix-extended -regex "${regex}" | sort)
 
   if [[ -n ${files} ]]; then
@@ -519,7 +509,7 @@ function compare_telegram_bot_versions() {
 
 function patch_telegram_bot_update_manager() {
   local patched moonraker_configs regex
-  regex="\/home\/${USER}\/([A-Za-z0-9_]+)\/config\/moonraker\.conf"
+  regex="${HOME//\//\\/}\/([A-Za-z0-9_]+)\/config\/moonraker\.conf"
   moonraker_configs=$(find "${HOME}" -maxdepth 3 -type f -regextype posix-extended -regex "${regex}" | sort)
 
   patched="false"

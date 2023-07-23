@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #=======================================================================#
-# Copyright (C) 2020 - 2022 Dominik Willner <th33xitus@gmail.com>       #
+# Copyright (C) 2020 - 2023 Dominik Willner <th33xitus@gmail.com>       #
 #                                                                       #
 # This file is part of KIAUH - Klipper Installation And Update Helper   #
 # https://github.com/th33xitus/kiauh                                    #
@@ -38,7 +38,7 @@ function install_pgc_for_klipper() {
   fi
 
   sudo cp "${pgconfsrc}" "${pgconf}"
-  sudo sed -i "s|/home/pi/pgcode;|/home/${USER}/pgcode;|" "${pgconf}"
+  sudo sed -i "s|/home/pi/pgcode;|${HOME}/pgcode;|" "${pgconf}"
 
   ### replace default port
   if (( pgc_custom_port != pgc_default_port )); then
